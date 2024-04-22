@@ -1,7 +1,10 @@
-# Web developement Notes: CSS
+# Programming Language Notes: [Language Name]
+
+## Introduction
+Brief introduction to the programming language.
 
 ## Table of Contents
-- [Boilerplate](#Boilerplate)
+- [Syntax](#syntax)
 - [Variables](#variables)
 - [Control Structures](#control-structures)
 - [Functions](#functions)
@@ -9,22 +12,8 @@
 - [Example Code](#example-code)
 - [Resources](#resources)
 
-## Boilerplate
-- set margin and padding 0 for all elements for consistency
-- set element size = border + padding + content (doesn't include margin)
-- set body to fill screen
-```
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    height: 100%;
-    width: 100%
-}
-```
+## Syntax
+Description of the syntax rules and conventions of the language.
 
 ## Variables
 Explanation of variable declaration, types, and scope.
