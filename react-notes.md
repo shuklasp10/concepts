@@ -1,16 +1,11 @@
 # Programming Language Notes: React
 
-## Introduction
-Brief introduction to the programming language.
-
 ## Table of Contents
 - [useEffect](#useeffect)
 - [useContext](#usecontext)
-- [Routing](#control-structures)
-- [Functions](#functions)
-- [Data Structures](#data-structures)
-- [Example Code](#example-code)
-- [Resources](#resources)
+- [useReducer](#usereducer)
+- [useRef](#useref)
+- [Routing](#routing)
 
 ## useEffect
 Used to synchronize components with some external systems (server, network, widget outside react)
@@ -44,11 +39,11 @@ Used to access and use values from context to prevent prop drilling
  ```
 //Context.jsx
 import React, { createContext } from "react";
-
+1
 export const MyContext = createContext(defaultValue);
  ```
 
-### Provide context to entire component tree
+### Provide context to application
 ```
 //Index.jsx
 import {MyContext} from './Context.jsx'
@@ -70,5 +65,50 @@ export default Page = () =>{
 }
 ```
 
+## useReducer
+
+## useRef
+
 ## Routing
-Description of conditional statements and loops.
+Library used to implemement routing - *react-router-dom*
+
+### Router setup
+```[javascript]
+//index.jsx
+import {BrowserRouter} from 'react-router-dom';
+...
+root.render(
+     <BrowserRouter>
+        <App />
+     </BrowserRouter>
+ );
+```
+
+### Creating routes
+```
+//App.jsx
+import {Routes, Route} from 'react-router-dom'
+
+function App = () = {
+    return (
+       <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='/about' element={<About/>} />
+        <Route path='/contact' element={<Contact/>} />
+       <Routes/>
+    )
+}
+```
+
+### Creating navigations
+```[javascript]
+//Nav.jsx
+import {Link} from 'react-router-dom'
+
+....
+<li><Link to='/about'>About</Link></li>
+```
+
+### Notes
+1. Use ```<Outlet />``` in navigation if there is nested routing.
+2. ```'/path'``` gives absolute path whereas ```'path'``` gives relative path.
