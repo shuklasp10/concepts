@@ -10,7 +10,8 @@
 - [Resources](#resources)
 
 ## Boilerplate
-
+set margin and padding 0 for all elements for consistency
+set element size = border + padding + content (doesn't include margin)
 ```
 //set margin and padding 0 for all elements for consistency
 //set element size = border + padding + content (doesn't include margin)
