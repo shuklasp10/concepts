@@ -1,10 +1,7 @@
-# Programming Language Notes: [Language Name]
-
-## Introduction
-Brief introduction to the programming language.
+# Web developement Notes: CSS
 
 ## Table of Contents
-- [Syntax](#syntax)
+- [Boilerplate](#Boilerplate)
 - [Variables](#variables)
 - [Control Structures](#control-structures)
 - [Functions](#functions)
@@ -12,8 +9,19 @@ Brief introduction to the programming language.
 - [Example Code](#example-code)
 - [Resources](#resources)
 
-## Syntax
-Description of the syntax rules and conventions of the language.
+## Boilerplate
+'''
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%
+}
+'''
 
 ## Variables
 Explanation of variable declaration, types, and scope.
