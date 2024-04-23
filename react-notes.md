@@ -39,7 +39,7 @@ Used to access and use values from context to prevent prop drilling
  ```
 //Context.jsx
 import React, { createContext } from "react";
-1
+
 export const MyContext = createContext(defaultValue);
  ```
 
