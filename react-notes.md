@@ -66,6 +66,67 @@ export default Page = () =>{
 ```
 
 ## useReducer
+Used to manage complex states with custom actions.
+
+```[javascript]
+//App.jsx
+import { useReducer } from 'react'
+
+function App() {
+    const [state, dispatch] = useReducer(reducer, InitialState)
+
+    return ()
+}
+```
+- Parameter
+    - **reducer** a function which changes state
+    - **InitialState** a object containing initial state
+- Returns
+    - An array containing
+        - **state** current value of state
+        - **dispatch** function to call actions
+
+### reducer function
+```
+function reducer(state, action){
+    switch(action.type){
+        case 'action1':
+            ...operation
+            return modifiedState
+        case 'action2':
+            ...operation
+            return modifiedState
+        default:
+            return state
+    }
+}
+```
+- Parameter
+    - **state** current state
+    - **actions** object containing type and payload
+- Returns
+    - new modified state
+
+### dispatch function
+calls reducer function by passing actions as parameter
+```
+dispatch({type:'action1'})
+```
+
+### actions
+Constant object to define action name. It used to prevent error in dispatch and reducer function.
+```
+const ACTIONS = {
+    INCREMENT : 'increment',
+    DECREMENT : 'decrement'
+}
+```
+
+### Note
+1. Always make constant or variable of string if  it used multiple places
+2. Do not modify state in reducer function since it is read only instead reutrn new state.
+3. We can pass *initializer function* as 3rd argument in useReducer.
+4. **initializer function** return value of this function will be set as state. Only called at first render.
 
 ## useRef
 
