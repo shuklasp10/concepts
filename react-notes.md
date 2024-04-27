@@ -6,6 +6,7 @@
 - [useReducer](#usereducer)
 - [useRef](#useref)
 - [Routing](#routing)
+- [Frontend Storage](#frontend-storage)
 
 ## useEffect
 Used to synchronize components with some external systems (server, network, widget outside react)
@@ -173,3 +174,8 @@ import {Link} from 'react-router-dom'
 ### Notes
 1. Use ```<Outlet />``` in navigation if there is nested routing.
 2. ```'/path'``` gives absolute path whereas ```'path'``` gives relative path.
+
+
+
+## Frontend Storage
+
