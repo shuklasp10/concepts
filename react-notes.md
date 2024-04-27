@@ -1,4 +1,4 @@
-# Programming Language Notes: React
+# Web Developemnt Notes: React
 
 ## Table of Contents
 - [useEffect](#useeffect)

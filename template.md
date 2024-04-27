@@ -1,4 +1,4 @@
-# Programming Language Notes: [Language Name]
+# Web Developemnt Notes: [Language Name]
 
 ## Introduction
 Brief introduction to the programming language.
