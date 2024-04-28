@@ -7,6 +7,7 @@
 - [Express](#express)
 - [Routing](#routing)
 - [Middleware](#middleware)
+- [Express Router](#express-router)
 
 
 ## Introduction
@@ -107,11 +108,42 @@ app.method_name('path',(req,res)=>{
 
 - __OPTIONS__ - Used to determine which HTTP methods and headers are supported by a server.
 
+## Express Router
+While we can use CRUD with app directly, using express router provides following benefits.
+- __Modularization__ - Route definition in different files or modules.
+- __Route Middleware__ - Middleware for specific route
+- __Path Prefixing__ - Define routes relative to a common base path.
+- __Route Parameterization__ - enabling the definition of dynamic routes with placeholders for variables.
+
+```
+//index.js
+const express = require('express')
+const userRouter = require('./Router/userRouter');
+
+const app = express();
+
+app.listen(3000,()=>{console.log('server is running')});
+
+app.use(userRouter);
+```
+```
+//Router/userRouter.js
+const express = require('express');
+
+const router = express.Router();
+
+router.get('/',(req,res)=>{res.status(200).send("hello world")});
+
+module.exports = router;
+```
+
+
 ## Middleware
 It process incoming request before reaching to route handlers.  
 Used to perform tasks such as logging, authentication, data parsing, error handling.
 
 ```
+//index.js
 const express = require('express');
 
 const app = express();
