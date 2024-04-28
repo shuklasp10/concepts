@@ -7,7 +7,7 @@
 - [Create Schema and Model](#create-schema-and-model)
 - [Data validation](#data-validation)
 - [Model operations](#model-operations)
-- [Introduction](#introduction)
+- [Operators](#operators)
 
 ## Introduction
 - __NoSQL__ database
@@ -73,7 +73,7 @@ const userSchema = mongoose.Schema({
         required: true,
 })
 ```
-### common contraints
+### common validators
 - ```type : String || Number || Integer || Double || Boolean || Null || [String] || Object || Date```
 - ```required : true || false```
 - ```lowercase || uppercase : true || false``` converts string casing
@@ -202,3 +202,59 @@ User.find({ age: { $gte: 30 } }) //age >= 30
 
 ### counting documents
 ```User.countDocuments()```
+
+## Operators
+Operators used to perform operations in queries
+
+### comparison operators
+| Operator | Use |
+|--------|--------|
+| ```$eq``` | equal to |
+| ```$ne``` | not equal to |
+| ```$lt``` | less than |
+| ```$gt``` | greater than |
+| ```$lte``` | less than or equal to |
+| ```$gte``` | greater than or equal to |
+
+```
+User.find({age: {$gte: 30}})
+```
+
+### logical operator
+| Operator | Use |
+|--------|--------|
+| ```$and``` | And |
+| ```$or``` | Or |
+| ```$not``` | Not |
+
+```
+```
+
+### element operator
+Perform query based on presence of field in database
+| Operator | Use |
+|--------|--------|
+| ```$exists``` | Check if field exists |
+| ```$type``` | Check datatype of field value |
+| ```$in``` | match field value from given array of values |
+
+```
+```
+
+### array operators
+| Operator | Use |
+|--------|--------|
+| ```$all``` | match array contains all specified elements |
+| ```$elemMatch``` | match array contains an element match spefified condition |
+| ```$size``` | match array with given length |
+
+```
+```
+
+### update operators
+| Operator | Use |
+|--------|--------|
+| ```$set``` | Update a field rather than replacing document |
+| ```$unset``` | remove field from document |
+| ```$inc``` | increment value of field |
+| ```$push``` | add new element to array |
