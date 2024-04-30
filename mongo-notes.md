@@ -228,6 +228,12 @@ User.find({age: {$gte: 30}})
 | ```$not``` | Not |
 
 ```
+User.find({
+    $or : [
+        {qty: {$lte: 10}},
+        {qty: {$gte: 40}}
+    ]
+});
 ```
 
 ### element operator
@@ -237,8 +243,12 @@ Perform query based on presence of field in database
 | ```$exists``` | Check if field exists |
 | ```$type``` | Check datatype of field value |
 | ```$in``` | match field value from given array of values |
+| ```$nin``` | doesn't match field value from given array of values |
 
 ```
+User.find({
+    name: {$exist: true, $in: ['Ramesh','Suresh','Aditya']}
+});
 ```
 
 ### array operators
@@ -258,3 +268,21 @@ Perform query based on presence of field in database
 | ```$unset``` | remove field from document |
 | ```$inc``` | increment value of field |
 | ```$push``` | add new element to array |
+
+### Evaluation operators
+| Operator | Use |
+|--------|--------|
+| ```$add``` | Addition |
+| ```$subtract``` | Substraction |
+| ```$multiply``` | Multiplication |
+| ```$divide``` | Division |
+| ```$pow``` | Exponent |
+| ```$mod``` | Modulous |
+```
+User.find({
+    qty: {$mod: [10,2]}
+});
+```
+
+### Notes
+1. Use ```$set``` operator in ```update()``` function to partially update document instead of replacing entire document.
