@@ -5,7 +5,7 @@
 - [Structure of MongoDB](#structure-of-mongodb)
 - [Connecting NodeJS app to Atlas instance](#connecting-nodejs-app-to-atlas-instance)
 - [Create Schema and Model](#create-schema-and-model)
-- [Data validation](#data-validation)
+- [Validation](#validation)
 - [Model operations](#model-operations)
 - [Operators](#operators)
 
@@ -27,12 +27,10 @@ __Clusters__ - Group of servers working for actual database deployment. It conta
 
 ## Connecting NodeJS app to Atlas instance
 Use mongoose library to use mongodb features in nodejs.
-```
+```[javascript]
 //index.js
-const express = require('express');
 const mongoose = require('mongoose');
 
-const app = express()
 mongoose.connect('instanceURI with password')
 .then(()=>{
     console.log('Database connected');
@@ -41,7 +39,6 @@ mongoose.connect('instanceURI with password')
     console.log('Error in connecting database');
 });
 
-app.listen(3000,()=>{console.log('server is running')});
 ```
 
 ## Create Schema and Model
@@ -57,15 +54,13 @@ const userSchema = mongoose.Schema({name: String});
 module.exports = mongoose.model('User', userSchema);
 ```
 
-## Data validation
+## Validation
+* Defined in Schema.
+* It's a middleware.
+* Disbale automatic valiation using
+* Run manaul validation using ```doc.validate``` or ```doc.validateSync()```
 
-### 2 ways to define constraints
-```
-const userSchema = mongoose.Schema({
-    name: String
-})
-```
-This method is used when we need additional constraints
+### define validation
 ```
 const userSchema = mongoose.Schema({
     name: {
@@ -73,6 +68,17 @@ const userSchema = mongoose.Schema({
         required: true,
 })
 ```
+
+### validation error
+```
+const userSchema = mongoose.Schema({
+    name: {
+        type: [String, 'value is not string'],
+        minlength: [4, 'value is too small']
+        required: true,
+})
+```
+
 ### common validators
 - ```type : String || Number || Integer || Double || Boolean || Null || [String] || Object || Date```
 - ```required : true || false```
@@ -84,10 +90,9 @@ const userSchema = mongoose.Schema({
 - ```default: 0``` for default value if no value is provided.
 - ```immutable : true || false``` restrict modification of value
 
-### ref contrainsts
-Used to reference a field value to other document's objectId.  
-Set type as mongo objectId  
-use ref to provide collection where to look for given objectId.
+### ref validators
+__type__ - Set type of field as mongodb objectId.  
+__ref__ - collection name where to look for objectId.
 ```
 const userSchema = mongoose.Schema({
     friend : {
@@ -97,7 +102,7 @@ const userSchema = mongoose.Schema({
 })
 ```
 
-### custom validation
+### custom validators
 ```validate``` is used to define custom validation  
 It contains two keys
 - ```validator``` - function to check validation accept value as argument. Returns a Boolean
@@ -110,20 +115,20 @@ const userSchema = mongoose.Schema({
         validator : (val) => {
             return val.length <=5
         }
+        message: 'Value length must be less than 5'
     },
-    message: 'Value length must be less than 5'
 });
 ```
 
-### Notes
-1. ```update()``` _(or its alias ```updateMany```, ```updateOne```, ```findByIdAndUpdate()```, ```findOneAndUpdate()```)_ method does not trigger schema validation by default. It will directly update value in database.   
-To run validator before update use ```{runValidators: true}``` option
+### this keyword
+it is used to refer current document instance.
 ```
-User.findByIdAndUpdate('id',{name:'Shri'},{runvalidators: true})
-.then(()=>{console.log('User Updated')})
-.catch((e)=>{console.log('Error in updating user')})
+const userSchema = mongoose.Schema({
+    name: String,
+    rating: Number,
+    isEven: ()=>(this.rating % 2==0)
+})
 ```
-
 ### date as default value
 Using current date as default value. eg createdAt field  
 - Wrong approach
@@ -134,12 +139,35 @@ when schema is compiled it will get replaced by static value which will be used 
 
 - Correct approach
 ```
-createdAt : ()=>(new Date())
+createdAt : {
+    type: Date,
+    default: ()=> new Date()
+}
 ```
 When schema is compiled this function will be stored and run each time document is created.
 
-## Model operations
-for model ```User``` 
+### Notes
+1. ```update()``` _(or its alias ```updateMany```, ```updateOne```, ```findByIdAndUpdate()```, ```findOneAndUpdate()```)_ method does not trigger schema validation by default. It will directly update value in database.   
+To run validator before update use ```{runValidators: true}``` option
+```
+User.findByIdAndUpdate('id',{name:'Shri'},{runvalidators: true})
+.then(()=>{console.log('User Updated')})
+.catch((e)=>{console.log('Error in updating user')})
+```
+2. 
+
+
+
+## Queries
+1. Query can executed on two ways
+    * callback function is passed to execute query result.
+    * ```.then()``` is used to execute query result.
+2. ```const persons = await Person.find({})```. here persons (or query) is of type ```Query()``` which can be chained for further queries.
+3. query can be executed by either ```query.exec()``` or ```query.then()```
+
+
+_```.then()``` is function provided by query that can be used as promise. Query itself is not a promise._
+
 
 ### creating document
 ```User.create()```
@@ -178,7 +206,7 @@ newUser.save()
 
 ### reading document
 ```User.find({})``` return array of documents or empty array.  
-```User.findOne({})``` return single document or null
+```User.findOne({})``` return single document or null.
 ```
 User.find({ age: { $gte: 30 } }) //age >= 30
     .then(data => {
@@ -193,8 +221,22 @@ User.find({ age: { $gte: 30 } }) //age >= 30
 ```User.findByIdAndUpdate('id',{age:40})``` return updated document or null  
 
 ### updating documents
-```User.updateOne({query},{new:value})```  
-```User.updateMany({query},{new:value})```
+Mongoose has 4 types to update document
+1. ```query.save()```
+    * Recommended method to update database.
+    * It works on doucment, so there must be document.
+    * get document from ```create()``` or ```find()``` query.
+    * runs validation before updating database.
+2. ```Model.updateOne()``` & ```Model.updateMany()```
+    * Atomically updates - update database without loading it first.
+    * Better performance if document is huge.
+    * doesn't run validation before updating.
+    * Returns number of document updated
+3. ```query.updateOne()```
+    * Not recommended method.
+    * Same as ```Model.updateOne()``` but runs on document.
+4. ```Model.findOneAndUpdate()```
+    * Same as ```Model.updateOne()``` except it returns updated document.
 
 ### deleting documents
 ```User.deleteOne({query})```  
@@ -217,7 +259,7 @@ Operators used to perform operations in queries
 | ```$gte``` | greater than or equal to |
 
 ```
-User.find({age: {$gte: 30}})
+User.find({age: {$gte: 30}});
 ```
 
 ### logical operator
