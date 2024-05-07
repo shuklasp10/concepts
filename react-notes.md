@@ -148,7 +148,7 @@ const ACTIONS = {
 ## Routing
 Used to navigate in application through URL path.  
 Library -  ```react-router-dom```  
-** Walkthrough **
+**Walkthrough**
 1. Install `react-router-dom` library.
 2. Wrap application with `<BrowserRouter>`
 3. Create `Routes` and `Route` defining path and component relation.
