@@ -6,7 +6,7 @@
 - [Connecting NodeJS app to Atlas instance](#connecting-nodejs-app-to-atlas-instance)
 - [Create Schema and Model](#create-schema-and-model)
 - [Validation](#validation)
-- [Model operations](#model-operations)
+- [Queries](#queries)
 - [Operators](#operators)
 
 ## Introduction
@@ -57,8 +57,8 @@ module.exports = mongoose.model('User', userSchema);
 ## Validation
 * Defined in Schema.
 * It's a middleware.
-* Disbale automatic valiation using
-* Run manaul validation using ```doc.validate``` or ```doc.validateSync()```
+* Disbale automatic validation using
+* Run manual validation using ```doc.validate``` or ```doc.validateSync()```
 
 ### define validation
 ```
@@ -121,7 +121,7 @@ const userSchema = mongoose.Schema({
 ```
 
 ### this keyword
-it is used to refer current document instance.
+it is used to refer fields of current document instance.
 ```
 const userSchema = mongoose.Schema({
     name: String,
@@ -146,27 +146,25 @@ createdAt : {
 ```
 When schema is compiled this function will be stored and run each time document is created.
 
-### Notes
+### Keypoints
 1. ```update()``` _(or its alias ```updateMany```, ```updateOne```, ```findByIdAndUpdate()```, ```findOneAndUpdate()```)_ method does not trigger schema validation by default. It will directly update value in database.   
-To run validator before update use ```{runValidators: true}``` option
+To run validator before update, use ```{runValidators: true}``` option
 ```
 User.findByIdAndUpdate('id',{name:'Shri'},{runvalidators: true})
 .then(()=>{console.log('User Updated')})
 .catch((e)=>{console.log('Error in updating user')})
 ```
-2. 
-
 
 
 ## Queries
-1. Query can executed on two ways
+1. Query can be executed on two ways
     * callback function is passed to execute query result.
     * ```.then()``` is used to execute query result.
-2. ```const persons = await Person.find({})```. here persons (or query) is of type ```Query()``` which can be chained for further queries.
+2. ```const persons = await Person.find({})```. here persons (also called query) is of type ```Query()``` which can be chained for further queries.
 3. query can be executed by either ```query.exec()``` or ```query.then()```
 
 
-_```.then()``` is function provided by query that can be used as promise. Query itself is not a promise._
+_```.then()``` is function provided by query that is used as promise but query itself is not a promise._
 
 
 ### creating document
@@ -187,8 +185,8 @@ User.create({
 
 ```
 ```new user()```
-- Creates one document
-- ```save()``` is called to insert in collection
+- Creates only one document
+- ```save()``` is called to insert newly created document in collection
 ```
 const newUser = new User({
     fname: 'shri',
@@ -221,7 +219,7 @@ User.find({ age: { $gte: 30 } }) //age >= 30
 ```User.findByIdAndUpdate('id',{age:40})``` return updated document or null  
 
 ### updating documents
-Mongoose has 4 types to update document
+Mongoose has 4 ways to update document
 1. ```query.save()```
     * Recommended method to update database.
     * It works on doucment, so there must be document.
@@ -326,5 +324,5 @@ User.find({
 });
 ```
 
-### Notes
+### Keypoint
 1. Use ```$set``` operator in ```update()``` function to partially update document instead of replacing entire document.
