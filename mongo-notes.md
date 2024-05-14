@@ -8,6 +8,8 @@
 - [Validation](#validation)
 - [Queries](#queries)
 - [Operators](#operators)
+- [images in mongodb](#operators)
+
 
 ## Introduction
 - __NoSQL__ database
@@ -326,3 +328,12 @@ User.find({
 
 ### Keypoint
 1. Use ```$set``` operator in ```update()``` function to partially update document instead of replacing entire document.
+
+## images in mongodb
+Common way:
+1. Convert image in binary format such as Base64
+    `image.toString('base64')`
+2. Store it as binary data or BLOB (Binary Large OBject)
+    Schema type: Buffer;
+3. Retrieving data
+

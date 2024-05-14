@@ -26,19 +26,11 @@ html, body {
 }
 ```
 
-## Variables
-Explanation of variable declaration, types, and scope.
+### transparency in bg color
+`background-color: rgba(147, 150, 152, 0.7)`;
 
-## Control Structures
-Description of conditional statements and loops.
+### shadow on div
+`box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
 
-## Functions
-Explanation of function declaration, parameters, return types, and usage.
 
-## Data Structures
-Overview of built-in data structures like arrays, lists, dictionaries, etc.
 
-## Example Code
-### Hello World
-```[Language Name]
-// Hello World program

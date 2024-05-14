@@ -8,6 +8,7 @@
 - [Routing](#routing)
 - [Redux](#redux)
 - [Frontend Storage](#frontend-storage)
+- [Dates](#dates)
 
 ## useEffect
 Used to synchronize components with some external systems (server, network, widget outside react)
@@ -368,4 +369,6 @@ __action object__
     2. __payload__ _optional_ additional data
 
 ## Frontend Storage
+
+## dates
 
