@@ -42,5 +42,27 @@ transparent (0)---------(1) opaque
 ## shadow on div
 `box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
 
+## media query
 
 
+
+## tips for css
+### from fireship video
+1. __Learn box model__ including content, padding, border, margin
+2. use clamp instead of media query
+3. use aspect ration property for image and video `ascpect-ratio: 16/9`
+4. use variables for global values like color, font sizes
+__defining variables__
+```
+#root {
+    --varName: value;
+}
+```
+__using css variables__
+```
+div {
+    color: var(--varName)
+}
+```
+5. use calc to calculate different units
+6. use focus within for dropdown menu

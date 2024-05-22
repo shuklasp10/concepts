@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
-- [Structure of MongoDB](#structure-of-mongodb)
+- [MongoDB Atlas](#mongodb-atlas)
 - [Connecting NodeJS app to Atlas instance](#connecting-nodejs-app-to-atlas-instance)
 - [Create Schema and Model](#create-schema-and-model)
 - [Validation](#validation)
@@ -42,6 +42,16 @@ mongoose.connect('instanceURI with password')
 });
 
 ```
+
+## MongoDB datatypes
+1. String
+2. Number
+4. Boolean
+5. Date
+6. Array
+7. Object
+8. Object ID - 12 bytes hexadecimal, 5 byte timestamp, 5 Byte random value (3 byte machine Id & 2 byte for process id), 3 byte for counter
+10. Mixed
 
 ## Create Schema and Model
 ```mongoose.Schema({})``` create collection schema  
