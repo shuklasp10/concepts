@@ -1,13 +1,10 @@
-# Web developement Notes: CSS
+# Web developement Notes: Javascript
 
 ## Table of Contents
-- [Boilerplate](#Boilerplate)
-- [Variables](#variables)
-- [Control Structures](#control-structures)
-- [Functions](#functions)
-- [Data Structures](#data-structures)
-- [Example Code](#example-code)
-- [Resources](#resources)
+- [Higher order function](#higher-order-function)
+- [Types of Array HOF](#types-of-array-hof)
+
+
 
 
 ## Higher order functions
@@ -16,7 +13,7 @@ Two types of HOF:
 1. __Taking function as argument__ most commonly used
 1. __Returning function__ less frequently used
 
-## Array HOF
+## Types of Array HOF
 | HOF |Return | Description |
 |------|------|------|
 | `map` | Array | returns new array with elements return by callback functions |
@@ -47,3 +44,5 @@ const addTag = (e) =>{
 
 ### adding chip in input field
 div = chip span + input (flexgrow : 1)
+
+## Promises
