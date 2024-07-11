@@ -2,16 +2,93 @@
 
 ## Table of Contents
 - [Higher order function](#higher-order-function)
+- [Scoping](#scoping)
+- [Closures](#closures)
 - [Types of Array HOF](#types-of-array-hof)
 - [Promises](#promises)
 - [Date in javascript](#date-in-javascript)
+- [Client side storage](#client-side-storage)
 
 
 ## Higher order functions
 HOF are those functions which operates on other functions
 Two types of HOF:
-1. __Taking function as argument__ most commonly used
-1. __Returning function__ less frequently used
+1. __Taking function as argument__ most commonly used. Eg map, filter
+2. __Returning function__ less frequently used
+
+## Scoping
+
+### let and const scoping
+* __block__ Anything withing curly braces
+* let and const follow block level scoping
+```
+{let a = 10}
+console.log(a) //error
+```
+
+* __global & window__ both reference same object. `window` used in context of browser and `global` in context of node application.
+
+* __globally scoped variable__ if let and const are not inside any block then they are inside _global or window_ block. It means they can accessed by another script using same application.
+
+* __precedence__ nearest scoped variable is used first then look for outer scoped variable
+```
+let a = 10;
+{
+    let a = 8;
+    console.log(a); //8
+}
+```
+
+### scope for var
+* var does not follow block level scoping
+```
+if(true){ var a = 10 }
+console.log(a) //10
+```
+* It attach to parent object in which it is declared. like function, object .
+* __precedence__ nearest scoped variable is used first then look for outer scoped variable
+
+## Closures
+- Closure is method of keeping scope of outer function available to inner function even outer function is executed.  
+- Closure exist if there is function inside a function.
+
+```
+function outer(){
+    let i = 10;
+    return inner(){console.log(i)}
+}
+var show = outer();
+show(); //10
+```
+__Keypoints__
+1. Closure variable gets updated if it is changed in inner function.
+```
+function outer(){
+    var a = 11
+
+    return function inner(){
+        a++
+        console.log(a);
+    }
+}
+var show = outer()
+show(); //12
+show(); //13
+```
+2. Earlier closures were used to create private variables.
+3. Closure is used to create helper functions with only one function definition.
+```
+for(let i=0; i<3; i++){
+  setTimeout(function() {console.log(i)}, 10);
+}
+```
+this will create three instance of `i` for each iteration. so output will be `0 1 2`
+```
+for(var i=0; i<3; i++){
+  setTimeout(function() {console.log(i)}, 10);
+}
+```
+this will create single instance of `i` which will be updated by each iteration. so output will be `3 3 3`.
 
 ## Types of Array HOF
 | HOF |Return | Description |
@@ -139,7 +216,7 @@ following method are used for accessing components from date object
 2. `date.toTimeString()` 12:00:00 GMT+0000 (Coordinated Universal Time)
 3. `date.toISOString()` 2024-05-15T12:00:00.000Z
 
-## Client-side storage
+## Client side storage
 
 ### types of storages
 1. __local storage__  accessed with `localStorage`

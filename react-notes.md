@@ -7,7 +7,6 @@
 - [useRef](#useref)
 - [Routing](#routing)
 - [Redux](#redux)
-- [Frontend Storage](#frontend-storage)
 - [Dates](#dates)
 
 ## useEffect
@@ -18,7 +17,7 @@ Used to synchronize components with some external systems (server, network, widg
 - Dependency changed
     - component rerenders
     - __cleanup__ executed with old values
-    - __setup__ executed with new values 
+    - __setup__ executed with new values
 ```[javascript]
 useEffect(()=>{
     ...setup function
@@ -41,8 +40,6 @@ Creates a context data which can be accessed in any component without prop drill
 1. Create context using ```createContext``` which takes default value.
 2. Wrap application with context provider using ```myContext.Provider```.
 3. To access context anywhere use ```useContext``` with your context name.
-
-
 
 ### Create context object
  ```
@@ -368,7 +365,6 @@ __action object__
     1. __type__ _required_ String
     2. __payload__ _optional_ additional data
 
-## Frontend Storage
 
 ## dates
 
