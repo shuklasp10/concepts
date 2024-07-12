@@ -2,6 +2,7 @@
 
 ## Table of Contents
 - [Higher order function](#higher-order-function)
+- [Pure functions](#pure-functions)
 - [Scoping](#scoping)
 - [Closures](#closures)
 - [Types of Array HOF](#types-of-array-hof)
