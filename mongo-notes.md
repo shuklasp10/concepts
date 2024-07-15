@@ -249,11 +249,19 @@ Mongoose has 4 ways to update document
     * Same as ```Model.updateOne()``` except it returns updated document.
 
 ### deleting documents
-```User.deleteOne({query})```  
-```User.deleteMany({query})```  
+```User.deleteOne({query})``` delete first matched query
+```User.deleteMany({query})```  delete all matched query
+both function return:
+```
+{
+    "acknowledged": true,
+    "deletedCount": 5
+}
+```
 
 ### counting documents
 ```User.countDocuments()```
+return single number of total documents in collection
 
 ## Operators
 Operators used to perform operations in queries
