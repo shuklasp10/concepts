@@ -9,6 +9,7 @@
 - [Redux](#redux)
 - [Dates](#dates)
 - [Middleware](#middleware)
+- [Keywords](#keywords);
 
 
 ## useEffect
@@ -237,7 +238,7 @@ import {Link} from 'react-router-dom'
 | absolute | relative (recommended) |
 |----------|----------|
 | specify URL structure from root | specify URL structure from current route  |
-| starts with ```'/'``` |  doesn't starts with ```'/'``` | 
+| starts with ```'/'``` |  starts without ```'/'``` | 
 | clear & simple to understand | require time to understand very nested routes | 
 | complex for nested routes | more maintainable for nested routes | 
 | need to change all absolute path if subdirectory of app changes | no changes neede if app deployed to different directory |  
@@ -275,6 +276,37 @@ function App = () = {
 * Used in parent component as a placeholder for nested route.
 * It creates a socket where child routes can be plugged to render their content.
 * In above example course will contain ```<Outlet />``` 
+
+### Redirect
+* Redirect from one page to another page can achieved in two way.  
+* Prev page -> Next Page
+* __Optional property:__ `{replace: true | falsee}` is used to replace history of prev page with next page in browser.
+
+#### `Navigate` component wrapper
+* Declarative way to redirect to another page
+* It is replaced from `Redirect` component in previous version
+```
+import {Navigate} from 'react-router-dom';
+
+return(
+    <Navigate to='/admin/home' replace='false' />
+)
+// Also used on routing
+<Route path='/admin' element=<Navigate to='/admin/home' replace /> />
+```
+
+#### `useNavigate` hooks
+* Programitical way to redirect to another page
+* Used to redirect on any event like button click or programitically
+```
+import {useNavigate} from 'react-router-dom'
+
+const navigate = useNavigate()
+
+function handleClick(){
+    navigate('/admin/home',{replace: true});
+}
+```
 
 ### Notes
 1. Use ```<Outlet />``` in navigation if there is nested routing.
@@ -418,3 +450,18 @@ __action object__
 
 ## dates
 
+
+## Keywords
+1. conditional rendering
+2. React Router - Router, Routes, Route, Link, Navigate, Location
+3. Lifecycle - Initialization, Mounting, Updating, Unmounting
+4. Hooks: how it works?
+5. How state and prop affects render?
+6. React fragments
+7. CSS modules - locally scope css
+8. Styled component
+9. Prop drilling
+10. Controlled and uncontrolled components
+11. useref hook
+12. Synthetic event
+13. Events

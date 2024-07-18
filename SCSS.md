@@ -123,7 +123,22 @@ CSS
   color: #fff;
 }
 ```
-
+* always include mixins before declaring other property
+```
+.sidebar {
+  min-width: 200px;
+  @include mixins.container(20%, 100%, white, 1rem);
+}
+```
+* Or we can use `&` to include before
+```
+.sidebar {
+  @include mixins.container(20%, 100%, white, 1rem);
+  &{
+    min-width: 200px;
+  }
+}
+```
 ## Extend or Inheritance
 * It lets share property of another selector
 * If some property are reused in many selectors then we can create a parent selector and extend it to all selectors.

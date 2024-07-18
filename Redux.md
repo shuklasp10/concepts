@@ -5,7 +5,7 @@
 * Redux contains three component
     * __State__ an object of all states for application
     * __Reducers__ function to change state with a pattern. It is abstract
-    * __Subscribe__ Instead of directly calling reducers subscribe is used
+    * __Subscribe__ run a function whenever dispatch is called
 
 ## Why state in redux are immutable
 * to track changes from previous state

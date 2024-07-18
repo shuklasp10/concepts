@@ -9,16 +9,17 @@
 - set element size = border + padding + content (doesn't include margin)
 - set body to fill screen
 ```
+html, body {
+    height: 100%;
+    width: 100%
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    width: 100%
-}
 ```
 
 ## inline vs block elements
@@ -42,10 +43,6 @@ transparent (0)---------(1) opaque
 ## shadow on div
 `box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
 
-## media query
-
-
-
 ## tips for css
 ### from fireship video
 1. __Learn box model__ including content, padding, border, margin
@@ -66,3 +63,27 @@ div {
 ```
 5. use calc to calculate different units
 6. use focus within for dropdown menu
+
+## turn of text selection
+`user-select: none`
+
+## hide scrollbar
+```
+&::-webkit-scrollbar {
+    display: none;
+  }
+```
+
+## mediaquery breakpoints
+```
+//mobile screen
+@media screen and (max-width: 768px){}
+
+// tablet
+@media screen and (min-width: 769px) and (max-width: 1024px) {}
+
+// desktop
+@media screen and (min-width: 1024px) {}
+```
+
+##
