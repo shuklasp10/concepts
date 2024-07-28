@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .container{
+            height: 200px;
+            width: 600px;
+            display: flex;
+            background-color: grey;
+        }
+        .item{
+            display: inline-block;
+            flex-grow: 1;
+            height: 100%;
+            width: 20px;
+            background-color: white;
+            border: 1px solid black;
+        }
+        .item:nth-last-child(2n){
+            background-color: black;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+        <div class="item"></div>
+    </div>
 </body>
+
 </html>
