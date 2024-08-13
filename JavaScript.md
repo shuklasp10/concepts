@@ -10,6 +10,7 @@
 - [Date in javascript](#date-in-javascript)
 - [Client side storage](#client-side-storage)
 - [DOM manipulation](#dom-manipulation)
+- [Events](#events)
 
 ## Higher order functions
 HOF are those functions which operates on other functions
@@ -314,6 +315,83 @@ Manipulating dom element in response to user action
 1. `element.removeEventListener('click',handleClick)`
 
 ## Events
+* __Events:__ things that happen in system which is told to code and code react accordingly
+* __Event fire:__ when event is fired in browser window, it is attached to element present in browser.
+* __Event listener:__ is a object which listens for event fire and calls event handler once event is fired.
+* __Event handler:__ block of code or function which execute as reaction to event fire.
+### Adding event listeners
+There are three ways to add event listeners to an element.
+1. `addEventListener`
+2. event handler properties
+3. inline event handlers
+#### addEventListener
+```
+<body>
+    <button id="btn">Click me!</button>
+    <script>
+        const btn = document.getElementById('btn');
+        function btnHandler(){
+            console.log('button is clicked');
+        }
+        btn.addEventListener('click',btnHandler)
+    </script>
+</body>
+```
+* Objects should have event listener to listen if event is fired.
+* if multiple event listener is added to an element then all be executed orderly.
+```
+myElement.addEventListener("click", functionA);
+myElement.addEventListener("click", functionB);
+```
+* Some event are available for all elements such as `click`
+* Some event are element specific such as `play` event is only available for `<video>` element.
+* __remove event listeners:__ if event listerners is added to any element it can be removed using `btn.removeEventListener()`
 
+#### event handler properties
+objects that can fire events usually have property starting with `on` followed by name of event.
+```
+btn.onclick(handleBtnClick);
+```
+* Unlike addEventListener, event handler properties can not handle multiple event handlers
+```
+element.onclick = function1;
+element.onclick = function2;
+```
+* Here function2 will overwrite function1 handler
+
+#### Inline event handlers _(Not recommended)_
+`<button onclick="bgChange()">Press me</button>`
+* here onclick attribute value is purely javascript code.
+
+### Events objects
+* Objects that are automatically passed to event handlers
+```
+const btn = document.querySelector("button");
+function handler(event){
+    console.log(event);
+    console.log('button is clicked)
+}
+btn.addEventListener('click',handler);
+```
+* `e.target` return element itself
+* `e.preventDefault()` prevent default event of element such as submit button of form.
+
+### Events in NodeJS
+* `events` library used for working with events
+* `EventEmitter` class used to emit events
+```
+const EventEmitters = require('events');
+
+const myEmitter = new EventEmitter();
+```
+* `on` method used to add event listeners
+```
+myEmitter.on('eventName',handlerFunction);
+```
+* `emit` method to emit or trigger event
+```
+myEmitter.emit('eventName');
+```
+* `once` same as `on` but event can be fired only once.
 
 ##

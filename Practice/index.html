@@ -5,42 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .container{
-            height: 300px;
-            width: 300px;
-            background-color: yellowgreen;
-            overflow: auto;
-        }
-        .item{
-            height: 50px;
-            width: 50px;
-            background-color: bisque;
-            margin: 10px;
-        }
-    </style>
 </head>
 <body>
-    <div id="container" class="container">
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-        <div class="item"></div>
-    </div>
-    <button onclick="handleclick()">Add</button>
+    <button id="btn">Click me!</button>
+    <input type="text" id="ip">
     <script>
-        var container = document.getElementById("container");
-
-        function handleclick(){
-            console.log("function is running");
-            container.scrollTop = container.scrollHeight;
+        function btnHandler(e){
+            const btn = document.getElementById('btn');
+            const ip = document.getElementById('ip');
+            console.log(e);
+            console.log('button is clicked');
         }
-        window.handleclick = handleclick
+        function showKey(e){
+            console.log(e.key);
+            
+        }
+        btn.addEventListener('click',btnHandler)
+        ip.addEventListener('keydown',showKey)
     </script>
 </body>
 </html>
