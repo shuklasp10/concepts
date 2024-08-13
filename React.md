@@ -443,13 +443,11 @@ const App(){
 }
 ```
 __action object__  
-* It contains two things
+* It contains two things 
     1. __type__ _required_ String
     2. __payload__ _optional_ additional data
 
-
 ## dates
-
 
 ## Keywords
 1. conditional rendering

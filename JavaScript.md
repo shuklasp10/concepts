@@ -9,13 +9,21 @@
 - [Promises](#promises)
 - [Date in javascript](#date-in-javascript)
 - [Client side storage](#client-side-storage)
-
+- [DOM manipulation](#dom-manipulation)
 
 ## Higher order functions
 HOF are those functions which operates on other functions
 Two types of HOF:
 1. __Taking function as argument__ most commonly used. Eg map, filter
 2. __Returning function__ less frequently used
+
+## Pure functions
+Pure function follows two rules
+1. __No side effects:__ does not change state or variable outside its scope.
+2. __Deterministic scope:__ for same input set it should return same output
+Charateristics
+1. __Referential transparency:__ if function is replaced with its output value, it should not affect behaviour of program.
+2. __Immutability:__ do not modify passed arguments
 
 ## Scoping
 
@@ -246,3 +254,66 @@ following method are used for accessing components from date object
 
 3. cookies
     * `document.cookie = 'name=shri; expires'+new Date(2025,1,1).toUTCString()`
+
+## DOM manipulation
+
+### Accessing element
+1. __document.getElementById()__ takes id and return an element.
+2. __document.getElementByClassName()__ takes class name and return array of element.
+3. __document.getElementByTagName()__ takes tag name and return array of element.
+4. __document.querySelector()__ takes css selector(tag, .class, #id) and return first matched element.
+5. __document.querySelector()__ takes css selector(tag, .class, #id) and return first matched element.
+6. __document.querySelectorAll()__ takes css selector(tag, .class, #id) and return array of matched element.
+
+### Modifying element content
+After selecting element with above methods we can change its content.
+```[javascript]
+let,
+const element = document.getElementById('myId')
+```
+1. __element.innerHTML__ get or set inner html content.
+    * `console.log(element.innerHTML)` // `<p>this is para</p>`
+    * `element.innerHTML = <h1>para changed to heading</h1>`
+2. __element.textContent__ get or set text content inside tag and its children .
+    * `console.log(element.textContent)` // `this is para`
+3. __element.innerText__ similar to textContent but also consider css styles. It repaints html based on css and return text content of only visible elements.
+
+### Modifying element attributes
+Change element attributes like src, href etc
+
+1. __element.setAttribute(attr, val)__ takes attributes and its value and set it element.
+    * `element.setAttribute('src','image.jpg');`
+2. __element.getAttribute(attr)__ takes attributes and return its value.
+    * `element.getAttribute('src');` //image.jpg
+3. __element.removeAttribute(attr)__ takes attributes and remove that attribute.
+    * `element.removeAttribute('src');`
+
+### Modifying element style
+change inline style of element 
+`element.style.cssPropertyName`
+1. __`element.style.cssPropertyName`__ set value of a css property
+    * `element.style.color = 'red'`
+2. __`element.classList`__
+    1. `element.classList.add('new_class1','new_class2')`
+    2. `element.classList.remove('class1','class2)`
+    3. `element.classList.toggle('myClass')` if myclass is present then it remove it else add it
+        1. `element.classList.toggle('myClass', true)` add the class
+        2. `element.classList.toggle('myClass', false)` remove the class
+    4. `element.classList.contains('class1')` returns true if class present else false.
+    5. `element.classList.replace('old-class','new-class')`
+    6. `element.classList.item(0)` or `element.classList[0]`
+    7. `element.classList.length` gives number of classed in the element.
+
+### Creating and insert element
+1. `document.createElement('tagname')` take tagname and return element created
+2. `element.appendChild(newElement)` append child to parent element.
+
+### Event Handling
+Manipulating dom element in response to user action
+1. `element.addEventListener('click',handleClick)`
+1. `element.removeEventListener('click',handleClick)`
+
+## Events
+
+
+##

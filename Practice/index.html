@@ -7,27 +7,21 @@
     <title>Document</title>
     <style>
         .container{
-            height: 200px;
-            width: 600px;
-            display: flex;
-            background-color: grey;
+            height: 300px;
+            width: 300px;
+            background-color: yellowgreen;
+            overflow: auto;
         }
         .item{
-            display: inline-block;
-            flex-grow: 1;
-            height: 100%;
-            width: 20px;
-            background-color: white;
-            border: 1px solid black;
-        }
-        .item:nth-last-child(2n){
-            background-color: black;
+            height: 50px;
+            width: 50px;
+            background-color: bisque;
+            margin: 10px;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
+    <div id="container" class="container">
         <div class="item"></div>
         <div class="item"></div>
         <div class="item"></div>
@@ -38,6 +32,15 @@
         <div class="item"></div>
         <div class="item"></div>
     </div>
-</body>
+    <button onclick="handleclick()">Add</button>
+    <script>
+        var container = document.getElementById("container");
 
+        function handleclick(){
+            console.log("function is running");
+            container.scrollTop = container.scrollHeight;
+        }
+        window.handleclick = handleclick
+    </script>
+</body>
 </html>
