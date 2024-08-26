@@ -21,6 +21,12 @@
     * __Extend/Inheritance:__ Share styles between selectors.
 Operators: Perform calculations within your CSS (e.g., for responsive layouts).
 
+### Setting up with react
+* Install SASS library as dev dependency
+```
+npm i sass --save-dev
+```
+
 ## Variables
 * Stores information to use in sheet further
 * It can store any value of css property that can be used later

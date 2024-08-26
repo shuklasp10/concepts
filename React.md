@@ -7,7 +7,7 @@
 - [useRef](#useref)
 - [Routing](#routing)
 - [Redux](#redux)
-- [Dates](#dates)
+- [Higher order component](#higher-order-component)
 - [Middleware](#middleware)
 - [Keywords](#keywords);
 
@@ -447,7 +447,7 @@ __action object__
     1. __type__ _required_ String
     2. __payload__ _optional_ additional data
 
-## dates
+## Higher order component
 
 ## Keywords
 1. conditional rendering

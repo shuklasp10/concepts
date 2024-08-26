@@ -1,7 +1,7 @@
 # Web developement Notes: CSS
 
 ## Table of Contents
-- [Boilerplate](#Boilerplate)
+- [Boilerplate](#boilerplate)
 - [Inline and Block elements](#inline-and-block-elements)
 - [Background opacity](#background-opacity)
 - [Border Shadow](#border-shadow)
@@ -80,7 +80,7 @@ div {
 * __`overflow-x`:__ target x axis scrollbar.
 * __`overflow-y`:__ target y axis scrollbar.
 * __`overflow:visible`:__ _(Default)_ content is not clipped and may be rendered outside the box
-* __`overflow:hidden`:__ content is clipped, scrollbar is not present, not able to scroll
+* __`overflow:hidden`:__ not able to scroll, content is clipped, scrollbar is not present
 * __`overflow:scroll`:__ scrollbar is added whether content overflow or not
 * __`overflow:auto`:__ scrollbar is added only when content is overflowed.
 
@@ -132,5 +132,21 @@ div {
 // desktop
 @media screen and (min-width: 1024px) {}
 ```
+
+## Grid
+* used for 2 dimensional control
+
+### container
+| property | value | description |
+|----------|--------|-------------|
+| `display` | `grid` | convert container in grid and children in block |
+| `grid-template-columns` | `12px 12px auto or 1fr 3fr or repeat(3, 100px); or 10% 20% auto` | define columns |
+| `grid-template-rows` | `12px 12px auto` | define rows |
+| `gap` | `1rem` | short hand property for row and column |
+| `justify-items` | `end or start or center or stretch (default)` | controls content inside grid horizontally |
+| `align-items` | `end or start or center or stretch (default)` | controls content inside grid vertically |
+| `align-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one vertically |
+| `justify-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one horizontally |
+| `grid-auto-flow` | `row or column or dense` | control which grid will be filled one by one |
 
 ##
