@@ -2,13 +2,19 @@
 
 ## Table of Contents
 - [Boilerplate](#boilerplate)
-- [Inline and Block elements](#inline-and-block-elements)
-- [Background opacity](#background-opacity)
-- [Border Shadow](#border-shadow)
-- [Tips](#tips)
-- [Text Selection](#text-selection)
+- [Background](#Background)
+- [Border](#border)
+- [Input](#input)
+- [Lists](#lists)
+- [Display](#display)
+- [Position](#position)
+- [Text and Fonts](#text-and-fonts)
+- [Images](#images)
+- [Grid](#grid)
+- [Flex](#flex)
 - [Scrollbar](#scrollbar)
 - [Mediaquery](#mediaquery)
+- [Tips](#tips)
 
 
 ## Boilerplate
@@ -29,7 +35,24 @@ html, body {
 
 ```
 
-## Inline and Block elements
+## Background
+### remove bg
+`background-color: transparent`
+### opacity
+add extra value in rgba  
+`background-color: rgba(147, 150, 152, 0.7)`;
+transparent (0)---------(1) opaque
+
+<!-- Pending: add all display properties -->
+
+## Border
+* shadow: `box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
+
+## Input
+
+## Lists
+
+## Display
 ### inline
 1. Does not follow box model.
 2. does not width & height, it's according to content
@@ -42,37 +65,32 @@ html, body {
 3. can set margin all direction
 4. starts in new line and takes all width available.
 
-## Background opacity
-add extra value in rgba  
-transparent (0)---------(1) opaque  
-`background-color: rgba(147, 150, 152, 0.7)`;
+## Postion
 
-## Border Shadow
-`box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
+## Text and Fonts
+* Restrict text selection `user-select: none`
 
-## Tips
-### from fireship video
-1. __Learn box model__ including content, padding, border, margin
-2. use clamp instead of media query
-3. use aspect ration property for image and video `ascpect-ratio: 16/9`
-4. use variables for global values like color, font sizes
-__defining variables__
-```
-#root {
-    --varName: value;
-}
-```
-__using css variables__
-```
-div {
-    color: var(--varName)
-}
-```
-5. use calc to calculate different units
-6. use focus within for dropdown menu
+## Images
 
-## Text Selection
-`user-select: none`
+## Grid
+* used for 2 dimensional control
+
+### container properties
+| property | value | description |
+|----------|--------|-------------|
+| `display` | `grid` | convert container in grid and children in block |
+| `grid-template-columns` | `12px 12px auto or 1fr 3fr or repeat(3, 100px); or 10% 20% auto` | define columns |
+| `grid-template-rows` | `12px 12px auto` | define rows |
+| `gap` | `1rem` | short hand property for row and column |
+| `justify-items` | `end or start or center or stretch (default)` | controls content inside grid horizontally |
+| `align-items` | `end or start or center or stretch (default)` | controls content inside grid vertically |
+| `align-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one vertically |
+| `justify-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one horizontally |
+| `grid-auto-flow` | `row or column or dense` | control which grid will be filled one by one |
+
+### chilren properties
+
+## Flex
 
 ## Scrollbar
 * Scrollbar appears only when overflow is active and content is overflowed
@@ -133,20 +151,23 @@ div {
 @media screen and (min-width: 1024px) {}
 ```
 
-## Grid
-* used for 2 dimensional control
-
-### container
-| property | value | description |
-|----------|--------|-------------|
-| `display` | `grid` | convert container in grid and children in block |
-| `grid-template-columns` | `12px 12px auto or 1fr 3fr or repeat(3, 100px); or 10% 20% auto` | define columns |
-| `grid-template-rows` | `12px 12px auto` | define rows |
-| `gap` | `1rem` | short hand property for row and column |
-| `justify-items` | `end or start or center or stretch (default)` | controls content inside grid horizontally |
-| `align-items` | `end or start or center or stretch (default)` | controls content inside grid vertically |
-| `align-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one vertically |
-| `justify-content` | `end or start or center or space-around or space-between or space-evenly` | control whole grid as one horizontally |
-| `grid-auto-flow` | `row or column or dense` | control which grid will be filled one by one |
-
-##
+## Tips
+### from fireship video
+1. __Learn box model__ including content, padding, border, margin
+2. use clamp instead of media query
+3. use aspect ration property for image and video `ascpect-ratio: 16/9`
+4. use variables for global values like color, font sizes
+__defining variables__
+```
+#root {
+    --varName: value;
+}
+```
+__using css variables__
+```
+div {
+    color: var(--varName)
+}
+```
+5. use calc to calculate different units
+6. use focus within for dropdown menu
