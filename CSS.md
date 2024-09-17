@@ -14,6 +14,7 @@
 - [Flex](#flex)
 - [Scrollbar](#scrollbar)
 - [Mediaquery](#mediaquery)
+- [Conic Gradient](#conic-gradient)
 - [Tips](#tips)
 
 
@@ -151,6 +152,18 @@ transparent (0)---------(1) opaque
 @media screen and (min-width: 1024px) {}
 ```
 
+## Conic Gradient
+* Used to create a circular gradient pattern around a center point.
+
+![Conic gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/conic-gradient/screenshot_2018-11-29_21.09.19.png)
+
+### syntax
+`background: conic-gradient(color end deg, color2 start deg...)`
+* For first color deg will be its ending degree from 0
+* from second color it will be starting deg and end of that color depend where next color starts
+* If there is no next color it will end at 360 deg
+* if there is difference in end of first color and start of second color, it will create gradient pattern
+
 ## Tips
 ### from fireship video
 1. __Learn box model__ including content, padding, border, margin
@@ -171,3 +184,4 @@ div {
 ```
 5. use calc to calculate different units
 6. use focus within for dropdown menu
+

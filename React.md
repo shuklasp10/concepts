@@ -9,6 +9,8 @@
 - [Redux](#redux)
 - [Higher order component](#higher-order-component)
 - [Middleware](#middleware)
+- [Charts](#charts)
+- [Tables](#tables)
 - [Keywords](#keywords);
 
 
@@ -448,6 +450,71 @@ __action object__
     2. __payload__ _optional_ additional data
 
 ## Higher order component
+
+## Charts
+Library used
+1. `chart.js` raw javascript library providing customization options to charts that can be used with any framework.
+2. `react-chartjs-2` build for react to provide chart components.
+
+### setup
+Importing libraries
+```
+import {Bar, Pie, Doughnut} from 'react-chartjs-2';
+import {Chart as ChartJS} from 'chart.js';
+```
+Every options from chart.js needs to be register before using
+``` diff
+- import {Chart as ChartJS} from 'chart.js';
++ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement Title, Tooltip, Legend, ArcElement, PointElement, LineElement, Filler, scales } from 'chart.js'
+
++ ChartJS.register( LinearScale, BarElement Title, Tooltip, Legend, ArcElement, PointElement, LineElement, Filler, scales )
+```
+Every chart component from react-chartjs-2 take two props
+1. data: specific format of data
+2. options: options to customize chart _(optional)_
+
+```
+<Bar data={data] options={options}/>
+```
+
+### Bar chart
+#### data format
+Data object takes values
+1. __labels:__ array with x-axis values
+2. __datasets:__ array of objects depending on number of bar chart to be shown in a chart. Each object contains two value.
+    1. __label:__ name of values to be shown (Revenu, sales etc)
+    2. __data:__ array of values corresponding to labels.
+
+```
+const data = {
+    labels: ['January', 'February', 'March'],
+    datasets: [
+        {
+            label: 'Revenue',
+            data: [100,50,120],
+            backgroundColor: '#00C6CA',
+        },
+        {
+            label: 'Sales',
+            data: [10000,150000, 4000],
+            backgroundColor: '#1976d2',
+        }
+    ]
+}
+```
+![alt text](image.png)
+* To remove gap between bars
+``` diff
+{
+    label: 'Revenue',
+    data: [100,50,120],
+    backgroundColor: '#00C6CA',
++   barPercentage: 1,
++   categoryPercentage: 0.4,
+}
+```
+
+## Tables
 
 ## Keywords
 1. conditional rendering
