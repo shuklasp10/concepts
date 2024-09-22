@@ -514,7 +514,29 @@ const data = {
 }
 ```
 
+#### options
+* Used to customize chart
+* to remove grid lines
+```
+const options = {
+    scales: {
+      x: {
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  }
+``` 
+
 ## Tables
+Library used `react-table`
+* 
 
 ## Keywords
 1. conditional rendering
