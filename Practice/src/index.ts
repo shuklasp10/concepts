@@ -54,18 +54,85 @@
 
 // const sample = new Product("Apple",20000, 500);
 
-type Person = {
+// type Person = {
+//     name: string,
+//     gender: boolean
+// }
+
+// const person:Person ={
+//     name: 'John',
+//     gender: true
+// }
+
+// const getValue = (key: keyof Person): string => {
+//     return String(person[key])
+// }
+
+// getValue('gender')
+
+
+// type Person = {
+//     name: string,
+//     age: number
+// }
+
+// const person: Person = {
+//     name: 'John',
+//     age: 29
+// }
+
+// const func = <T>(n: T): T => {
+//     return n
+// }
+
+// var a = func("Hello")
+// var b = func(23);
+// var c = func<Person>({ name: "abhi", age: 26 })
+
+// type Person = {
+//     name: string,
+//     age: number
+// }
+
+// const person: Person = {
+//     name: 'John',
+//     age: 20
+// }
+
+// const func = <T, O extends T>(m: T, n: O): void =>{}
+
+// func(person, {
+//     name:'Peter',
+//     address: 'London',
+//     age: 29
+// })
+
+type Users = {
     name: string,
-    gender: boolean
+    age: number
 }
 
-const person:Person ={
-    name: 'John',
-    gender: true
+const users = [
+    {
+        name: 'John',
+        age: 29
+    },
+    {
+        name: 'Peter',
+        age: 32
+    },
+    {
+        name: 'Mark',
+        age: 57
+    },
+    {
+        name: 'Chris',
+        age: 18
+    },
+]
+
+const filterUsers = <T, O extends keyof T>(users: T[], key:O , value: T[O]): T[]=> {
+        return users.filter(user=> user[key]===value)
 }
 
-const getValue = (key: keyof Person): string => {
-    return String(person[key])
-}
-
-getValue('gender')
+const filteredUsers = filterUsers(users, "age", 23)

@@ -61,7 +61,7 @@ tsc -init
 
 
 
-## Datatypes
+## Datatypesp
 ### implicit v/s explicit
 * __Implicitly:__ typescript automatically decalre type of variable. `let a = "John"` here `a` will be assigned `string` datatype
 * __Explicitly:__ defining type while decalaring variables or function. `let a: string = 'John`
@@ -520,3 +520,85 @@ getPersonVal('name')
     ```
 
 ## Generics 
+Generics is a feature that allows a function to work with any datatype while keeping type safety.
+* __Problem:__ A function that takes any datatype value and returns that datatype value. Here, type of `a` & `b` will be `any` which is not efficient. 
+
+    ```
+    const func = (n: any): any => {
+        return n
+    }
+    var a = func("Hello")
+    var b = func(20)
+    ```
+* __Solution:__ In generics, we declare a placeholder type which will take replaced by argument type. This placeholder is generally denoted by `T`. Here type of `a` will be `string` and type of `b` will be `number`
+    ```
+    const func = <T>(n: T): T => {
+        return n
+    }
+    var a = func("Hello")
+    var b = func(23)
+    ```
+* In above example typescript infer type of passed argument and put as T. We can manaually decalre type of passed argument as well
+    ```
+    var a = func<string>("Hello")
+    ```
+
+### extend in generics
+* we can declare second placeholder type by extending first one. Below if first argument is number then second argument also have to be number.
+    ```
+    const func = <T, O extends T>(m: T, n: O): {m: T, n: O} => {
+        return {m,n}
+    }
+
+    var a = func<number, number>(23,16)
+    var a = func<string, string>(19,29.3)
+    ``` 
+* __extends with object:__ Here O must contain all type from T and may contain types.
+    ```
+    type Person = {
+        name: string,
+        age: number
+    }
+
+    const person = {
+        name: 'John'
+        age: 20
+    }
+
+    const func = <T, O extends T>(m: T, n:O): void =>{}
+    var a = func<Person>(person,{name: 'Peter',age:32, address: 'London'})
+    ```
+
+### Complex Example
+* A function which filter out user from users array based on key and value provided
+    ```
+    const Users = {
+        name: string,
+        age: number
+    }
+
+    const users: Array<Users> = [
+        {
+            name: 'John',
+            age: 29
+        }
+        {
+            name: 'Peter',
+            age: 32
+        }
+        {
+            name: 'Mark',
+            age: 57
+        }
+        {
+            name: 'Chris',
+            age: 43
+        }
+    ]
+
+    const filterUsers = <T, O extends keyof T>(users: T[], key:O, value: T[O]): T[] =>{
+        return users.filter(user=>user[key]===value)
+    }
+
+    const filteredUsers = filterUsers(users,"name","mark")
+    ```
