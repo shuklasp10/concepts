@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        html, body{
+        html,
+        body {
             height: 100%;
             width: 100%;
             /* background-color: black; */
         }
-        .container{
+
+        .container {
             display: flex;
-            flex-wrap:wrap;
+            flex-wrap: wrap;
             width: 500px;
             height: 70%;
             padding: 10px;
             border: 1px solid black;
             justify-content: center;
             align-items: center;
-            align-content:end;
+            align-content: end;
         }
+
         .box {
             border: 1px solid black;
             width: 100px;
@@ -28,6 +32,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="box items1">box 1</div>
@@ -38,5 +43,38 @@
         <div class="box items4">box 3</div>
         <div class="box items5">box 4</div>
     </div>
+    <table>
+        <thead>
+            <th>
+            <td>User</td>
+            <td>Amount</td>
+            <td>Discount</td>
+            <td>Quantity</td>
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+
 </html>
+
+<tr {...headerGroup.getHeaderGroupProps()}>
+    {headerGroup.headers.map(column=>(
+    <th ...column.getHeaderProps()>
+        {column.render("Header")}
+    </th>
+    ))}
+</tr>

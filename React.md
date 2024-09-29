@@ -310,6 +310,26 @@ function handleClick(){
 }
 ```
 
+### useLocation
+* `useLocation` hook is used to get current url 
+* `useLocation` return a location object
+    ```
+    import {useLocation} from 'react-router-dom;
+
+    const App = () => {
+        const location = useLocation()
+        console.log(location)
+
+        location = {
+            hash: "",
+            key: "hl22e0if",
+            pathname: "/product",
+            search: "",
+            state: null
+        }
+    }
+    ```
+
 ### Notes
 1. Use ```<Outlet />``` in navigation if there is nested routing.
 2. ```'/path'``` gives absolute path whereas ```'path'``` gives relative path.
@@ -583,7 +603,231 @@ const options = {
 
 ## Tables
 Library used `react-table`
-* 
+* It is headless library which provides state, utilities and event listeners that can be added to own table.
+* We have full control over markup and styling
+
+### setup
+* Install library  
+    ```
+    npm i react-table
+    ```
+* `useTable` is a hook which provides all functionality of table
+    ```
+    import {useTable} from 'react-table'
+    ```
+
+* __Data formatting:__ `useTable` takes data in two parts
+    1. __columns:__ array of object with two value
+        1. __Header:__ heading to be appear in table
+        2. __accessor:__ respective key in json data
+    ```
+    columns = [
+        {
+            Header: "User",
+            accessor: "user"
+        },
+        {
+            Header: "Amount",
+            accessor: "amount"
+        },
+        {
+            Header: "Discount",
+            accessor: "discount"
+        },
+        {
+            Header: "Quantity",
+            accessor: "quantity"
+        },
+    ]
+    ```
+    2. __data:__ actual json data
+    ```
+    [
+        {
+            "user": "John",
+            "amount": 2000,
+            "discount": 50,
+            "quantity":70
+        },
+        {
+            "user": "Mark",
+            "amount": 1599,
+            "discount": 23,
+            "quantity":57
+        }
+    ]
+    ```
+* Create table
+    ```
+    const TableApp = () => {
+        return (
+            <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Discount</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+        )
+    }
+    ```
+* Implement `react-table` features
+    ```diff
+    + import {useTable} from 'react-table';
+
+    const TableApp = () => {
+    +     const {
+    +         getTableProps,
+    +         getTableBodyProps,
+    +         headerGroups,
+    +         prepareRow,
+    +         rows
+    +     }  = useTable({columns, data});
+
+        return (
+    -        <table>
+    +        <table {...getTableProps}>
+                <thead>
+    -                <tr>
+    -                    <th>User</th>
+    -                    <th>Amount</th>
+    -                    <th>Discount</th>
+    -                    <th>Quantity</th>
+    -                </tr>
+    +                {headerGroups.map(headerGroup)=>(
+    +                    <tr {...headerGroup.getHeaderGroupProps()}>
+    +                       {headerGroup.headers.map(column=>(
+    +                            <th ...column.getHeaderProps()>
+    +                                {column.render("Header")}
+    +                            </th>
+    +                        ))}
+    +                    </tr>
+    +                )}
+                </thead>
+    -            <tbody>
+    -                <tr>
+    -                    <td></td>
+    -                    <td></td>
+    -                    <td></td>
+    -                    <td></td>
+    -                </tr>
+    -                <tr>
+    -                    <td></td>
+    -                    <td></td>
+    -                    <td></td>
+    -                    <td></td>
+    -                </tr>
+    +            <tbody ...{getTableBodyProps()}>
+    +                {rows.map(row=>{
+    +                    prepareRow();
+    +                    return (
+    +                        <tr {...row.getRowProps()}>
+    +                            {row.cells.map(cell=>(
+    +                                <td {cell.getCellProps()}>{cell.render+("Cell")}</td>
+    +                            ))}
+    +                        </tr>
+    +                    )
+    +                })}
+                </tbody>
+            </table>
+        )
+    } 
+    ```
+
+
+
+### table sorting
+* `useSortBy` hook is used to implement sorting.
+    ```diff
+    - import {useTable} from 'react-table';
+    + import {useTable, useSortBy} from 'react-table';
+
+    ...
+
+    const {
+              getTableProps,
+              getTableBodyProps,
+              headerGroups,
+              prepareRow,
+              rows
+    -     }  = useTable({columns, data});
+    +     }  = useTable({columns, data}, useSortBy);
+
+    ...
+
+    <tr {...headerGroup.getHeaderGroupProps()}>
+        {headerGroup.headers.map(column=>(
+    -    <th ...column.getHeaderProps()>
+    +    <th ...column.getHeaderProps(column.getSortByToggleProps())>
+            {column.render("Header")}
+    +        <span>
+    +            {column.isSorted && (column.isSortedDesc "🔽"? "🔼")}
+    +        </span>
+        </th>
+        ))}
+    </tr>
+
+    ```
+
+### pagination
+* `usePagination` is used to implement pagination in table
+
+    ```diff
+    - import {useTable} from 'react-table';
+    + import {useTable, usePagination} from 'react-table';
+
+    ...
+
+    const {
+              getTableProps,
+              getTableBodyProps,
+              headerGroups,
+              prepareRow,
+    -         rows
+    +         page,
+    +         state: {pageIndex},
+    +         previousPage
+    +         nextPage,
+    +         canPreviousPage,
+    +         canNextPage,
+    +         pageCount
+    -     }  = useTable({columns, data});
+    +     }  = useTable({columns, data}, usePagination);
+
+    ...
+        <tbody {...getTableBodyProps()}> 
+    -        {rows.map(row)=>{
+    +        {page.map(row)=>{
+
+    ...
+
+        </table>
+    +    {showPagination && (
+    +        <div className="pagination">
+    +        <button disabled={!canPreviousPage} onClick={previousPage}>Prev</button>
+    +        <span>{pageIndex+1} of {pageCount}</span>
+    +        <button disabled={!canNextPage} onClick={nextPage}>Next</button>
+    +        </div>
+    +    )}
+
+    ```
 
 ## Keywords
 1. conditional rendering
