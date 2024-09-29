@@ -11,6 +11,7 @@
 - [Client side storage](#client-side-storage)
 - [DOM manipulation](#dom-manipulation)
 - [Events](#events)
+- [Middleware](#middleware)
 
 ## Higher order functions
 HOF are those functions which operates on other functions
@@ -393,5 +394,8 @@ myEmitter.on('eventName',handlerFunction);
 myEmitter.emit('eventName');
 ```
 * `once` same as `on` but event can be fired only once.
+
+## Middleware
+
 
 ##

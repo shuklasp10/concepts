@@ -7,11 +7,11 @@
 - [useRef](#useref)
 - [Routing](#routing)
 - [Redux](#redux)
-- [Higher order component](#higher-order-component)
 - [Middleware](#middleware)
+- [Higher order component](#higher-order-component)
 - [Charts](#charts)
 - [Tables](#tables)
-- [Keywords](#keywords);
+- [Keywords](#keywords)
 
 
 ## useEffect
@@ -448,6 +448,53 @@ __action object__
 * It contains two things 
     1. __type__ _required_ String
     2. __payload__ _optional_ additional data
+
+
+## Middleware
+* __Problem:__ Reducer cannot handle api calls
+    * Reducer are pure function. Same output for same input
+    * Reducer should be predictable but api calls are not.
+* __Solution:__ before calling reducer call  middleware to handle asynchronous tasks.
+    * Dispatch → Middleware → Reducer
+* Middleware can stop disptach or allow to reducer
+
+### setup
+1. Create middleware: middleware is curried function
+    ```
+    function logged(store){
+        return function (next){
+            return function (action){
+                console.log(store, next, action);
+                next(action);
+            }
+        }
+    }
+    ```
+    * This can be also created by arrow function
+        ```
+        const logger = (store) => (next) => (action) => {
+            console.log(store, next, action);
+            next(action);
+        }
+        ```
+    * `next(action)` should be called to run reducer
+
+2. Add middleware in store
+    ```
+    const store = configureStore({
+        reducer: {
+            products: productSlice,
+            cart: cartSlice,
+            wishlist: wishlistSlice
+        },
+        middleware: [logger]
+    })
+    ```
+
+### API calls using middleware
+
+### API call using useEffect
+
 
 ## Higher order component
 
