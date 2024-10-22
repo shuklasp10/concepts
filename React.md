@@ -8,6 +8,7 @@
 - [Routing](#routing)
 - [Redux](#redux)
 - [Middleware](#middleware)
+- [Handling API calls](#handling-api-calls)
 - [Higher order component](#higher-order-component)
 - [Charts](#charts)
 - [Tables](#tables)
@@ -500,6 +501,9 @@ __action object__
     * `next(action)` should be called to run reducer
 
 2. Add middleware in store
+    * There are some default middlewares in store.
+    * middleware must be callback which should return an array with all middlewares
+    * To include default middlewares use `(defaultMiddleware)=>defaultMiddleware.concat(logger)`
     ```
     const store = configureStore({
         reducer: {
@@ -507,14 +511,84 @@ __action object__
             cart: cartSlice,
             wishlist: wishlistSlice
         },
-        middleware: [logger]
+        middleware: ()=>[logger]
     })
     ```
 
-### API calls using middleware
+## Handling API calls
 
-### API call using useEffect
+### using useffect hook
+App.js
+```
 
+const App = () => {
+    
+    useEffect(()=>{
+        fetch('API').then(res=>res.json()).then(data=>(
+            dispatch(getData(data));
+        ))
+    })
+}
+```
+Slice.js
+```
+const Slice = createSlice({
+    name: 'data'
+    initialState = []
+    reducer: {
+        getData: (state, payload)=>{
+            return payload;
+        }
+    }
+});
+
+export const {getData} = Slice.actions;
+export default Slice.reducer
+```
+* To handle loading and error state
+App.js
+```
+useEffect(()=>{
+    disptach(loadingData());
+    fetch('API').then(res=>res.json()).then(data=>(
+            dispatch(getData(data));
+    ))
+    .catch((err)=>{
+        dispatch(loadingError(err));
+    })
+})
+```
+Slice.js
+```
+const Slice = createSlice({
+    name: 'data'
+    initialState = {
+        loading: false,
+        data: [],
+        error: false;
+    }
+    reducer: {
+        loadingData: ()=>{
+            state.loading = true
+        },
+        getData: (state, payload)=>{
+            state.loading = false;
+            state.data = payload
+        },
+        loadingError: (state, payload)=>{
+            state.loading = false;
+            state.error = true
+        }
+    }
+});
+
+export const {getData, loadingData, loadingError} = Slice.actions;
+export default Slice.reducer
+```
+
+### handling API from middleware
+   
+### handling API from redux-thunk
 
 ## Higher order component
 
