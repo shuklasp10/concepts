@@ -587,8 +587,88 @@ export default Slice.reducer
 ```
 
 ### handling API from middleware
-   
+#### Walkthrough
+* A special action is dispatched from application which is not available in redux.
+* Custom middleware is created which will check for that special action else pass it
+* Fetching from api is implemented in custom middleware and based on success or failure actions are dispatched.
+App.js
+```
+useEffect(()=>{
+    dispatch({
+        type: 'makeAPICall',
+        url: 'products'
+    })
+},[])
+```
+APIMiddleware.js
+```
+const BASE_URL = 'https://api.com'
+const APIMiddleware = ({dispatch}) => (next) => (action) => {
+    if(action.type==='makeAPICall'){      //insure middleware run for only api calls not for every dispatch
+        dispatch(loadingData());
+        fetch(`${BASE_URL}/${action.url}`).then(res=>res.json())
+        .then(data=>next(getData(data)))
+        .catch(e=>next(loadingError()))
+    }
+    else{
+        next(action)
+    }
+}
+```
+#### Important notes
+* If we want to use middleware for multiple API calls then loading, error and getData can be passed along with action instead of hardcoding in middleware.
+```
+useEffect(()=>{
+    dispatch({
+        type: 'makeAPICall',
+        url: 'products',
+        success: getData,
+        error: loadingError,
+        loading: loadingData
+    })
+})
+```
+* In middleware dispatch and next both are used to send action to reducer.
+    * When dispatch is used it restart whole redux middleware chain. used to handle any sideeffect
+    * When next is used it send action to next middleware or reducer indicating it has been processed by previous middlewares
+* Order of middleware execution depends in array in store. First in array will be used first.
 ### handling API from redux-thunk
+#### walkthrough
+* Thunk is basically a middleware which check if action is function then it execute the function.
+* `dispatch` can only dispatch simple object with type and payload to reducers. but with middleware we can handle functions.
+* Inside the function fetching from api is implemented and based on success or failure action is dispatched.
+* Action function will take dispatch so that function can dispatch actions.
+* Function implementation is stored in slice file.
+* Since By convention function is called in dispatch so we create a callback which will return a function. and we call callback function in dispatch.
+```
+// thunk Implementation
+const customThunk = ({dispatch}) => (next) => (action) =>{
+    if(typeof action=== 'function'){
+        return action(dispatch)
+    }
+    else{
+        next(action)
+    }
+}
+```
+```
+// app.js
+import {getProductData} from './productSlice.js'
+useEffect(()=>{
+    dispatch(getProductData())
+},[])
+```
+
+```
+// productSlice.js
+
+export const getProductData = () => (dispatch) => {
+    dispatch(loadingData());
+    fetch(api).then(res=>res.json())
+    .then(data=>dispatch(getData(data)))
+    .catch((e)=>dispatch(loadingError()))
+}
+```
 
 ## Higher order component
 
