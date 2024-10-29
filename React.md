@@ -651,6 +651,7 @@ const customThunk = ({dispatch}) => (next) => (action) =>{
     }
 }
 ```
+* This function is generally exist in redux by default so we don't need to write middleware.
 ```
 // app.js
 import {getProductData} from './productSlice.js'
@@ -668,6 +669,74 @@ export const getProductData = () => (dispatch) => {
     .then(data=>dispatch(getData(data)))
     .catch((e)=>dispatch(loadingError()))
 }
+```
+
+### createAsyncThunk
+#### walkthrough
+* use `createAsyncThunk` to create action with type and function which will return payload of action.
+* Add `extraReducer` in `createSlice` to handle three stages - pending, fulfilled, reject
+* export `slice.actions`
+
+#### createAsyncThunk
+* Instead of creating a function and manually dispatching actions based on api result we can use `createAsyncThunk` function to create a action
+* It is a action creator which take two parameters
+    * __action type prefix:__ a string which will be action type to uniquely identify in reducer. prefix means later fulfilled, pending or rejected is added in action type based on api result
+    * __function:__ a function which will return payload of action. also known as payload creator.
+#### payload creator
+* State of thunk depends on payload creator function
+    1. `pending` after dispatch and before calling payload creator
+    2. `fulfilled` if payload creator function returns data successfully
+    3. `rejected` if payload creator function throws error.
+* parameters
+    1. `arg` data that is passed with dispatch
+    2. `thunkAPi` an object which provide useful methods and properties.
+    {
+        dispatch: to dispatch any action,
+        getState: access current state value,
+        extra: any extra argument to configure `createAsyncthunk`,
+        requestID,
+        signal,
+        rejectWithValue: to reject thunk with custom error payload. Should be returned
+    }
+
+```
+\\ createAsyncThunk
+export const fetchData = createAsyncThunk(
+    'products/fetchData',
+    async (arg, {rejectWithValue})=>{
+        try{
+            const res = await fetch('api')
+            return res.json()
+        }
+        catch(e){
+            return rejectWithValue("Api fetching failed")
+        }
+    }
+)
+```
+
+#### extra reducers
+* it contains a function which have reducers for three cases
+```
+extrareducers: (builder)=>{
+    builder.addCase(fetchData.pending,(state)=>{
+        state.loading = true
+    })
+    builder.addCase(fetchData.fulfilled,(state,action)=>{
+        state.loading = false
+        state.data = action.payload
+    })
+    builder.addCase(fetchData.rejected,(state,action)=>{
+        state.loading = false
+        state.error = action.payload
+    })
+}
+```
+
+#### dispatch and use
+* to use thunk actions need to export thunk function instead of slice action generator.
+```
+dispatch(fetchData(userID))
 ```
 
 ## Higher order component
