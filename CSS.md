@@ -18,6 +18,53 @@
 - [Tips](#tips)
 
 
+## Selectors
+* Type of selectors in css
+  1. element selector like `p{ }, h1{ }`
+  2. class selector like `.class1{ }, .class2{ }`
+  3. id selector like `#id1{ }, #id2{ }`
+  4. attribute selector `[type] { }` selects all element which have property type. for more specific `[type="text"] { }`
+
+## combinator
+* `div p` __children and grandchildren__ selects all `p` children or grandchildren of `div`
+* `div > p` __only children__ selects `p` direct children of `div`
+* `div.demo` __and__ select all `p` which have class name `demo`
+* `div + p` __next immediate__ selects `p` that comes immediatly after `div` no other element in between 
+* `div ~ p` __next all__ selects all `p` in dom that comes after `div`
+
+## cascade and specificity
+* If the same property is applied to an element multiple times with different values, here’s how the final value is decided in following order:
+  1. __specificty__ The style with the highest specificity (more targeted selector) will apply.
+  2. __cascade rule__ if two styles have the same specificity, the one that appears later in the CSS will apply.
+* Specificty for selectors are
+  * __element selectors__ 001
+  * __class selectors__ 010
+  * __attribute selectors__ 010
+  * __id selectors__ 100
+* for combinators all selectors specificity is added
+  * `div p` has specificity 001+001 = 002
+  * `div .class1` has specificity 001+010 = 011
+  * `#id .class1 #id2` has specificity 100+010+100 = 210
+  * `#id#id` has specificity 100+100 = 200
+* inline css can be overridden by using `!important` in css file.
+```
+li{
+  color: green; !important
+}
+```
+* Element selector < Class selector < Id selector < Internal CSS < Inline CSS < important
+
+## Inheritance
+* some property inherit value from parent and some not
+* like color property is inherited from parent
+* button override parent property with its default property
+* To manaully inherit parent property use vaue `inherit`
+```
+button {
+  color: inherit;
+}
+```
+
 ## Boilerplate
 - set margin and padding 0 for all elements for consistency
 - set element size = border + padding + content (doesn't include margin)

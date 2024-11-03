@@ -632,6 +632,7 @@ useEffect(()=>{
     * When dispatch is used it restart whole redux middleware chain. used to handle any sideeffect
     * When next is used it send action to next middleware or reducer indicating it has been processed by previous middlewares
 * Order of middleware execution depends in array in store. First in array will be used first.
+
 ### handling API from redux-thunk
 #### walkthrough
 * Thunk is basically a middleware which check if action is function then it execute the function.
@@ -738,6 +739,20 @@ extrareducers: (builder)=>{
 ```
 dispatch(fetchData(userID))
 ```
+
+### RTK Query
+* RTK query help to query and mutate api data without creating thunk, slice, loading and error handler.
+* RTK is part of @reduxjs/toolkit library.
+
+#### walkthrough
+* use `createAPI` from RTK to define reducer path, baseurl, endpoints and API calls
+* add api reducer in store
+* use query hooks in component to get data, isError, isLoading, error
+* Use query and mutation to fetch and mutate data
+* use query invalidation to refresh data when specific actions occur
+
+### createAPI
+
 
 ## Higher order component
 

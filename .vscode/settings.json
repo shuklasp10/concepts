@@ -1,4 +1,5 @@
 {
     "IDX.aI.enableCodebaseIndexing": false,
-    "IDX.aI.enableInlineCompletion": false
+    "IDX.aI.enableInlineCompletion": false,
+    "liveServer.settings.port": 5501
 }
