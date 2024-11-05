@@ -1,6 +1,8 @@
 # Web developement Notes: CSS
 
 ## Table of Contents
+- [Selectors and combinator](#selectors-and-combinator)
+- [Cascade and specificity](#cascade-and-specificity)
 - [Boilerplate](#boilerplate)
 - [Background](#Background)
 - [Border](#border)
@@ -18,21 +20,22 @@
 - [Tips](#tips)
 
 
-## Selectors
-* Type of selectors in css
-  1. element selector like `p{ }, h1{ }`
-  2. class selector like `.class1{ }, .class2{ }`
-  3. id selector like `#id1{ }, #id2{ }`
-  4. attribute selector `[type] { }` selects all element which have property type. for more specific `[type="text"] { }`
+## Selectors and combinator
+### selectors
+1. __element__  `p{ }, h1{ }`
+2. __class__  `.class1{ }, .class2{ }`
+3. __id__  `#id1{ }, #id2{ }`
+4. __attribute__ `[type] { }` selects all element which have property type. for more specific `[type="text"] { }`
 
-## combinator
+### combinator
 * `div p` __children and grandchildren__ selects all `p` children or grandchildren of `div`
 * `div > p` __only children__ selects `p` direct children of `div`
-* `div.demo` __and__ select all `p` which have class name `demo`
+* `.test.demo` __and__ select all element with class name test and demo
+* `.test, demo` __or__ select all element with class name test or demo
 * `div + p` __next immediate__ selects `p` that comes immediatly after `div` no other element in between 
 * `div ~ p` __next all__ selects all `p` in dom that comes after `div`
 
-## cascade and specificity
+## Cascade and specificity
 * If the same property is applied to an element multiple times with different values, here’s how the final value is decided in following order:
   1. __specificty__ The style with the highest specificity (more targeted selector) will apply.
   2. __cascade rule__ if two styles have the same specificity, the one that appears later in the CSS will apply.
@@ -52,7 +55,7 @@ li{
   color: green; !important
 }
 ```
-* Element selector < Class selector < Id selector < Internal CSS < Inline CSS < important
+>Specificity: Element selector < Class selector < Id selector < Internal CSS < Inline CSS < important
 
 ## Inheritance
 * some property inherit value from parent and some not
@@ -64,6 +67,116 @@ button {
   color: inherit;
 }
 ```
+
+## heigth & width
+* __prevent overflow__ by using min, max or percentage instead of absolute pixel value
+```
+div {
+  min-width: 100px;
+}
+```
+* width in percentage can be applied to child even parent width is not set. since by default width is 100%.
+* height in precentage can not be applied to child if parent height is not set.
+
+## padding, border & margin
+* border default color is same as color of text in it.
+* `border` prooperty is combination of
+  * `border-width`
+  * `border-style`
+  * `border-color`
+* margin can be negative to move box opposite
+* __box sizing___
+  * By default `content-box`, height and width given to block is applied to content only.
+  * to include padding and border set
+  ```
+  div {
+    box-sizing: border-box;
+  }
+  ```
+* __margin collapse__ when starting margin of two vertically stacked element touch each other then their margin collapse into one. changing margin of one will change another. To prevent this 
+  * set outer element `padding-top: 1px`
+  * set outer element `overflow: hidden`
+* __outline__ is same as border but do not take space or change height and width.
+
+## inline elements
+* Following property does not apply
+  * `height`
+  * `width`
+* `padding`, `border`& `margin` work all four side but does not push elements top and bottom instead it overlap it. Means it does not work vertically
+* `display: block` can be used to change it to block.
+* By default, block elements don't allow the next element to sit beside them.
+* `inline-block` alows next element start right after current element like an inline element and use margin, padding, border like block element
+* __replaced inline__ elements are inline elements but act as inline-block elements like `img`, `iframe`, `video`
+
+## Units
+### percentage
+* `width` is calculated on parent width
+* `height` is calculated on parent height only if parent height is defined
+* `padding` & `margin` is calculated on parent width
+* `border` does not work with percentage
+* `font-size` is calculated on parent font-size.
+
+### vw & vh
+* `vw` viewport width calcuate percentage of browser width.
+* `vh` viewport height calcuate percentage of browser height.
+
+### em
+* em (element) is mutiple of current `font-size`
+* in starting `1em = 16px`
+* if element has `font-size: 4px` then `2em = 8px`
+* width, height, padding, margin can be set using em based on current font-size.
+* if font-size is set in em then it will calculate based on parent font-size.
+```[css]
+.parent {
+  font-size: 20px;
+  width: 2em;   //40px
+}
+.inner {
+  font-size: 1.5em;   //30px
+  width: 2em;   //60px
+}
+```
+
+### rem
+* rem (root element) is multiple of root element (html).
+* rem is fixed throughout document
+* to change rem value root font-size should be changed
+```
+html {
+  font-size: 10px;
+}
+div {
+  font:size: 2rem   //20px
+}
+```
+* we can also select root as `:root {   }`
+
+## postions
+### static
+* Default position property
+* `top`, `bottom`, `left`, `right` property are locked
+
+### relative
+* Unlock `top`, `bottom`, `left`, `right` property
+* It moves with respective to its original position. `top: 10px` means it moves 10px down from original position
+* `top: 10px` is same as `bottom: -10px` and vice versa
+* if both `top` and `bottom` is given then only `top` is considered. 
+* if both `left` and `right` is given then only `right` is considered. 
+* `inset` property can be used to define all property
+* `inset: 20px 30px` means `top: 20px; right: 30px; bottom: 20px; left: 30px;`
+
+### absolute
+* it lift the element from its placed and its place is occupied by next element.
+* It moves with respective to recently __non-static parent__. If no non-static parent found it moves with respective to viewport
+* if both `top` and `bottom` is given then element is stretched and leaving space from top and bottom.
+* if both `left` and `right` is given then element is stretched and leaving space from top and bottom.
+
+### fixed
+* Same as absolute but always moves with respect to viewport. doesn't matter what parent is
+
+### sticky
+* 
+
 
 ## Boilerplate
 - set margin and padding 0 for all elements for consistency
@@ -100,18 +213,6 @@ transparent (0)---------(1) opaque
 
 ## Lists
 
-## Display
-### inline
-1. Does not follow box model.
-2. does not width & height, it's according to content
-2. can set margin left and right but not top and bottom
-4. Does not start in new line
-
-### block
-1. follow box model
-2. have width and height
-3. can set margin all direction
-4. starts in new line and takes all width available.
 
 ## Postion
 

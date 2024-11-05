@@ -1,0 +1,14 @@
+.outer {
+    font-size: 20px;
+    background-color: teal;
+    height: 400px;
+    width: 700px;
+    padding-left: 5px;
+}
+
+.outer div {
+    width: 100px;
+    height: 100px;
+    background-color: khaki;
+    margin-top: 5px;
+}
