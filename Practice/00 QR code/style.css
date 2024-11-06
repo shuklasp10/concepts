@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    width: 100%;
+    font-family: sans-serif, monospace;
+    background-color: hsl(220, 15%, 55%);
+}
+
+.card {
+    max-width: 325px;
+    padding: 12px;
+    aspect-ratio: 3/4;
+    border-radius: 15px;
+    background-color: white;
+    position: relative;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: 700;
+    box-shadow: 0 0 10px 10px hsl(218, 44%, 22%);
+}
+img{
+    width: 100%;
+    border-radius: 10px;
+}
+h2 {
+    margin: 16px 0;
+}
+p {
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: hsl(214, 7%, 63%);
+}

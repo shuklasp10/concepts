@@ -1,14 +1,18 @@
 .outer {
     font-size: 20px;
     background-color: teal;
-    height: 400px;
-    width: 700px;
-    padding-left: 5px;
+    height: 300px;
+    width: 300px;
+    position: relative;
+    box-sizing: border-box;
 }
 
-.outer div {
-    width: 100px;
-    height: 100px;
+.div1 {
+    height: 150px;
+    width: 150px;
     background-color: khaki;
-    margin-top: 5px;
+    position: relative;
+    inset: 50%;
+    top: 100%;
+    transform: translate(-50%, -50%);
 }

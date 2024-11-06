@@ -6,9 +6,6 @@
 - [Cascade and specificity](#cascade-and-specificity)
 - [Boilerplate](#boilerplate)
 - [Background](#background)
-- [Border](#border)
-- [Input](#input)
-- [Lists](#lists)
 - [Position](#position)
 - [Text and Fonts](#text-and-fonts)
 - [Images](#images)
@@ -87,6 +84,7 @@ div {
 
 - width in percentage can be applied to child even parent width is not set. since by default width is 100%.
 - height in precentage can not be applied to child if parent height is not set.
+- `verticle-align` property is used to align two elements vertically
 
 ## padding, border & margin
 
@@ -173,7 +171,7 @@ div {
 
 - we can also select root as `:root {   }`
 
-## postions
+## position
 
 ### static
 
@@ -203,7 +201,73 @@ div {
 
 ### sticky
 
-## position
+- [to be done]
+
+## transform
+
+- transform is used to change transform element without affecting surrounding elemenets position.
+
+### scale
+
+- scale is used to increase size (zoom in) of element.
+- `transform: scale(2.5)` size become 2.5 times original size.
+- to change center of element from which size is increased
+- `transform-origin: 0 0` it centre of transform will be top left corner.
+- `transform-origin: 100% 100%` centre will bottom right corner.
+
+### rotate
+
+- used to rotate element
+- `transform: rotate(90deg)` rotate element clockwise from center
+- origin can be changed using `transform-origin` property
+
+### translate
+
+- used to move element from its original position
+- `tranform: translate(20px 30px)` element moves 20px left and 30px down overlapping other elements.
+- `translate` is shorthand property of `translateX` and `translateY`.
+- `transform: translateX(50%)` moves element left by 30% of its width.
+- while `top`, `bottom` properties moves element according to parent width and height, translate moves element according to elements width and height.
+- to center a div
+
+  ```[css]
+  div {
+    postion: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%)
+  }
+  ```
+
+## transition
+
+- to control how property changes based on action like hover
+- `transition: all 300ms` property will change in 200ms. More time more smooth transition.
+- __value format:__ property selector and time.
+- `transition: transform 300ms` to select only transform property to transition.
+
+## box shadow and text shadow
+
+### box-shadow
+
+- `box-shadow: 10px 20px 5px rgb(0,0,20)`
+- value format X Y blur radius and color
+- `box-shadow: 10px 20px 5px 10px rgb(0,0,20)` it will add 10px in shadow height and width in all direction. also called __spread__
+
+### text-shadow
+
+- `text-shadow: 10px 20px 5px rgb(0,0,20)`
+- same as box shadow but does not have spread
+- can be inherited from parent since it's text property
+
+## background
+
+- `background-image: url('')` to set image as background
+- `background-repeat: no-repeat` to prevent background repeating to cover element height and cover
+- `background-size: cover` to  crop image to fit element
+- `background-position-x` to set background position
+- __remove background:__ `background-color: transparent`
+- __opacity:__ `background-color: rgba(147, 150, 152, 0.7)` provide alpha value. transparent [0....1] opaque.
 
 ## Boilerplate
 
@@ -224,30 +288,6 @@ html, body {
 }
 
 ```
-
-## background
-
-### remove bg
-
-`background-color: transparent`
-
-### opacity
-
-add extra value in rgba  
-`background-color: rgba(147, 150, 152, 0.7)`;
-transparent (0)---------(1) opaque
-
-<!-- Pending: add all display properties -->
-
-## Border
-
-- shadow: `box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3);`
-
-## Input
-
-## Lists
-
-## Postion
 
 ## Text and Fonts
 

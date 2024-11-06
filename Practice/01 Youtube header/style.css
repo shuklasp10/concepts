@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: sans-serif;
+}
+
+.banner {
+    background-color: rgb(46, 111, 233);
+    width: 100vw;
+    background-image: url(./assets/background.png);
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: 100% 52%;
+    color: white;
+    padding: 40px 20px;
+}
+h1 {
+    font-weight: 500;
+}
+span{
+    font-weight: 400;
+    font-size: 1.3rem;
+}
+.persons {
+    display: inline-block;
+    /* position: relative;
+    top: 15px; */
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.persons div {
+    display: inherit;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background-size: cover;
+    border: 4px solid white;
+    margin-right: -15px;
+
+}
+.person1{
+    background-image: url(./assets/people/person-1.jpg);
+}
+.person2{
+    background-image: url(./assets/people/person-2.jpg);
+}
+.person3{
+    background-image: url(./assets/people/person-3.jpg);
+}
+.person4{
+    background-image: url(./assets/people/person-4.jpg);
+}
+.person5{
+    background-image: url(./assets/people/person-5.jpg);
+}
+.person6{
+    background-image: url(./assets/people/person-6.jpg);
+}
+.person7{
+    background-image: url(./assets/people/person-7.jpg);
+}
+.person8{
+    background-image: url(./assets/people/person-8.jpg);
+}
