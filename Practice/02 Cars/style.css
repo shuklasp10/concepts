@@ -1,0 +1,53 @@
+*  {
+    font-family: sans-serif;
+    color: white;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div{
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 300px;
+    height: 455px;
+    padding: 40px;
+    position: relative;
+}
+.sedan{
+     background-color: #e28525;
+}
+.suv{
+    background-color: #016972;
+}
+.luxury{
+    background-color: #00403f;
+}
+p{
+    margin-bottom: 135px;
+    margin-top: 25px;
+}
+
+button {
+    color: none;
+    font-weight: 600;
+    font-size: 18px;
+    outline: none;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 20px;
+    position: absolute;
+    bottom: 50px;
+}
+.sedan button {
+    color: #e28525;
+}
+.suv button {
+    color: #016972;
+}
+.luxury button{
+    color: #00403f;
+}

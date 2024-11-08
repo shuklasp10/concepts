@@ -4,6 +4,16 @@
 
 - [Selectors and combinator](#selectors-and-combinator)
 - [Cascade and specificity](#cascade-and-specificity)
+- [Inheritance](#inheritance)
+- [Heigth and Width](#heigth-and-width)
+- [Box model](#box-model)
+- [Inline Elements](#inline-elements)
+- [Units](#units)
+- [Position](#position)
+- [Transform](#transform)
+- [Transition](#transition)
+- [Box shadow and Text shadow](#box-shadow-and-text-shadow)
+- [Background](#background)
 - [Boilerplate](#boilerplate)
 - [Background](#background)
 - [Position](#position)
@@ -72,7 +82,7 @@ button {
 }
 ```
 
-## heigth & width
+## Heigth and Width
 
 - __prevent overflow__ by using min, max or percentage instead of absolute pixel value
 
@@ -86,7 +96,7 @@ div {
 - height in precentage can not be applied to child if parent height is not set.
 - `verticle-align` property is used to align two elements vertically
 
-## padding, border & margin
+## Box model
 
 - border default color is same as color of text in it.
 - `border` prooperty is combination of
@@ -109,7 +119,7 @@ div {
   - set outer element `overflow: hidden`
 - __outline__ is same as border but do not take space or change height and width.
 
-## inline elements
+## Inline Elements
 
 - Following property does not apply
   - `height`
@@ -180,7 +190,11 @@ div {
 
 ### relative
 
-- Unlock `top`, `bottom`, `left`, `right` property
+- Unlock `top`, `bottom`, `left`, `right` property.
+- __attached__ to parent. moves with parent.
+- can be moved outside parent.
+- 0px means original position.
+- Overlaps other element while moving unless next sibiling is also non-static. then it get overlap by that sibiling
 - It moves with respective to its original position. `top: 10px` means it moves 10px down from original position
 - `top: 10px` is same as `bottom: -10px` and vice versa
 - if both `top` and `bottom` is given then only `top` is considered.
@@ -190,20 +204,34 @@ div {
 
 ### absolute
 
-- it lift the element from its placed and its place is occupied by next element.
+- lift element in parent (static or non-static) box and space taken by sibilings.
+- __attached__ to parent, moves with parent
+- can be moved outside parent
+- 0px means __non-static parent__ starting point.
+- - Overlaps other element while moving unless next sibiling is also relative. then it get overlap by that sibiling
 - It moves with respective to recently __non-static parent__. If no non-static parent found it moves with respective to viewport
-- if both `top` and `bottom` is given then element is stretched and leaving space from top and bottom.
-- if both `left` and `right` is given then element is stretched and leaving space from top and bottom.
 
 ### fixed
 
-- Same as absolute but always moves with respect to viewport. doesn't matter what parent is
+- lift element in parent (static or non-static) box and space taken by sibilings.
+- __attached__ to parent, moves with parent.
+- can be moved outside parent.
+- 0px means viewport starting point always.
+- Overlaps other element while moving unless next sibiling is also relative. then it get overlap by that sibiling
+- if both `top` and `bottom` is given then element is stretched and leaving space from top and bottom by given value. (unless height is not specified)
+- if both `left` and `right` is given then element is stretched and leaving space from top and bottom. (unless width is not specified)
 
 ### sticky
 
-- [to be done]
+- Does not lift element
+- __attached__ to parent, moves with parent.
+- can't be moved outside parent.
+- if `top:10px` then when parent is scrolled it makes 10px spaces from parent until whole parent is scrolled then it goes up with parent.
+- it works with most recent parent which is scrollable if not found work with viewport.
+- if top and bottom both given top is considered and it does not stretch element
 
-## transform
+
+## Transform
 
 - transform is used to change transform element without affecting surrounding elemenets position.
 
