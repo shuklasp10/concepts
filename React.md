@@ -30,7 +30,7 @@ Used to synchronize components with some external systems (server, network, widg
   - __cleanup__ executed with old values
   - __setup__ executed with new values
 
-```[javascript]
+```[jsx harmony]
 useEffect(()=>{
     ...setup function
     return ()=>{
