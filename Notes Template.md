@@ -29,5 +29,18 @@ Overview of built-in data structures like arrays, lists, dictionaries, etc.
 
 ## Example Code
 ### Hello World
-```[Language Name]
+```Language Name
 // Hello World program
+```
+
+## Topic
+
+### Overview [⬆](#table-of-contents)
+
+### Implementation
+
+### Keypoints/Best Practices
+
+### Performance Considerations
+
+### Related Concepts

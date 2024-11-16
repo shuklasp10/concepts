@@ -30,13 +30,13 @@ Used to synchronize components with some external systems (server, network, widg
   - __cleanup__ executed with old values
   - __setup__ executed with new values
 
-```jsx harmony
+```jsx
 useEffect(()=>{
     ...setup function
     return ()=>{
         ...cleanup function
     }
-},[dependencies])
+},[dependencies]);
 ```
 
 __Dependency__ props, state, variables and functions  
@@ -89,7 +89,7 @@ root.render(
 
 __Access context in component__
 
-```[javascript]
+```jsx
 //Page.jsx
 import {useContext} from 'react';
 
@@ -147,7 +147,7 @@ Walkthrough:
 
 ### create state with useReducer
 
-```[javascript]
+```jsx
 //App.jsx
 import { useReducer } from 'react'
 
@@ -193,7 +193,7 @@ function reducer(state, action){
 
 calls reducer function by passing actions as parameter
 
-```
+```jsx
 dispatch({type:'action1'})
 ```
 
@@ -201,7 +201,7 @@ dispatch({type:'action1'})
 
 Constant object to define action name. It used to prevent error in dispatch and reducer function.
 
-```
+```jsx
 const ACTIONS = {
     INCREMENT : 'increment',
     DECREMENT : 'decrement'
@@ -217,6 +217,61 @@ const ACTIONS = {
 
 ## useRef
 
+### Overview
+
+- `useRef()` returns a object `{current: value}` which value persists over re-render.
+
+    ```jsx
+    import {useRef} from react;
+
+    const App = () => {
+        const myRef = useRef(0);
+
+        return (
+            <h1>{myref.current}</h1>
+        )
+    }
+
+    //output
+    const myRef = { current:0 }
+    ```
+
+- To change value
+
+    ```jsx
+    myRef.current = myRef.current+1;
+    ```
+
+- This works just like normal variable expect it persist over re-renders (uses closure brhind the scene).
+- unlike `useState` it does not re-render componet when value is changed
+
+### using with dom node
+
+- `useRef` is mostly used to refer dom nodes
+
+    ```jsx
+    const App = () => {
+        const btnRef = useRef(null);
+
+        return (
+            <>
+                <button ref={btnRef}> Click me </button>
+            </>
+        )
+    }
+    ```
+
+- When dom is loaded then `btnRef.current` will be set to `button` elements
+- Using this ref we can change element from react
+
+    ```jsx
+        useEffect(()=>{
+            btnRef.current.style.backgroundColor: "red";
+        },[]);
+    ```
+
+- `useEffect` is used so that style is changed after dom is loaded and ref is set to button else it will result in `null`.
+
 ## useMemo
 
 > prevent expensive calculations during re-renders
@@ -226,7 +281,7 @@ const ACTIONS = {
 - `useMemo(function,dependency)`
 - function returns value that is cached and during re-renders that value is used without calling function again until dependecy is changed.
 
-```[javascript]
+```jsx
 //App.jsx
 
 function App = () => {
@@ -241,7 +296,7 @@ function App = () => {
 
 - when we need to track if object value is changed
 
-```[javascript]
+```jsx
 funnction App = () => {
     const [dark, setdark] = useState(true);
     const themeStyle = { color: dark ? 'black' : 'white'}
@@ -258,7 +313,7 @@ funnction App = () => {
 - Even though dark state is not changed and themeStyle is same still useEffect will log
 - to prevent this we can use `useMemo` to memoize themestyle and change only when dark is changed
 
-```[javascript]
+```jsx
 const themeStyle = useMemo(()=>{
     return { color: dark ? 'black' : 'white'}
 },[dark]);
@@ -270,7 +325,7 @@ const themeStyle = useMemo(()=>{
 - By default child is also rendered when parent is re-rendered.
 - React.Memo prevent redenring by allowing render when props is changed.
 
-```[Javascript]
+```jsx
 const Child = React.Memo((props)=>{
     ...component
 });
@@ -280,7 +335,7 @@ export default Child;
 
 or
 
-``` [Javascript]
+``` jsx
 const Child = ( props ) => {
     ...logic
 }
@@ -303,7 +358,7 @@ export default React.Memo(Child);
 
 ### Example
 
-```[javascript]
+```jsx
 import {PureComponent} from 'react';
 
 class Counter extends PureComponent{
@@ -318,7 +373,7 @@ class Counter extends PureComponent{
 Used to navigate in application through URL path.  
 Library -  `react-router-dom`  
 
-### walkthrough
+### Walkthrough
 
 1. Install `react-router-dom` library.
 2. Wrap application with `<BrowserRouter>`
@@ -326,11 +381,11 @@ Library -  `react-router-dom`
 4. Use `Link` to create navigation button or link.
 5. Use `<Outlet />` to create placeholder for nested route in parent route.
 
-### router setup
+### Router
 
 wrap application with ```BrowserRouter```
 
-```[javascript]
+```jsx
 //index.jsx
 import {BrowserRouter} from 'react-router-dom';
 ...
@@ -341,11 +396,11 @@ root.render(
  );
 ```
 
-### creating routes
+### Routes
 
 define ```Route``` inside ```Routes```
 
-```[javascript]
+```jsx
 //App.jsx
 import {Routes, Route} from 'react-router-dom'
 
@@ -361,11 +416,11 @@ function App = () = {
 }
 ```
 
-### creating navigations
+### Links
 
 Wrap button with ```Link``` to enable routing.
 
-```[javascript]
+```jsx
 //Nav.jsx
 import {Link} from 'react-router-dom'
 
@@ -373,7 +428,7 @@ import {Link} from 'react-router-dom'
 <li><Link to='/about'>About</Link></li>
 ```
 
-### absolute vs relative path
+### Absolute v/s Relative path
 
 | absolute | relative (recommended) |
 |----------|----------|
@@ -397,7 +452,7 @@ __relative path__
  </Route>
  ```
 
-### nested routing
+### Nested Routing
 
 Used when we need to render both parent component as well as child component.  
 define ```Route``` inside ```Route```
@@ -424,7 +479,32 @@ function App = () = {
 - It creates a socket where child routes can be plugged to render their content.
 - In above example course will contain ```<Outlet />```
 
-### Redirect
+### Protected Routing
+
+- to restrict route or component rendering based on certain conditions
+
+    ```jsx
+    const ProtectedRoute = ({isAuthenticated}) => {
+        return (
+            isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+        )
+    }
+
+    const App = () => {
+        return (
+            <Routes>
+                <Route path='/login' element={<Login />} />
+                <Route element={<ProtectedRoute  isAuthenticated={isAuthenticated}/>}>
+                    <Route path='/home' element={<Home />} />
+                </Route>
+
+            </Routes>
+        )
+    }
+
+    ```
+
+### Redirect (Navigate)
 
 - Redirect from one page to another page can achieved in two way.  
 - Prev page -> Next Page
@@ -435,7 +515,7 @@ function App = () = {
 - Declarative way to redirect to another page
 - It is replaced from `Redirect` component in previous version
 
-```
+```jsx
 import {Navigate} from 'react-router-dom';
 
 return(
@@ -449,8 +529,9 @@ return(
 
 - Programitical way to redirect to another page
 - Used to redirect on any event like button click or programitically
+- `navigate(-1)` to go back as per browser history.
 
-```
+```jsx
 import {useNavigate} from 'react-router-dom'
 
 const navigate = useNavigate()
@@ -465,7 +546,7 @@ function handleClick(){
 - `useLocation` hook is used to get current url
 - `useLocation` return a location object
 
-    ```
+    ```jsx
     import {useLocation} from 'react-router-dom;
 
     const App = () => {
@@ -486,6 +567,18 @@ function handleClick(){
 
 1. Use ```<Outlet />``` in navigation if there is nested routing.
 2. ```'/path'``` gives absolute path whereas ```'path'``` gives relative path.
+3. Types of other routers
+    1. __BrowserRouter__
+        - Have access to browser's history
+        - Mostly used in web apps
+    2. __HashRouter__
+        - updates only # part of url
+        - since part of url is updated so does not log in browser's history
+        - url looks like `https://myapp.com/#/home`
+        - Not SEO friendly
+    3. __MemoryRouter__
+        - ideal of server side routing
+        - does not rely on browser's history
 
 ## Redux
 
@@ -974,7 +1067,7 @@ dispatch(fetchData(userID))
   - name starts with `With` like `WithLogging`
   - argument is called `WrappedComponent`
 
-    ```[javascript]
+    ```jsx
     const WithLogging = (WrappedComponent) => {
         return (prop) => {
             console.log(props);
@@ -990,7 +1083,7 @@ dispatch(fetchData(userID))
 - This HOC will return new component which contain counter functionality.
 - Props passed to this new component will be passed to WrappedComponent.
 
-```[javascript]
+```jsx
 //WithCounter.jsx
 
     const WithCounter = (WrappedComponent) => {
@@ -1011,7 +1104,7 @@ dispatch(fetchData(userID))
 
 - This component will create UI which uses counter functionality. But instead of writing functionality here we will pass this component to HOC to get new component with added functionality
 
-```[javascript]
+```jsx
 //BookCounter.jsx
 
     const BookCounter = (props) => {
@@ -1030,7 +1123,7 @@ dispatch(fetchData(userID))
 
 - Here BookCounter refer to new component that is returned from HOC and then exported from BookCounter component.
 
-```[javascript]
+```jsx
 //App.jsx
     const App = () => {
         return(
