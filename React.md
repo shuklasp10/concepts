@@ -6,6 +6,8 @@
 - [useContext](#usecontext)
 - [useReducer](#usereducer)
 - [useRef](#useref)
+- [useMemo](#usememo)
+- [Pure Component](#pure-component)
 - [Routing](#routing)
 - [Redux](#redux)
 - [Middleware](#middleware)
@@ -87,7 +89,7 @@ root.render(
 
 __Access context in component__
 
-```
+```[javascript]
 //Page.jsx
 import {useContext} from 'react';
 
@@ -235,36 +237,86 @@ function App = () => {
 }
 ```
 
-- __Referential comparison__
-  - when we need to track if object value is changed
+### Referential comparison
 
-    ```[javascript]
-    funnction App = () => {
-        const [dark, setdark] = useState(true);
-        const themeStyle = { color: dark ? 'black' : 'white'}
+- when we need to track if object value is changed
 
-        useEffect(()=>{
-            console.log('Theme is changed')
-        },[themeStyle]);
+```[javascript]
+funnction App = () => {
+    const [dark, setdark] = useState(true);
+    const themeStyle = { color: dark ? 'black' : 'white'}
+
+    useEffect(()=>{
+        console.log('Theme is changed')
+    },[themeStyle]);
+}
+```
+
+- here useEffect is tracking change in themeStyle
+- Whenever component is re-rendered due to any state themeStyle will create different object with same value but different reference.
+- this different object will trigger useEffect
+- Even though dark state is not changed and themeStyle is same still useEffect will log
+- to prevent this we can use `useMemo` to memoize themestyle and change only when dark is changed
+
+```[javascript]
+const themeStyle = useMemo(()=>{
+    return { color: dark ? 'black' : 'white'}
+},[dark]);
+```
+
+### React.Memo
+
+- React.Memo is HOC provided by react to pevent re-renders
+- By default child is also rendered when parent is re-rendered.
+- React.Memo prevent redenring by allowing render when props is changed.
+
+```[Javascript]
+const Child = React.Memo((props)=>{
+    ...component
+});
+
+export default Child;
+```
+
+or
+
+``` [Javascript]
+const Child = ( props ) => {
+    ...logic
+}
+
+export default React.Memo(Child);
+```
+
+- Now child only renders when props is changed
+- If props contain object then we can use `useMemo` to compare them.
+
+## Pure component
+
+- Render same output for same props and state
+- Re-render only when props or state changes
+
+### Features
+
+- Compares props and state using shallow comparison (check reference)
+- Was used in class based component. `React.Memo` is used for functional based component.
+
+### Example
+
+```[javascript]
+import {PureComponent} from 'react';
+
+class Counter extends PureComponent{
+    render(){
+        <h1>This is pure component</h1>
     }
-    ```
-
-  - here useEffect is tracking change in themeStyle
-  - Whenever component is re-rendered due to any state themeStyle will create different object with same value but different reference.
-  - this different object will trigger useEffect
-  - Even though dark state is not changed and themeStyle is same still useEffect will log
-  - to prevent this we can use `useMemo` to memoize themestyle and change only when dark is changed
-
-  ```[javascript]
-    const themeStyle = useMemo(()=>{
-        return { color: dark ? 'black' : 'white'}
-    },[dark]);
-  ```
+}
+```
 
 ## Routing
 
 Used to navigate in application through URL path.  
-Library -  ```react-router-dom```  
+Library -  `react-router-dom`  
 
 ### walkthrough
 
@@ -293,7 +345,7 @@ root.render(
 
 define ```Route``` inside ```Routes```
 
-```
+```[javascript]
 //App.jsx
 import {Routes, Route} from 'react-router-dom'
 
@@ -303,6 +355,7 @@ function App = () = {
         <Route path='/' element={<Home/>} />
         <Route path='/about' element={<About/>} />
         <Route path='/contact' element={<Contact/>} />
+        <Route path='*' element={<ErrorPage/>} />
        <Routes/>
     )
 }

@@ -230,7 +230,6 @@ div {
 - it works with most recent parent which is scrollable if not found work with viewport.
 - if top and bottom both given top is considered and it does not stretch element
 
-
 ## Transform
 
 - transform is used to change transform element without affecting surrounding elemenets position.
