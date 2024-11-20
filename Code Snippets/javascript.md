@@ -1,6 +1,7 @@
 # Web developement Notes: CSS
 
 ## Table of Contents
+
 - [Boilerplate](#Boilerplate)
 - [Variables](#variables)
 - [Control Structures](#control-structures)
@@ -10,7 +11,8 @@
 - [Resources](#resources)
 
 ## Dynamic checkboxes
-``` [javascript]
+
+```js
 import { useState } from 'react'
 import './App.css'
 
@@ -47,7 +49,9 @@ export default App;
 ```
 
 ## object keys in array
+
 `Object.keys(obj)`
 
 ## object values in array
+
 `Object.values(obj);`
