@@ -6,13 +6,15 @@
 - [Pure functions](#pure-functions)
 - [Scoping](#scoping)
 - [Closures](#closures)
-- [Types of Array HOF](#types-of-array-hof)
+- [Array](#array)
 - [Promises](#promises)
 - [Date in javascript](#date-in-javascript)
 - [Client side storage](#client-side-storage)
 - [DOM manipulation](#dom-manipulation)
 - [Events](#events)
 - [Event Loop](#event-loop)
+- [Drag events](#drag-events)
+- [Performance Calculator](#performance-calculator)
 
 ## Higher order functions
 
@@ -121,7 +123,9 @@ for(var i=0; i<3; i++){
 
 this will create single instance of `i` which will be updated by each iteration. so output will be `3 3 3`.
 
-## Types of Array HOF
+## Array
+
+### Array HOF
 
 | HOF |Return | Description |
 |------|------|------|
@@ -133,6 +137,8 @@ this will create single instance of `i` which will be updated by each iteration.
 | `every` | Boolean | return true if for all element callback returns true |
 | `find` | Single element | returns first element for which callback returns true |
 | `findIndex` | Single index | same as find but returns index instead of element |
+| `findLast` | Single element | returns last element for which callback returns true |
+| `findLastIndex` | Single index | same as findLast but returns index instead of element |
 
 ### reduce
 
@@ -145,6 +151,38 @@ const total = arr.reduce((acc,ele)=>{
     return acc;
 });
 ```
+
+### Array methods
+
+| __Method Name__         | __Parameters__                          | __Return Value__                              | __Details__                                                                 |
+|--------------------------|------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------|
+| __`Array.from()`__       | `arrayLike`, _`mapFn`, `thisArg`_       | A new array.                                 | Creates a new array from an array-like or iterable object.                  |
+| __`Array.of()`__         | `...elements`                           | A new array.                                 | Creates a new array with the given arguments as elements.                   |
+| __`Array.isArray()`__    | `value`                                 | `true` or `false`.                           | Checks if the given value is an array.                                      |
+| __`push()`__             | `...elements`                           | The new length of the array.                 | Adds one or more elements to the end of an array.                           |
+| __`pop()`__              | _(none)_                                | The removed element or `undefined`.          | Removes the last element from an array.                                     |
+| __`unshift()`__          | `...elements`                           | The new length of the array.                 | Adds one or more elements to the beginning of an array.                     |
+| __`shift()`__            | _(none)_                                | The removed element or `undefined`.          | Removes the first element from an array.                                    |
+| __`splice()`__           | `start`, _`deleteCount`, `...items`_    | An array containing the removed elements.    | Adds or removes elements from an array at the specified index.              |
+| __`concat()`__           | `...arrays`                             | A new array.                                 | Merges two or more arrays into a new array.                                 |
+| __`at()`__               | `index`                                 | The element at the specified index or `undefined`. | Returns the element at the specified index (supports negative indices).     |
+| __`indexOf()`__          | `searchElement`, _`fromIndex`_          | The index of the element or `-1`.            | Returns the first index of the element or -1 if not found.                  |
+| __`lastIndexOf()`__      | `searchElement`, _`fromIndex`_          | The last index of the element or `-1`.       | Returns the last index of the element or -1 if not found.                   |
+| __`includes()`__         | `searchElement`, _`fromIndex`_          | `true` or `false`.                           | Checks if the array contains a specific element.                            |
+| __`sort()`__             | _`compareFunction`_                    | The sorted array (in place).                 | Sorts the elements of an array in place.                                    |
+| __`reverse()`__          | _(none)_                                | The reversed array (in place).               | Reverses the order of elements in an array.                                 |
+| __`flat()`__             | _`depth`_                              | A new flattened array.                       | Flattens a nested array up to the specified depth (default is 1).           |
+| __`slice()`__            | _`start`, `end`_                       | A new array containing the extracted elements.| Returns a shallow copy of a portion of an array into a new array.           |
+| __`copyWithin()`__       | `target`, `start`, _`end`_              | The modified array.                          | Copies part of an array to another location in the same array.              |
+| __`fill()`__             | `value`, _`start`, `end`_              | The modified array.                          | Fills elements in the array with a static value.                            |
+| __`join()`__             | _`separator`_                          | A string of joined elements.                 | Joins all elements into a string with a specified separator (default is a comma). |
+| __`toString()`__         | _(none)_                                | A string of array elements separated by commas.| Converts the array into a comma-separated string.                           |
+| __`toLocaleString()`__   | _(none)_                                | A locale-specific string.                    | Converts the array into a locale-specific string representation.            |
+| __`entries()`__          | _(none)_                                | An iterator of key-value pairs.              | Returns an iterator with key-value pairs for each index.                    |
+| __`keys()`__             | _(none)_                                | An iterator of keys (indices).               | Returns an iterator with keys (indices) of the array.                       |
+| __`values()`__           | _(none)_                                | An iterator of values.                       | Returns an iterator with values of the array.                               |
+
+
 
 ## handling input on key press
 
@@ -484,3 +522,48 @@ myEmitter.emit('eventName');
 - __Web API__ if any async operations is encountered by call stack then it delegated to web api to handle it (dom request, network request etc) and moves to another job from task queue.
 - __callback queue__ one web api finish task it pushes callback function to callback queue.
 - Event loop constantly check if call stack is empty (that is after finishing task queue) then it pushes job from callback queue.
+
+## Performance calculator
+
+```js
+let startTime = performance.now();
+let endTime = performance.now();
+let timeElapsed = endTime - startTime;
+```
+
+## Drag Events
+
+- __draggable__ attribute of element is set true to make is draggable element.
+
+```html
+<div draggable="true">
+
+</div>
+```
+
+| Events | Applicable on | Details |
+|---------|-------------|----------|
+| `onDragStart` | draggable element | triggered when dragging started|
+| `onDrag` | draggable element | continously run when dragged |
+| `onDragEnd` | draggable element | when element is released |
+| `onDragEnter` | Other element | when draggable element enter other target element|
+| `onDragOver` | Other element | continoulsy run when draggable element is hovered over target|
+|`onDragLeave` | Other element | runs when draggable element leaves target|
+| `onDrop` | Other element | when element is dropped on target|
+
+### Execution order
+
+`onDragStart` -> `onDrag` -> `onDragEnter` -> `onDragOver` -> `onDragLeave` -> `onDrop` -> `onDragEnd`
+
+### Notes
+
+- call `e.preventDefault()` on `onDrop` and `onDragOver` to allow dropping.
+- use `dataTransfer` to transfer data between drag and drop
+
+    ```js
+    dropzone.addEventListener('drop', (event) => {
+       event.preventDefault();
+       const data = event.dataTransfer.getData('text/plain');
+       dropzone.textContent = `Dropped: ${data}`;
+   });
+    ```

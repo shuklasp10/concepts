@@ -1,6 +1,7 @@
 # Web developement Notes: typescript
 
 ## Table of Contents
+
 - [Basics](#basics)
 - [Datatypes](#datatypes)
 - [Functions](#functions)
@@ -8,65 +9,90 @@
 - [Type assertion](#type-assertion)
 - [Utility Classes](#utility-classes)
 - [Generics](#generics)
+- [Event types](#event-types)
 
 ## Basics
+
 ### typescript
-* Strongly typed
-* Supperset of javascript
-* Object oreinted features
-* Auto type inference
+
+- Strongly typed
+
+- Supperset of javascript
+- Object oreinted features
+- Auto type inference
 
 ### installation
+
 #### Library
+
 Library used
+
 ```
 npm i -g typescript
 ```
+
 #### Compiler
-* `tsc` is typescript compiler within `typescript library`.
-* It converts `ts` file to `js` file
+
+- `tsc` is typescript compiler within `typescript library`.
+
+- It converts `ts` file to `js` file
+
 ```
 tsc index.ts
 ```
 
 #### Watcher
-* `-w` flag is used for continous compilation on any change
+
+- `-w` flag is used for continous compilation on any change
+
 ```
 tsc index.ts -w
 ```
+
 #### Compile & execute
-* Library used `ts-node`
+
+- Library used `ts-node`
+
 ```
 npm i ts-node
 ```
-* It will compiler and execute js file in single command
+
+- It will compiler and execute js file in single command
+
 ```
 ts-node index.ts
 ```
 
 ### folder structure
-* __Problem:__ By default typescript compile in same folder which may cause scoping issue. For example, const variables after compilation will be decalartion in same scope causing error.
-* __Solution:__ create two folder `src` _(for ts file)_ and `dest` or `build` _(for compiled js file)_
+
+- __Problem:__ By default typescript compile in same folder which may cause scoping issue. For example, const variables after compilation will be decalartion in same scope causing error.
+
+- __Solution:__ create two folder `src` _(for ts file)_ and `dest` or `build` _(for compiled js file)_
 
     ![alt text](image-1.png)
 
 #### setup
+
 1. Initialize typescript to get `tsconfig.json` to configure typescript.
+
 ```
 tsc -init
 ```
+
 2. Change two property in `tsconfig.json`
     1. `"srcDir":"./src"` path of source directory
     2. `"outDir":"./dist"` path of distribution directory
 
+## Datatypes
 
-
-## Datatypesp
 ### implicit v/s explicit
-* __Implicitly:__ typescript automatically decalre type of variable. `let a = "John"` here `a` will be assigned `string` datatype
-* __Explicitly:__ defining type while decalaring variables or function. `let a: string = 'John`
+
+- __Implicitly:__ typescript automatically decalre type of variable. `let a = "John"` here `a` will be assigned `string` datatype
+
+- __Explicitly:__ defining type while decalaring variables or function. `let a: string = 'John`
 
 ### datatype declaration syntax
+
 1. Explicit Type Annotation
     1. `let a: string = 'John'`
     2. `let a: number = 23`
@@ -75,50 +101,63 @@ tsc -init
 2. `let a = <string>'John'` Type Assertion (Casting)
 
 ### union types
+
 `|` operator is used to declare multiple datatype to a variable
-```
+
+```ts
 let a: string|number;
 a = 'Hello'
 a = 23
 ```
 
 ### function declaration
+
 Define type of parameters and return value. If no return, type is `void`
-```
+
+```ts
 const func = (n: number, m: number): string => {
     return string(n*m)
 }
 ```
 
 ### type
-* `type` is a way to create custom type by assigning datatypes to a variable.
-* PascalCase naming convention is used for custom types
-* For varibles
-    ```
+
+- `type` is a way to create custom type by assigning datatypes to a variable.
+
+- PascalCase naming convention is used for custom types
+- For varibles
+
+    ```ts
     type Username = string | number
 
     let name: Username;
     name = 23
     name = 'John'
     ```
-* Functions
-    ```
+
+- Functions
+
+    ```ts
     type Func = (n: number, m:number) => string
 
     const func: Func = (n, m) => {
         return string(n*m)
     }
     ```
-* Instead of datatypes we can assign values to datatypes
-![alt text](image-2.png) 
+
+- Instead of datatypes we can assign values to datatypes  
+    ![alt text](image-2.png)
 
 ### array declaration
+
 1. `let arr: string[] = ['Hello','World']`
 2. `let arr: Array<string | number> = ['Hello',23]`
 
 ### object declaration
-* Adding type while declaring variable
-    ```
+
+- Adding type while declaring variable
+
+    ```ts
     let obj: {
         name: string,
         age: number
@@ -127,8 +166,10 @@ const func = (n: number, m: number): string => {
         age: 26
     }
     ```
-* Defining custom type
-    ```
+
+- Defining custom type
+
+    ```ts
     type Obj = {
         name: string,
         age: number
@@ -139,17 +180,21 @@ const func = (n: number, m: number): string => {
         age: 26
     }
     ```
-* Optional property
-    ```
+
+- Optional property
+
+    ```ts
     type Obj = {
         name: string,
         age: number,
         dob?: string
     }
     ```
-* Interface
-    * Interface can be extended but type can't
-    ```
+
+- Interface
+  - Interface can be extended but type can't
+
+    ```ts
     interface Obj {
         name: string,
         age: number
@@ -165,20 +210,24 @@ const func = (n: number, m: number): string => {
         gender: false
     }
     ```
-* readonly property
-```
+
+- readonly property
+
+```ts
 interface Product {
     readonly id: string,
     name: string,
     amount: number
 }
 ```
+
 readonly property can be used but can't be changed
 
-
 ## Functions
+
 ### optional parameter
-```
+
+```ts
 type FuncType = (n: number, m: number, o?: number) => number;
 
 const func: FuncType = (m,n,o) =>{
@@ -190,8 +239,10 @@ func(10,20) //200
 ```
 
 ### rest parameter
-* Used to get multiple parameter as array
-```
+
+- Used to get multiple parameter as array
+
+```ts
 type FuncType = (...m: number) => number[]
 
 const func: FuncType = (...m) => {
@@ -202,14 +253,18 @@ func(10,20,30,40,50)
 ```
 
 ### custom type with function keyword
-* defining type while decalaring function
-```
+
+- defining type while decalaring function
+
+```ts
 function func(n: string, m: string): string {
     return n+m;
 }
 ```
-* function must be stored in variables to use custom types
-```
+
+- function must be stored in variables to use custom types
+
+```ts
 type FuncType = (n: string, m: string) => string
 
 const func: FuncType = function(n,m){
@@ -218,22 +273,28 @@ const func: FuncType = function(n,m){
 ```
 
 ### never type
-* When a function throws error it means it never return anything, in that case return type of function will be `never`
-```
+
+- When a function throws error it means it never return anything, in that case return type of function will be `never`
+
+```ts
 const func = (): never =>{
     throw new Error();
 }
 ```
-* Instead of throw if it return error then return type will be `Error`
-```
+
+- Instead of throw if it return error then return type will be `Error`
+
+```ts
 const func = (): Error =>{
     return new Error();
 }
 ```
 
 ## Classes
-* basic class with ts
-```
+
+- basic class with ts
+
+```ts
 class Player {
     height;
     width;
@@ -248,8 +309,10 @@ console.log(player1.height)  //100
 console.log(player1.w)  //200
 
 ```
-* we can make property of class `readonly`
-```
+
+- we can make property of class `readonly`
+
+```ts
 class Player {
     readonly id: string
 
@@ -261,65 +324,75 @@ class Player {
 const player1 = new Player();
 player1.id = 23 // error
 ```
-* ts provided ___access modifiers___ which is not available in js
+
+- ts provided ___access modifiers___ which is not available in js
 
 ### access modifier
+
 1. __Public__ _default_ property of class are public which can be accessible outside and inside class
-```
-class Player {
-    public height;
-    width; 
 
-    ...
-}
-```
-2. __Private__ Properties to be used only within the class.
-```
-class Player {
-    private height;
-    width;
-    constructor(height: number, width: number){
-        this.height = height;
-        this.width = width;
+    ```ts
+    class Player {
+        public height;
+        width; 
+
+        ...
     }
-}
+    ```
 
-const player1 = new Player(100,200);
-console.log(player1.height)  //error
-console.log(player1.width)  //200
-```
+2. __Private__ Properties to be used only within the class.
+
+    ```ts
+    class Player {
+        private height;
+        width;
+        constructor(height: number, width: number){
+            this.height = height;
+            this.width = width;
+        }
+    }
+
+    const player1 = new Player(100,200);
+    console.log(player1.height)  //error
+    console.log(player1.width)  //200
+    ```
 
 3. __Protected__ properties can be used within class and inherited class but not with objects.
-* If access modifier is used in constructor then no need declare it. 
-```
-class Player {
-    constructor(private height: number, public width: number, protected age: number){
-        this.height = height;
-        this.width = width;
-        this age = age
-    }
-}
 
-class SubPlayer extends Player {
-    constructor(height: number, width: number, age: number){
-        super(height, width, age);
-    }
-    getAge = () => this.age; 
-    getHeight = () => this.height; /error
-    getWidth = () => this.width;
-}
+- If access modifier is used in constructor then no need declare it.
 
-const player1 = new SubPlayer(100,200,26);
-player1.getAge() //26
-player1.getHeight() //error
-player1.getWidth() //200
-```
+    ```ts
+    class Player {
+        constructor(private height: number, public width: number, protected age: number){
+            this.height = height;
+            this.width = width;
+            this age = age
+        }
+    }
+
+    class SubPlayer extends Player {
+        constructor(height: number, width: number, age: number){
+            super(height, width, age);
+        }
+        getAge = () => this.age; 
+        getHeight = () => this.height; /error
+        getWidth = () => this.width;
+    }
+
+    const player1 = new SubPlayer(100,200,26);
+    player1.getAge() //26
+    player1.getHeight() //error
+    player1.getWidth() //200
+    ```
 
 ### setter & getter
-* function used to set and get values of property without calling function
-* getter & setter function can be used to get and set private and protected properties also.
-* getter must have a return value and no parameter and setter have no return value and 1 parameter
-```
+
+- function used to set and get values of property without calling function
+
+- getter & setter function can be used to get and set private and protected properties also.
+- getter must have a return value and no parameter and setter have no return value and 1 parameter
+
+```ts
 class Player {
     height: number
     width: number
@@ -344,13 +417,15 @@ player.setPlayerWidth = 300;
 ```
 
 ### implements
-* used to define structure of class by an interface
-* When access modifiers are used in constructor then assigning variable using `this` is not required.
-* Class must have all property from interface and can have additional property.
-* A class can have multiple interface.
-* properties from interface can't be private in class
 
-```
+- used to define structure of class by an interface
+
+- When access modifiers are used in constructor then assigning variable using `this` is not required.
+- Class must have all property from interface and can have additional property.
+- A class can have multiple interface.
+- properties from interface can't be private in class
+
+```ts
 interface ProductType {
     name: string,
     amount: number,
@@ -380,45 +455,36 @@ const sample = new Product("Apple",20000, 500);
 ```
 
 ## Type assertion
+>
 >Type assertion in TypeScript is a way to explicitly tell the compiler the specific type of a value when TypeScript cannot infer it correctly.
 
-* Type assertion is majorly used in 
+- Type assertion is majorly used in
     1. Dom manipulation
     2. Narrowing down union types
     3. JSON parsing
-* Two types of assetion
+- Two types of assetion
     1. `const a = <string>'John'`
     2. `const a = 'John' as string`
+
 ### Dom manipulation
-```
+
+```ts
 const btn = document.getElementById('btn');
 ```
-* By default type of `btn` will be `HTMLElement | null` since typescript doesn't know if btn element exist or not.
-* But we can tell typescript that is exist and not to keep null
-    * Method 1
-        ```
-        const  btn = <HTMLElement> document.getElementById('btn')
-        ```
-    * Method 2
-        ```
-        const  btn = document.getElementById('btn') as HTMLElement
-        ```
-    * Method 3
-        ```
-        const  btn = document.getElementById('btn')!
-        ```
-* Some elements have sepecific property like src for that we have to tell typescript which element is being accessed.
-    ```
-    const img = <HTMLImageElement>document.getElementById('img')
-    ```
-* Or we can choose query selector. It can be null
-    ```
-    const img = document.querySelector('img')!
-    ```
+
+- By default type of `btn` will be `HTMLElement | null` since typescript doesn't know if btn element exist or not.
+- But we can tell typescript that is exist and not to keep null
+  - Method 1: `const  btn = <HTMLElement> document.getElementById('btn')`
+  - Method 2: `const  btn = document.getElementById('btn') as HTMLElement`
+  - Method 3: `const  btn = document.getElementById('btn')!`
+- Some elements have sepcific property like src for that we have to tell typescript which element is being accessed. Eg: `const img = <HTMLImageElement>document.getElementById('img')`
+- Or we can choose query selector. It can be null. Eg: `const img = document.querySelector('img')!`
 
 ### keyof
-* __Problem:__ Suppose we want to access object value from key
-```
+
+- __Problem:__ Suppose we want to access object value from key
+
+```ts
 type Person = {
     name: string,
     age: number
@@ -435,18 +501,23 @@ person[key]   //error since value of key can change and can be anything
 const key2: string  = 'name'
 person[key2]   // it will work since key2 is constant
 ```
-* __Solution:__ type assertion can be used to specifiy type of key
-```
+
+- __Solution:__ type assertion can be used to specifiy type of key
+
+```ts
 let key: string = 'name'
 person[key as keyof Person]
 ```
-* if we don't know type of person object then we can use `typeof` operator to get type of object
-```
+
+- if we don't know type of person object then we can use `typeof` operator to get type of object
+
+```ts
 person[key as keyof typeof person]
 ```
 
-* `keyof` can be used in function as well
-```
+- `keyof` can be used in function as well
+
+```ts
 type Person = {
     name: string,
     age: number
@@ -465,8 +536,10 @@ getPersonVal('name')
 ```
 
 ## Utility classes
+
 1. `Partial<Type>` to make property optional
-    ```diff
+
+    ```ts diff
     type Person = {
         name: string,
         age: number
@@ -479,7 +552,8 @@ getPersonVal('name')
     ```
 
 2. `Required<Type>` make every optional property required. opposite of partials.
-    ```diff
+
+    ```ts diff
     type Person = {
         name?: string,
         age: number
@@ -492,7 +566,8 @@ getPersonVal('name')
     ```
 
 3. `Readonly<Type>` make every property readonly
-    ```diff
+
+    ```ts diff
     type Person = {
         name?: string,
         age: number
@@ -505,7 +580,8 @@ getPersonVal('name')
     ```
 
 4. `Record<key, Type>` used to check keys
-    ```
+
+    ```ts
     interface UserInfo {
         age: number
     }
@@ -519,42 +595,52 @@ getPersonVal('name')
     }
     ```
 
-## Generics 
-Generics is a feature that allows a function to work with any datatype while keeping type safety.
-* __Problem:__ A function that takes any datatype value and returns that datatype value. Here, type of `a` & `b` will be `any` which is not efficient. 
+## Generics
 
-    ```
+Generics is a feature that allows a function to work with any datatype while keeping type safety.
+
+- __Problem:__ A function that takes any datatype value and returns that datatype value. Here, type of `a` & `b` will be `any` which is not efficient.
+
+    ```ts
     const func = (n: any): any => {
         return n
     }
     var a = func("Hello")
     var b = func(20)
     ```
-* __Solution:__ In generics, we declare a placeholder type which will take replaced by argument type. This placeholder is generally denoted by `T`. Here type of `a` will be `string` and type of `b` will be `number`
-    ```
+
+- __Solution:__ In generics, we declare a placeholder type which will take replaced by argument type. This placeholder is generally denoted by `T`. Here type of `a` will be `string` and type of `b` will be `number`
+
+    ```ts
     const func = <T>(n: T): T => {
         return n
     }
     var a = func("Hello")
     var b = func(23)
     ```
-* In above example typescript infer type of passed argument and put as T. We can manaually decalre type of passed argument as well
-    ```
+
+- In above example typescript infer type of passed argument and put as T. We can manaually decalre type of passed argument as well
+
+    ```ts
     var a = func<string>("Hello")
     ```
 
 ### extend in generics
-* we can declare second placeholder type by extending first one. Below if first argument is number then second argument also have to be number.
-    ```
+
+- we can declare second placeholder type by extending first one. Below if first argument is number then second argument also have to be number.
+
+    ```ts
     const func = <T, O extends T>(m: T, n: O): {m: T, n: O} => {
         return {m,n}
     }
 
     var a = func<number, number>(23,16)
     var a = func<string, string>(19,29.3)
-    ``` 
-* __extends with object:__ Here O must contain all type from T and may contain types.
     ```
+
+- __extends with object:__ Here O must contain all type from T and may contain types.
+
+    ```ts
     type Person = {
         name: string,
         age: number
@@ -570,8 +656,10 @@ Generics is a feature that allows a function to work with any datatype while kee
     ```
 
 ### Complex Example
-* A function which filter out user from users array based on key and value provided
-    ```
+
+- A function which filter out user from users array based on key and value provided
+
+    ```ts
     const Users = {
         name: string,
         age: number
@@ -601,4 +689,24 @@ Generics is a feature that allows a function to work with any datatype while kee
     }
 
     const filteredUsers = filterUsers(users,"name","mark")
+    ```
+
+## Event types
+
+| Event type | Event|
+| ------ | ---------- |
+| `React.MouseEvent<T>` | `onClick`, `onMouseEnter` |
+| `React.KeyboardEvent<T>` | `onKeyDown`, `onKeyPress` |
+| `React.ChangeEvent<T>` | `onChange` |
+| `React.FocusEvent<T>` | `onFocus`, `onBlur` |
+| `React.FormEvent<T>` | `onSubmit` |
+| `React.DragEvent<T>` | `onDragStart`, `onDrop` |
+
+- `T` is type of element which triggered the event like `HTMLInputElement`
+- Example
+
+    ```ts
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+        ...
+    }
     ```
