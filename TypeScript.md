@@ -539,7 +539,7 @@ getPersonVal('name')
 
 1. `Partial<Type>` to make property optional
 
-    ```ts diff
+    ```diff
     type Person = {
         name: string,
         age: number
@@ -553,7 +553,7 @@ getPersonVal('name')
 
 2. `Required<Type>` make every optional property required. opposite of partials.
 
-    ```ts diff
+    ```diff
     type Person = {
         name?: string,
         age: number
@@ -567,7 +567,7 @@ getPersonVal('name')
 
 3. `Readonly<Type>` make every property readonly
 
-    ```ts diff
+    ```diff
     type Person = {
         name?: string,
         age: number
