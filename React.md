@@ -7,6 +7,7 @@
 - [useReducer](#usereducer)
 - [useRef](#useref)
 - [useMemo](#usememo)
+- [useCallback](#usecallback)
 - [Pure Component](#pure-component)
 - [Routing](#routing)
 - [Redux](#redux)
@@ -323,7 +324,7 @@ const themeStyle = useMemo(()=>{
 
 - React.Memo is HOC provided by react to pevent re-renders
 - By default child is also rendered when parent is re-rendered.
-- React.Memo prevent redenring by allowing render when props is changed.
+- React.Memo prevent redenring by allowing render only when props is changed.
 
 ```jsx
 const Child = React.Memo((props)=>{
@@ -345,6 +346,10 @@ export default React.Memo(Child);
 
 - Now child only renders when props is changed
 - If props contain object then we can use `useMemo` to compare them.
+
+## useCallback
+
+
 
 ## Pure component
 

@@ -24,6 +24,7 @@
       "pkief.material-icon-theme"
       "ritwickdey.liveserver"
       # "vscodevim.vim"
+      "DavidAnson.vscode-markdownlint"
     ];
 
     # Enable previews

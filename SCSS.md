@@ -1,46 +1,55 @@
 # SCSS Notes
 
 ## Index
+
 - [Introduction](#introduction)
 - [Variables](#variables)
-- [Nesting](#Nesting)
-- [Mixins](#Mixins)
+- [Nesting](#nesting)
+- [Partials](#partials)
+- [Mixins](#mixins)
 - [Extend or Inheritance](#extend-or-inheritance)
 - [Operators](#operators)
-
+- [Architecture](#architecture)
 
 ## Introduction
-* SCSS is preprocessor which provide fancy way of writing CSS.
-* SCSS is compiled by SCSS library and converted to CSS
-* It provide following features
-    * __Variables:__ Store reusable values like colors and fonts.
-    * __Nesting:__ Organize CSS selectors to mirror your HTML structure.
-    * __Partials:__ Break down CSS into smaller, reusable files.
-    * __Modules:__ Organize Sass into separate files with namespaces.
-    * __Mixins:__ Create reusable blocks of CSS with optional arguments.
-    * __Extend/Inheritance:__ Share styles between selectors.
+
+- SCSS is preprocessor which provide fancy way of writing CSS.
+- SCSS is compiled by SCSS library and converted to CSS
+- It provide following features
+  - __Variables:__ Store reusable values like colors and fonts.
+  - __Nesting:__ Organize CSS selectors to mirror your HTML structure.
+  - __Partials:__ Break down CSS into smaller, reusable files.
+  - __Modules:__ Organize Sass into separate files with namespaces.
+  - __Mixins:__ Create reusable blocks of CSS with optional arguments.
+  - __Extend/Inheritance:__ Share styles between selectors.
 Operators: Perform calculations within your CSS (e.g., for responsive layouts).
 
 ### Setting up with react
-* Install SASS library as dev dependency
-```
+
+- Install SASS library as dev dependency
+
+```sh
 npm i sass --save-dev
 ```
 
 ## Variables
-* Stores information to use in sheet further
-* It can store any value of css property that can be used later
-* Use `$` before property to make is variable
-```
+
+- Stores information to use in sheet further
+- It can store any value of css property that can be used later
+- Use `$` before property to make is variable
+
+```scss
 $primary-color: #333;
 ```
-* When SCSS is compiled actual value of variable is placed anywhere it is used
-* It is used to make consistency
+
+- When SCSS is compiled actual value of variable is placed anywhere it is used
+- It is used to make consistency
 
 ## Nesting
-* SCSS provides visual heirarchy just like HTML
 
-```
+- SCSS provides visual heirarchy just like HTML
+
+```scss
 //CSS
 nav ul {
   margin: 0;
@@ -75,10 +84,12 @@ nav {
 ```
 
 ## Partials
-* Partials files are like snippets that can be used in actual sheet
-* This helps to make css modularize
-* Partials file name start with `_` like `_partials.scss`
-```
+
+- Partials files are like snippets that can be used in actual sheet
+- This helps to make css modularize
+- Partials file name start with `_` like `_partials.scss`
+
+```scss
 //_partials
 $font-stack: Helvetica, sans-serif;
 $primary-color: #333;
@@ -98,8 +109,10 @@ body {
 ```
 
 ## Mixins
-* Mixins are like functions which may accept variable (also have default value) and generate css based using that variable value
-```
+
+- Mixins are like functions which may accept variable (also have default value) and generate css based using that variable value
+
+```scss
 @mixin theme($theme: DarkGray) {
   background: $theme;
   box-shadow: 0 0 1px rgba($theme, .25);
@@ -116,8 +129,10 @@ body {
   @include theme($theme: DarkRed);
 }
 ```
+
 CSS
-```
+
+```css
 .info {
   background: DarkGray;
   box-shadow: 0 0 1px rgba(169, 169, 169, 0.25);
@@ -129,15 +144,19 @@ CSS
   color: #fff;
 }
 ```
-* always include mixins before declaring other property
-```
+
+- always include mixins before declaring other property
+
+```scss
 .sidebar {
   min-width: 200px;
   @include mixins.container(20%, 100%, white, 1rem);
 }
 ```
-* Or we can use `&` to include before
-```
+
+- Or we can use `&` to include before
+
+```scss
 .sidebar {
   @include mixins.container(20%, 100%, white, 1rem);
   &{
@@ -145,12 +164,14 @@ CSS
   }
 }
 ```
-## Extend or Inheritance
-* It lets share property of another selector
-* If some property are reused in many selectors then we can create a parent selector and extend it to all selectors.
-* `@extend selector_name` is used to extend css
 
-```
+## Extend or Inheritance
+
+- It lets share property of another selector
+- If some property are reused in many selectors then we can create a parent selector and extend it to all selectors.
+- `@extend selector_name` is used to extend css
+
+```scss
 /* This CSS will print because %message-shared is extended. */
 %message-shared {
   border: 1px solid #ccc;
@@ -170,13 +191,17 @@ CSS
 ```
 
 ## Operators
-* SCSS provides tool to calculate 
-* Can perform ` + - * math.div() %`
 
-```
+- SCSS provides tool to calculate
+- Can perform `+ - * math.div() %`
+
+```scss
 @use "sass:math";
 
 article[role="main"] {
   width: math.div(600px, 960px) * 100%;
 }
 ```
+
+## Architecture
+

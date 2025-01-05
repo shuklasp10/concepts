@@ -2,9 +2,12 @@
 
 ## Table of Contents
 
+- [Datatypes](#datatypes)
 - [Higher order functions](#higher-order-functions)
+- [Call, Apply, and Bind](#call-apply-and-bind)
 - [Pure functions](#pure-functions)
 - [Scoping](#scoping)
+- [Hoisting](#hoisting)
 - [Closures](#closures)
 - [Array](#array)
 - [Promises](#promises)
@@ -15,6 +18,113 @@
 - [Event Loop](#event-loop)
 - [Drag events](#drag-events)
 - [Performance Calculator](#performance-calculator)
+
+## Datatypes
+
+### Primitive
+
+- __string__
+- __number__
+- __bigint__
+- __boolean__
+- __undefined__
+- __null__
+- __symbol__
+
+### Non primitive (reference)
+
+- __object__
+- __array__
+- __function__
+- __date__
+
+### special types
+
+- __Infinity__
+- __NaN__
+
+### Built-in objects
+
+- __Set__
+  - stores unique value of any type
+
+    ```js
+    const set = [...new Set(arr)]
+    ```
+
+- __Map__
+  - map stores key, value pair where key can be anything not only string
+
+    ```js
+    const map = new Map()
+    map.set('key','value')
+    map.get('key') //value
+    ```
+
+  - `map.size` gives number of entries in map.
+  - `Object.fromEntries(map)` convert map to object.
+
+## Call, apply and bind
+
+### Call
+
+- The `call()` method invokes a function with a given this value and arguments provided one by one
+
+```js
+var employee1 = { firstName: "John", lastName: "Rodson" };
+var employee2 = { firstName: "Jimmy", lastName: "Baily" };
+
+function invite(greeting1, greeting2) {
+  console.log(
+    greeting1 + " " + this.firstName + " " + this.lastName + ", " + greeting2
+  );
+}
+
+invite.call(employee1, "Hello", "How are you?"); // Hello John Rodson, How are you?
+invite.call(employee2, "Hello", "How are you?"); // Hello Jimmy Baily, How are you?
+```
+
+### Apply
+
+- Invokes the function with a given this value and allows you to pass in arguments as an array
+
+```js
+var employee1 = { firstName: "John", lastName: "Rodson" };
+var employee2 = { firstName: "Jimmy", lastName: "Baily" };
+
+function invite(greeting1, greeting2) {
+  console.log(
+    greeting1 + " " + this.firstName + " " + this.lastName + ", " + greeting2
+  );
+}
+
+invite.apply(employee1, ["Hello", "How are you?"]); // Hello John Rodson, How are you?
+invite.apply(employee2, ["Hello", "How are you?"]); // Hello Jimmy Baily, How are you?
+```
+
+### bind
+
+- returns a new function, allowing you to pass any number of arguments
+
+```js
+var employee1 = { firstName: "John", lastName: "Rodson" };
+var employee2 = { firstName: "Jimmy", lastName: "Baily" };
+
+function invite(greeting1, greeting2) {
+  console.log(
+    greeting1 + " " + this.firstName + " " + this.lastName + ", " + greeting2
+  );
+}
+
+var inviteEmployee1 = invite.bind(employee1);
+var inviteEmployee2 = invite.bind(employee2);
+inviteEmployee1("Hello", "How are you?"); // Hello John Rodson, How are you?
+inviteEmployee2("Hello", "How are you?"); // Hello Jimmy Baily, How are you?
+```
+
+- Call and Apply are pretty much interchangeable. Both execute the current function immediately. You need to decide whether it’s easier to send in an array or a comma separated list of arguments. You can remember by treating Call is for comma (separated list) and Apply is for Array.
+
+- Bind creates a new function that will have this set to the first parameter passed to bind().
 
 ## Higher order functions
 
@@ -60,7 +170,7 @@ let a = 10;
 }
 ```
 
-### scope for var
+### var scoping
 
 - var does not follow block level scoping
 
@@ -71,6 +181,29 @@ console.log(a) //10
 
 - It attach to parent object in which it is declared. like function, object .
 - __precedence__ nearest scoped variable is used first then look for outer scoped variable
+
+## Hoisting
+
+- Behaviour of javascript which moves variable or function definition (not declaration) to top of its scope.
+- Only var follow hoisting, let and const does not moves on top
+- use `let` or `const` to prevent hoisting.
+
+```js
+console.log(a) //undefined
+var a = 10
+```
+
+### Temporal dead zone
+
+- Behaviour of js which hoist `let` and `const` variables and function but unlike `var` they is not initialized by `undefined` resulting in `ReferenceError`.
+- TDZ starts from starting of enclosed block to the line where variable is declared
+
+```js
+function show(){
+    // ...TDZ
+    let a = 10;
+}
+```
 
 ## Closures
 
@@ -181,8 +314,6 @@ const total = arr.reduce((acc,ele)=>{
 | __`entries()`__          | _(none)_                                | An iterator of key-value pairs.              | Returns an iterator with key-value pairs for each index.                    |
 | __`keys()`__             | _(none)_                                | An iterator of keys (indices).               | Returns an iterator with keys (indices) of the array.                       |
 | __`values()`__           | _(none)_                                | An iterator of values.                       | Returns an iterator with values of the array.                               |
-
-
 
 ## handling input on key press
 

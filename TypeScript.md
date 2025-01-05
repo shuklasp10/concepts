@@ -548,7 +548,7 @@ getPersonVal('name')
     -    name?: string,
     -    age?: number
     - }
-    + type NewPerson = Partials<Person>
+    + type NewPerson = Partial<Person>
     ```
 
 2. `Required<Type>` make every optional property required. opposite of partials.
