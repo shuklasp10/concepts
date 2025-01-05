@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+      "yoavbls.pretty-ts-errors",
+      "esbenp.prettier-vscode",
+      "dsznajder.es7-react-js-snippets",
+      "pkief.material-icon-theme",
+      "ritwickdey.liveserver",
+      "sibiraj-s.vscode-scss-formatter"
+    ]
+  }
