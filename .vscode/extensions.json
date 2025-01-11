@@ -1,10 +1,20 @@
 {
     "recommendations": [
+      // typescript
       "yoavbls.pretty-ts-errors",
-      "esbenp.prettier-vscode",
+      // javascript & react
       "dsznajder.es7-react-js-snippets",
-      "pkief.material-icon-theme",
       "ritwickdey.liveserver",
-      "sibiraj-s.vscode-scss-formatter"
+      "dbaeumer.vscode-eslint",
+      "formulahendry.code-runner",
+      // error handling
+      "usernamehw.errorlens",
+      // git
+      "eamodio.gitlens",
+      // appearance
+      "esbenp.prettier-vscode",
+      "pkief.material-icon-theme",
+      "sibiraj-s.vscode-scss-formatter",
+      "streetsidesoftware.code-spell-checker",
     ]
   }

@@ -1,4 +1,4 @@
-# Web Developemnt Notes: React
+# Web Development Notes: React
 
 ## Table of Contents
 
@@ -13,6 +13,7 @@
 - [Redux](#redux)
 - [Middleware](#middleware)
 - [Handling API calls](#handling-api-calls)
+- [React Query](#react-query)
 - [Higher order component](#higher-order-component)
 - [Charts](#charts)
 - [Tables](#tables)
@@ -71,7 +72,7 @@ export const MyContext = createContext(defaultValue);
  ```
 
 - here we can't use `useState` because hooks can be used only in react component or in custom hook
-- Also default value is not required becasue while wrapping application with provider it is mandatory to give value prop.
+- Also default value is not required because while wrapping application with provider it is mandatory to give value prop.
 
 __Provide context to application__
 
@@ -212,7 +213,7 @@ const ACTIONS = {
 ### Note
 
 1. Always make constant or variable of string if  it used multiple places
-2. Do not modify state in reducer function since it is read only instead reutrn new state.
+2. Do not modify state in reducer function since it is read only instead return new state.
 3. We can pass *initializer function* as 3rd argument in useReducer.
 4. __initializer function__ return value of this function will be set as state. Only called at first render.
 
@@ -229,7 +230,7 @@ const ACTIONS = {
         const myRef = useRef(0);
 
         return (
-            <h1>{myref.current}</h1>
+            <h1>{myRef.current}</h1>
         )
     }
 
@@ -243,8 +244,8 @@ const ACTIONS = {
     myRef.current = myRef.current+1;
     ```
 
-- This works just like normal variable expect it persist over re-renders (uses closure brhind the scene).
-- unlike `useState` it does not re-render componet when value is changed
+- This works just like normal variable expect it persist over re-renders (uses closure behind the scene).
+- unlike `useState` it does not re-render component when value is changed
 
 ### using with dom node
 
@@ -280,7 +281,7 @@ const ACTIONS = {
 ### walkthrough
 
 - `useMemo(function,dependency)`
-- function returns value that is cached and during re-renders that value is used without calling function again until dependecy is changed.
+- function returns value that is cached and during re-renders that value is used without calling function again until dependency is changed.
 
 ```jsx
 //App.jsx
@@ -298,8 +299,8 @@ function App = () => {
 - when we need to track if object value is changed
 
 ```jsx
-funnction App = () => {
-    const [dark, setdark] = useState(true);
+function App = () => {
+    const [dark, setDark] = useState(true);
     const themeStyle = { color: dark ? 'black' : 'white'}
 
     useEffect(()=>{
@@ -312,7 +313,7 @@ funnction App = () => {
 - Whenever component is re-rendered due to any state themeStyle will create different object with same value but different reference.
 - this different object will trigger useEffect
 - Even though dark state is not changed and themeStyle is same still useEffect will log
-- to prevent this we can use `useMemo` to memoize themestyle and change only when dark is changed
+- to prevent this we can use `useMemo` to memoize theme style and change only when dark is changed
 
 ```jsx
 const themeStyle = useMemo(()=>{
@@ -322,9 +323,9 @@ const themeStyle = useMemo(()=>{
 
 ### React.Memo
 
-- React.Memo is HOC provided by react to pevent re-renders
+- React.Memo is HOC provided by react to prevent re-renders
 - By default child is also rendered when parent is re-rendered.
-- React.Memo prevent redenring by allowing render only when props is changed.
+- React.Memo prevent rendering by allowing render only when props is changed.
 
 ```jsx
 const Child = React.Memo((props)=>{
@@ -441,17 +442,17 @@ import {Link} from 'react-router-dom'
 | starts with ```'/'``` |  starts without ```'/'``` |
 | clear & simple to understand | require time to understand very nested routes |
 | complex for nested routes | more maintainable for nested routes |
-| need to change all absolute path if subdirectory of app changes | no changes neede if app deployed to different directory |  
+| need to change all absolute path if subdirectory of app changes | no change needed if app deployed to different directory |  
 
 __absolute path__  
 
-```
+```js
 <Route path='/about' element={<About />} />
 ```
 
 __relative path__  
 
- ```
+ ```js
  <Route path='courses' element={<Courses />}>
     <Route path='detail/:courseId' element={<CourseDetail />} />
  </Route>
@@ -479,7 +480,7 @@ function App = () = {
 ```<Outlet />```
 
 - It is a placeholder component in parent component.
-- It decides where child compoent will render in parent component.
+- It decides where child component will render in parent component.
 - Used in parent component as a placeholder for nested route.
 - It creates a socket where child routes can be plugged to render their content.
 - In above example course will contain ```<Outlet />```
@@ -513,7 +514,7 @@ function App = () = {
 
 - Redirect from one page to another page can achieved in two way.  
 - Prev page -> Next Page
-- __Optional property:__ `{replace: true | falsee}` is used to replace history of prev page with next page in browser.
+- __Optional property:__ `{replace: true | false}` is used to replace history of prev page with next page in browser.
 
 #### `Navigate` component wrapper
 
@@ -532,8 +533,8 @@ return(
 
 #### `useNavigate` hooks
 
-- Programitical way to redirect to another page
-- Used to redirect on any event like button click or programitically
+- Programmatically way to redirect to another page
+- Used to redirect on any event like button click or programmatically
 - `navigate(-1)` to go back as per browser history.
 
 ```jsx
@@ -619,7 +620,7 @@ __returns:__ an object including:
 
 __Implementation:__
 
-```
+```js
 import { createSlice } from '@reduxjs/toolkit';
 
 const counterSlice = createSlice({
@@ -648,10 +649,10 @@ __action generators:__
 
 1. action creators are functions that returns action object with type and payload.
 2. `createSlice` creates action creator functions with same name as reducers key.
-3. If we execute action creators it gives object contaning
+3. If we execute action creators it gives object containing
     - __type__ <name/actionName>
      *counter/increment* or *counter/decrement*
-    - __payload__ parameter passed while executing aciton creators
+    - __payload__ parameter passed while executing action creators
 
 ### configureStore
 
@@ -661,7 +662,7 @@ __arguments:__ an object including:
 1. `reducer` *(required)* reducers for all state and combine into one
 2. `middleware` *(optional)* by default thunk is added.
 
-```
+```js
 import { configureStore } from '@reduxjs/toolkit';
 import {counterReducer} from './counterSlice';
 import {todoReducer} from './todoSlice';
@@ -673,7 +674,7 @@ const store = configureStore({
     }
 });
 
-export deafult store;
+export default store;
 ```
 
 >Name provided to reducers will be used as state name. eg state.counter, state.todo
@@ -682,7 +683,7 @@ export deafult store;
 
 To make store accessible to app.
 
- ```
+ ```js
  import ReactDOM from 'react-dom/client';
  import store from './store';
  import {Provider} from 'react-redux';
@@ -703,7 +704,7 @@ To make store accessible to app.
 - is used to fetch state from store.
 - takes a function which takes whole state and return required slice of state.
 
-```
+```js
 import {useSelector} from 'react-redux';
 
 const app(){
@@ -721,9 +722,9 @@ const app(){
 
 - messenger between app and store.
 - dispatch function send action object to store.
-- action creator function is executed in dispatch function so that returned action object can be passed in dispatch funtion.
+- action creator function is executed in dispatch function so that returned action object can be passed in dispatch function.
 
-```
+```js
 import {useDispatch} from 'react-redux';
 import {increment, decrement} from './counterSlice';
 
@@ -749,13 +750,13 @@ __action object__
   - Reducer should be predictable but api calls are not.
 - __Solution:__ before calling reducer call  middleware to handle asynchronous tasks.
   - Dispatch → Middleware → Reducer
-- Middleware can stop disptach or allow to reducer
+- Middleware can stop dispatch or allow to reducer
 
 ### setup
 
 1. Create middleware: middleware is curried function
 
-    ```
+    ```js
     function logged(store){
         return function (next){
             return function (action){
@@ -768,7 +769,7 @@ __action object__
 
     - This can be also created by arrow function
 
-        ```
+        ```js
         const logger = (store) => (next) => (action) => {
             console.log(store, next, action);
             next(action);
@@ -782,7 +783,7 @@ __action object__
     - middleware must be callback which should return an array with all middlewares
     - To include default middlewares use `(defaultMiddleware)=>defaultMiddleware.concat(logger)`
 
-    ```
+    ```js
     const store = configureStore({
         reducer: {
             products: productSlice,
@@ -795,12 +796,11 @@ __action object__
 
 ## Handling API calls
 
-### using useffect hook
+### using usEffect hook
 
 App.js
 
-```
-
+```js
 const App = () => {
     
     useEffect(()=>{
@@ -813,7 +813,7 @@ const App = () => {
 
 Slice.js
 
-```
+```js
 const Slice = createSlice({
     name: 'data'
     initialState = []
@@ -831,9 +831,9 @@ export default Slice.reducer
 - To handle loading and error state
 App.js
 
-```
+```js
 useEffect(()=>{
-    disptach(loadingData());
+    dispatch(loadingData());
     fetch('API').then(res=>res.json()).then(data=>(
             dispatch(getData(data));
     ))
@@ -845,7 +845,7 @@ useEffect(()=>{
 
 Slice.js
 
-```
+```js
 const Slice = createSlice({
     name: 'data'
     initialState = {
@@ -881,7 +881,7 @@ export default Slice.reducer
 - Fetching from api is implemented in custom middleware and based on success or failure actions are dispatched.
 App.js
 
-```
+```jsx
 useEffect(()=>{
     dispatch({
         type: 'makeAPICall',
@@ -892,7 +892,7 @@ useEffect(()=>{
 
 APIMiddleware.js
 
-```
+```js
 const BASE_URL = 'https://api.com'
 const APIMiddleware = ({dispatch}) => (next) => (action) => {
     if(action.type==='makeAPICall'){      //insure middleware run for only api calls not for every dispatch
@@ -911,7 +911,7 @@ const APIMiddleware = ({dispatch}) => (next) => (action) => {
 
 - If we want to use middleware for multiple API calls then loading, error and getData can be passed along with action instead of hardcoding in middleware.
 
-```
+```js
 useEffect(()=>{
     dispatch({
         type: 'makeAPICall',
@@ -939,7 +939,7 @@ useEffect(()=>{
 - Function implementation is stored in slice file.
 - Since By convention function is called in dispatch so we create a callback which will return a function. and we call callback function in dispatch.
 
-```
+```js
 // thunk Implementation
 const customThunk = ({dispatch}) => (next) => (action) =>{
     if(typeof action=== 'function'){
@@ -953,7 +953,7 @@ const customThunk = ({dispatch}) => (next) => (action) =>{
 
 - This function is generally exist in redux by default so we don't need to write middleware.
 
-```
+```js
 // app.js
 import {getProductData} from './productSlice.js'
 useEffect(()=>{
@@ -961,7 +961,7 @@ useEffect(()=>{
 },[])
 ```
 
-```
+```js
 // productSlice.js
 
 export const getProductData = () => (dispatch) => {
@@ -999,13 +999,13 @@ export const getProductData = () => (dispatch) => {
     {
         dispatch: to dispatch any action,
         getState: access current state value,
-        extra: any extra argument to configure `createAsyncthunk`,
+        extra: any extra argument to configure `createAsyncThunk`,
         requestID,
         signal,
         rejectWithValue: to reject thunk with custom error payload. Should be returned
     }
 
-```
+```js
 \\ createAsyncThunk
 export const fetchData = createAsyncThunk(
     'products/fetchData',
@@ -1025,8 +1025,8 @@ export const fetchData = createAsyncThunk(
 
 - it contains a function which have reducers for three cases
 
-```
-extrareducers: (builder)=>{
+```js
+extraReducers: (builder)=>{
     builder.addCase(fetchData.pending,(state)=>{
         state.loading = true
     })
@@ -1064,6 +1064,127 @@ dispatch(fetchData(userID))
 
 ### createAPI
 
+
+## React Query
+
+### Walkthrough
+
+- React query helps in fetching, caching, syncing, and updating and managing server state in app.
+- `@tanstack/react-query` library is installed.
+- `QueryClient` class provide object to wrap the application.
+- `useQuery` is used to fetch & cache data from server. (GET)
+- `useMutation` is used to modify server side data (POST, PUT, PATCH, DELETE)
+
+### setup
+
+1. Install library 
+    ```bash
+    npm i @tanstack/react-query
+    ```
+2. create new `QueryClient` object
+    ```js
+    //main.jsx
+    import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+    const queryClient = new QueryClient();
+
+    <QueryClientProvider client={queryClient}>
+        <App />
+    </QueryClientProvider>
+    ```
+3. fetch data from `useQuery` hook
+    ```js
+    //app.jsx
+    import {useQuery} from '@tanstack/react-query';
+
+    const App = () => {
+        const [data, isLoading, isError, isSuccess] = useQuery({queryKey, queryFn});
+    }
+    ``` 
+
+### useQuery
+
+- **parameters**
+    - **required:** queryKey, queryFn
+    - *optional:* initialData, staleTime, refetchOnReconnect
+- `useQuery` focuses on fetching and caching, side effects(success, error) are handled by react logics(useEffect).
+- `queryKey` unique identifier of the query, helps to update and manage state. 
+    - It can be string or array of multiple elements. 
+        ```js
+        useQuery(['todos', { filter: 'completed' }], fetchFilteredTodos);
+        ```
+    - this key is passed to `queryFn` 
+        ```js
+        function fetchFilteredTodos(queryKey){
+            console.log(queryKey[1].filter) //'completed'
+            ...logic
+        }
+        ```
+    - Here filter represent query state.
+- `queryFn`
+    - contains fetching logic
+    - receives `queryKey` as parameter
+    - must return a promise.
+    ```js
+    function fetchTodoById({ queryKey }) {
+        const [, id] = queryKey;
+        return fetch(`/api/todos/${id}`).then(res => res.json());
+    }
+
+    const { data } = useQuery(['todo', todoId], fetchTodoById);
+    ```
+- `staleTime` time during data is considered fresh, after that data is stale. In that time refetching is not triggered.
+    - once data is stale, it will refetch based on other query `refetchOnMount`, `refetchOnWindowFocus`
+
+### useMutation
+- used to push any change to server.
+- Unlike queries, allows to handle side effects
+
+```js
+const mutation = useMutation(mutationFn, {
+  onSuccess: (data, variables, context) => { ... },
+  onError: (error, variables, context) => { ... },
+  onSettled: (data, error, variables, context) => { ... },
+});
+```
+- **Parameters**
+    - `mutationFn` function that performs mutation, must return promise.
+    - `options` object containing callbacks to handle success, fail or settled
+- **returned**
+    - `mutate` to trigger mutation manually
+    - `asyncMutate` another version of mutate that returns promise.
+    - `isLoading`, `isError`, `isSuccess`, `error`, `data`
+- **example**
+    ```jsx
+    import { useMutation } from '@tanstack/react-query';
+
+    function addTodo(newTodo) {
+    return fetch('/api/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTodo),
+    }).then(res => res.json());
+    }
+
+    function TodoForm() {
+    const mutation = useMutation(addTodo);
+
+    const handleSubmit = async () => {
+        mutation.mutate({ title: 'Learn React Query', completed: false });
+    };
+
+    return (
+        <div>
+        <button onClick={handleSubmit} disabled={mutation.isLoading}>
+            Add Todo
+        </button>
+        {mutation.isError && <p>Error: {mutation.error.message}</p>}
+        {mutation.isSuccess && <p>Todo added successfully!</p>}
+        </div>
+    );
+    }
+    ```
+
 ## Higher order component
 
 - HOC are just a function which takes a component and return component.
@@ -1080,7 +1201,7 @@ dispatch(fetchData(userID))
         }
     }
 
-    export default Withlogging;
+    export default WithLogging;
     ```
 
 ### Implementation
@@ -1097,7 +1218,7 @@ dispatch(fetchData(userID))
             function handleIncrease(){
                 setCount(count+1)
             }
-            function handledecrease(){
+            function handleDecrease(){
                 setCount(count-1)
             }
             return <WrappedComponent {...props} />
@@ -1123,7 +1244,7 @@ dispatch(fetchData(userID))
         )
     }
 
-    export default Withlogging(BookCounter);
+    export default WithLogging(BookCounter);
 ```
 
 - Here BookCounter refer to new component that is returned from HOC and then exported from BookCounter component.
@@ -1179,7 +1300,7 @@ Data object takes values
 
 1. __labels:__ array with x-axis values
 2. __datasets:__ array of objects depending on number of bar chart to be shown in a chart. Each object contains two value.
-    1. __label:__ name of values to be shown (Revenu, sales etc)
+    1. __label:__ name of values to be shown (Revenue, sales etc)
     2. __data:__ array of values corresponding to labels.
 
 ```
@@ -1490,6 +1611,6 @@ Library used `react-table`
 8. Styled component
 9. Prop drilling
 10. Controlled and uncontrolled components
-11. useref hook
+11. useRef hook
 12. Synthetic event
 13. Events

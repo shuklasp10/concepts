@@ -6,4 +6,7 @@
     "workbench.iconTheme": "material-icon-theme",
     "liveServer.settings.port": 5501,
     "files.autoSave": "afterDelay",
+    "cSpell.words": [
+        "chartjs"
+    ],
 }
