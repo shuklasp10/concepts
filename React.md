@@ -350,8 +350,6 @@ export default React.Memo(Child);
 
 ## useCallback
 
-
-
 ## Pure component
 
 - Render same output for same props and state
@@ -1064,7 +1062,6 @@ dispatch(fetchData(userID))
 
 ### createAPI
 
-
 ## React Query
 
 ### Walkthrough
@@ -1077,11 +1074,14 @@ dispatch(fetchData(userID))
 
 ### setup
 
-1. Install library 
+1. Install library
+
     ```bash
     npm i @tanstack/react-query
     ```
+
 2. create new `QueryClient` object
+
     ```js
     //main.jsx
     import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
@@ -1092,7 +1092,9 @@ dispatch(fetchData(userID))
         <App />
     </QueryClientProvider>
     ```
+
 3. fetch data from `useQuery` hook
+
     ```js
     //app.jsx
     import {useQuery} from '@tanstack/react-query';
@@ -1100,31 +1102,36 @@ dispatch(fetchData(userID))
     const App = () => {
         const [data, isLoading, isError, isSuccess] = useQuery({queryKey, queryFn});
     }
-    ``` 
+    ```
 
 ### useQuery
 
-- **parameters**
-    - **required:** queryKey, queryFn
-    - *optional:* initialData, staleTime, refetchOnReconnect
+- __parameters__
+  - __required:__ queryKey, queryFn
+  - *optional:* initialData, staleTime, refetchOnReconnect
 - `useQuery` focuses on fetching and caching, side effects(success, error) are handled by react logics(useEffect).
-- `queryKey` unique identifier of the query, helps to update and manage state. 
-    - It can be string or array of multiple elements. 
-        ```js
-        useQuery(['todos', { filter: 'completed' }], fetchFilteredTodos);
-        ```
-    - this key is passed to `queryFn` 
-        ```js
-        function fetchFilteredTodos(queryKey){
-            console.log(queryKey[1].filter) //'completed'
-            ...logic
-        }
-        ```
-    - Here filter represent query state.
+- `queryKey` unique identifier of the query, helps to update and manage state.
+  - It can be string or array of multiple elements.
+
+    ```js
+    useQuery(['todos', { filter: 'completed' }], fetchFilteredTodos);
+    ```
+
+  - this key is passed to `queryFn`
+
+    ```js
+    function fetchFilteredTodos(queryKey){
+        console.log(queryKey[1].filter) //'completed'
+        ...logic
+    }
+    ```
+
+  - Here filter represent query state.
 - `queryFn`
-    - contains fetching logic
-    - receives `queryKey` as parameter
-    - must return a promise.
+  - contains fetching logic
+  - receives `queryKey` as parameter
+  - must return a promise.
+
     ```js
     function fetchTodoById({ queryKey }) {
         const [, id] = queryKey;
@@ -1133,10 +1140,12 @@ dispatch(fetchData(userID))
 
     const { data } = useQuery(['todo', todoId], fetchTodoById);
     ```
+
 - `staleTime` time during data is considered fresh, after that data is stale. In that time refetching is not triggered.
-    - once data is stale, it will refetch based on other query `refetchOnMount`, `refetchOnWindowFocus`
+  - once data is stale, it will refetch based on other query `refetchOnMount`, `refetchOnWindowFocus`
 
 ### useMutation
+
 - used to push any change to server.
 - Unlike queries, allows to handle side effects
 
@@ -1147,14 +1156,16 @@ const mutation = useMutation(mutationFn, {
   onSettled: (data, error, variables, context) => { ... },
 });
 ```
-- **Parameters**
-    - `mutationFn` function that performs mutation, must return promise.
-    - `options` object containing callbacks to handle success, fail or settled
-- **returned**
-    - `mutate` to trigger mutation manually
-    - `asyncMutate` another version of mutate that returns promise.
-    - `isLoading`, `isError`, `isSuccess`, `error`, `data`
-- **example**
+
+- __Parameters__
+  - `mutationFn` function that performs mutation, must return promise.
+  - `options` object containing callbacks to handle success, fail or settled
+- __returned__
+  - `mutate` to trigger mutation manually
+  - `asyncMutate` another version of mutate that returns promise.
+  - `isLoading`, `isError`, `isSuccess`, `error`, `data`
+- __example__
+
     ```jsx
     import { useMutation } from '@tanstack/react-query';
 
