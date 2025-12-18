@@ -42,5 +42,12 @@ chmod +x setup/assets/.githooks/commit-msg
 chmod +x setup/setup.sh
 echo -e "  ${GREEN}✅ Success: Execution bits updated${NC}"
 
+# 4. Git aliases
+log_process "Registering Git Aliases"
+git config --local alias.notes "log --oneline --grep='^note:'"
+git config --local alias.today "log --oneline --since='1 day ago'"
+git config --local alias.sync "push"
+echo -e "  ${GREEN}✅ Success: Aliases (nlog, today, sync) registered.${NC}"
+
 echo -e "\n${GREEN}✨ SETUP COMPLETE! Your brain is now synced. ✨${NC}"
 echo -e "Remember: Use ${CYAN}note:, docs:, fix:, refactor:, asset:, or chore:${NC}"
