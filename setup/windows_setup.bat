@@ -30,6 +30,13 @@ if %ERRORLEVEL% EQU 0 (
     exit /b 1
 )
 
+:: 3. Setting Git Aliases
+echo [PROCESS] Registering Git Aliases...
+git config --local alias.notes "log --oneline --grep='^note:'"
+git config --local alias.today "log --oneline --since='1 day ago'"
+git config --local alias.sync "push"
+echo   [OK] Success: Aliases registered.
+
 echo.
 echo =========================================
 echo   SUCCESS! Your Notes setup is ready.
