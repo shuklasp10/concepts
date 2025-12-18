@@ -14,7 +14,8 @@
         "**Inbox",
         "**Projects",
         "**Resources",
-        "**Archive"
+        "**Archive",
+        ".github"
     ],
     "draw.folder.structure.style": "ChevronIndicators",
     "draw.folder.structure.allowRecursion": true,
