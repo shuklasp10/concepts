@@ -4,9 +4,19 @@
     "window.autoDetectColorScheme": false,
     "workbench.colorTheme": "Default Dark Modern",
     "workbench.iconTheme": "material-icon-theme",
-    "liveServer.settings.port": 5501,
     "files.autoSave": "afterDelay",
-    "cSpell.words": [
-        "chartjs"
+    "draw.folder.structure.exclude": [
+        ".git",
+        ".idx",
+        ".vscode",
+        "05_Assets",
+        "**/assets",
+        "**Inbox",
+        "**Projects",
+        "**Resources",
+        "**Archive"
     ],
+    "draw.folder.structure.style": "ChevronIndicators",
+    "draw.folder.structure.allowRecursion": true,
+    "draw.folder.structure.respectGitignore": true
 }
