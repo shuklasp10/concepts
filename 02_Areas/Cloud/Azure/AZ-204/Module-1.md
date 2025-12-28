@@ -1,5 +1,5 @@
 ---
-tags: [cloud, azure, az-204]
+tags: [cloud, azure, az-204, app-service, configure-app-service]
 ---
 
 # Module 1: Azure App Services
@@ -271,7 +271,7 @@ __Adding keys:__
 
 ### Configure General Settings
 
-- Controls platform & runtime options; **some settings require higher pricing tiers (Standard/Premium)**.
+- Controls platform & runtime options; __some settings require higher pricing tiers (Standard/Premium)__.
  
   ![App service configuration window](Assets/image3.png)
 
@@ -280,14 +280,14 @@ __Adding keys:__
   ![App service stack setting window](Assets/image4.png)
 
 - __Platform settings:__
-  - **Platform bitness:** 32-bit or 64-bit _(Windows only)_.
-  - **FTP state:** disable or allow only FTPS _(recommended)_.
-  - **HTTP version:** set to **2.0** to enable HTTP/2 (note: HTTP/2 typically used over TLS).
-  - **WebSockets:** enable for SignalR or socket.io.
-  - **Always On:** keeps the app loaded and prevents cold starts; **required** for continuous or CRON WebJobs.
-  - **ARR affinity:** sticky sessions for stateful apps; set **Off** for stateless applications.
-  - **HTTPS Only:** redirect all HTTP traffic to HTTPS.
-  - **Minimum TLS version:** enforce TLS baseline for client connections.
+  - __Platform bitness:__ 32-bit or 64-bit _(Windows only)_.
+  - __FTP state:__ disable or allow only FTPS _(recommended)_.
+  - __HTTP version:__ set to __2.0__ to enable HTTP/2 (note: HTTP/2 typically used over TLS).
+  - __WebSockets:__ enable for SignalR or socket.io.
+  - __Always On:__ keeps the app loaded and prevents cold starts; __required__ for continuous or CRON WebJobs.
+  - __ARR affinity:__ sticky sessions for stateful apps; set __Off__ for stateless applications.
+  - __HTTPS Only:__ redirect all HTTP traffic to HTTPS.
+  - __Minimum TLS version:__ enforce TLS baseline for client connections.
 
 - __Debugging:__ remote debugging available for ASP.NET / ASP.NET Core / Node.js (auto-disabled after 48 hours).
 
@@ -308,20 +308,220 @@ az webapp update \
   --set httpsOnly=true
 ```
 
-> 💡 **Tip:** Enable **HTTPS Only** + set a secure **Minimum TLS version** for production; prefer **FTPS** or disable FTP to reduce attack surface.
+> 💡 __Tip:__ Enable __HTTPS Only__ + set a secure __Minimum TLS version__ for production; prefer __FTPS__ or disable FTP to reduce attack surface.
 
-**Exam tips:**  
-- Know that **Always On** is required for continuous WebJobs.  
+__Exam tips:__  
+- Know that __Always On__ is required for continuous WebJobs.  
 - HTTP/2 benefits require TLS — secure custom domain to get HTTP/2 in browsers.  
 - Be familiar with Portal path (Configuration → General settings) and CLI equivalents (`az webapp config set`, `az webapp update`).
 
 
 ### Configure Path Mappings
 
+> __Windows App Service Only__ — Path mappings (virtual directories + handler mappings) are __IIS features__ unavailable on Linux App Service.
 
+__Mental Model:__ Path mapping redirects URL requests → physical folders or script handlers at the IIS level.
+
+#### Path Mapping Types
+
+| Feature | Maps | IIS Level | Effect |
+|---------|------|-----------|--------|
+| __Virtual Directory__ | URL path `/api` | Virtual directory | Routes to physical folder (local or UNC path) |
+| __Handler Mapping__ | File extension `.php`, `.svc` | HTTP handler | Executes with specific processor/DLL |
+
+#### Virtual Directories
+
+- __Root path__ `/` → Points to `<root app path>` (default).
+- __Non-root alias__ `/images` → Points to separate physical path (e.g., `D:\shared-images`).
+- Can map to __UNC paths__ (network shares on other servers) or __local drives__.
+- Request internally served from mapped directory; __NOT a redirect__.
+- Example: GET `https://app.azurewebsites.net/images/photo.jpg` → serves from `D:\shared-images\photo.jpg`.
+
+#### Handler Mappings
+
+Routes file types to IIS modules or external processes:
+- __Request path:__ File pattern (e.g., `*.php`, `*.svc`) or exact filename.
+- __Executable:__ Full path to processor (e.g., `C:\PHP\php-cgi.exe`, `System.ServiceModel.Activation.HttpModule`).
+- __Module:__ IIS module name (e.g., `FastCgiModule`, `IsapiModule`, `StaticFile`).
+- __Entry Point (optional):__ Class/method for managed handlers.
+- __Precondition:__ Applies handler only if file exists on disk (`skipIfFileNotFound`).
+- __Access Permission:__ Handler inherits folder NTFS permissions.
+
+#### Portal Configuration Path
+
+__App Service__ → __Settings__ → __Configuration__ → __Path mappings__ tab.
+
+#### CLI / ARM Template
+- __No dedicated CLI command__ for path mappings.
+- Configure via __Azure Portal__ or __ARM template__ `virtualApplications` property (Windows plans only).
+
+```bash
+# Example: ARM template syntax (Windows only)
+"config": {
+  "virtualApplications": [
+    {
+      "virtualPath": "/",
+      "physicalPath": "site\\wwwroot"
+    },
+    {
+      "virtualPath": "/static",
+      "physicalPath": "D:\\shared\\static"
+    }
+  ]
+}
+```
+
+#### Troubleshooting Checklist
+
+| Symptom | Check |
+|---------|-------|
+| __404 on virtual directory__ | 1. Physical path exists 2. App Service identity has __Read__ permission 3. Path not typo'd |
+| __Handler not executing__ | 1. Executable path correct 2. `.exe` has __Execute__ permission 3. App logs for process errors |
+| __500 errors with handler__ | 1. Handler process crashed → Check __Application Event Log__ 2. Incorrect __Entry Point__ for managed handlers |
+| __Works locally, fails in Azure__ | 1. Windows vs Linux plan (path mappings Windows-only) 2. Drive letter changed (e.g., `C:\` → `D:\`) |
+
+#### Exam Hacks
+
+- __If question mentions:__ "Map URL `/api` to folder" → __Virtual Directory__.
+- __If question mentions:__ "Run `.php` files with engine" → __Handler Mapping__.
+- __Don't confuse:__ Path mappings ≠ Application routes ≠ VNet integration.
+- __Sticky setting:__ Path mappings __persist across slot swaps__ (tied to IIS config, not slot-specific).
+- __Windows-only feature:__ Linux App Service uses __Application settings__ + entry point; no path mappings.
 
 ### Enable Diagnostic logging
 
+> **Quick focus:** concise, exam-ready notes for [[Enable diagnostic logging]] — features, limitations, CLI fast-path, and exam hacks. ✅
+
+#### Executive summary
+
+| Feature | Key constraint | Use case |
+|---|---:|---|
+| **[[Application logging]]** | Filesystem (Windows) is temporary (auto-off ~12 hrs); Blob requires storage account & container | App-generated messages (Critical/Error/Warning/Info/Debug/Trace) — short-term debugging (filesystem) vs long-term retention (blob) |
+| **[[Web server logging]]** | Windows only for full W3C logs; choose File System or Azure Storage blobs | Capture raw HTTP request data (method, URI, IP, user-agent, response code) |
+| **[[Detailed error messages]]** | Windows only; stored in file system; avoid serving in production | Saves complete HTML error pages for troubleshooting |
+| **[[Failed request tracing]]** | Windows only; generates folder per failed request | Deep IIS-level traces for failed requests (XML + XSL) |
+| **Deployment logging** | Automatic, no config | Diagnose failed deployments |
+
+---
+
+#### Hard numbers & storage notes ⚠️
+
+- Filesystem application logging (Windows) is intended for temporary debugging and **turns itself off after ~12 hours**. 
+- Log files live under `d:/home/LogFiles` (Windows) / `/home/LogFiles` (Linux containers). Use the ZIP endpoints to download logs per instance.
+- When using [[Azure Storage blobs]] for logging, **regenerating storage keys requires toggling logging off/on** to reset configuration.
+
+---
+
+#### CLI fast-path 🔧
+
+- Enable logging (example):
+```bash
+# Why: configure app logging and storage/server logging
+az webapp log config --name <app> --resource-group <rg> --application-logging filesystem --web-server-logging filesystem
+```
+- Stream logs live:
+```bash
+# Why: live tail of app logs
+az webapp log tail --name <app> --resource-group <rg>
+```
+- Download logs:
+```text
+# Linux/container: https://<app-name>.scm.azurewebsites.net/api/logs/docker/zip
+# Windows: https://<app-name>.scm.azurewebsites.net/api/dump
+```
+
+---
+
+#### Decision matrix — Filesystem vs Blob 📊
+
+- **Filesystem**: quick access, useful for immediate debugging, limited retention, not suitable for long-term analytics.
+- **Blob**: long-term retention, requires storage account & container, more durable and centralizable for analysis (Log Analytics onward).
+
+---
+
+#### Add log messages / examples
+
+- C# example:
+```csharp
+// Why: writes an error to App Service application logs
+System.Diagnostics.Trace.TraceError("If you're seeing this, something bad happened");
+```
+- Python: use [[OpenCensus]] / standard logging to send messages to application diagnostics.
+
+---
+
+#### Stream & access logs
+
+- To stream in the portal: **Log stream** blade under your App Service.
+- CLI streaming: `az webapp log tail` (see above).
+- ZIP download endpoints for per-instance logs (see above).
+- Note: some log types buffer writes → stream order can be out-of-order.
+
+---
+
+#### Exam hacks 💡
+
+- If the question asks **how to persist logs long-term** → answer: **Azure Storage blobs** (needs storage container & keys).
+- If a Windows app asks **where W3C HTTP details are found** → answer: **Web server logging** (W3C format).
+- If keys are regenerated and blob logging breaks → **toggle logging off/on** to refresh keys.
+- If immediate short-term debugging is needed → **Filesystem** (remember ~12-hour auto-off on Windows).
+
+---
+
+#### Mental model (1 line)
+
+Logs = app + server messages written to `[[/LogFiles]]` or [[Azure Storage blobs]]; stream via **Log stream** or `az webapp log tail`.
+
 ### Configure Security settings
+
+> **Quick focus:** exam-ready notes for [[Configure security certificates]] — private vs managed vs Key Vault, upload/import rules, and exam hacks. 🔐
+
+#### Executive summary
+
+| Feature | Key constraint | Use case |
+|---|---:|---|
+| **[[Free App Service managed certificate]]** | No wildcard, not exportable, not for ASE, DigiCert issuer (may require CAA `0 issue digicert.com`) | Quick, free TLS for custom domain; auto-renewed every ~6 months (renewal starts 45 days before expiry) |
+| **[[App Service Certificate (purchase)]]** | Managed by Azure in Key Vault; supports export/renew/management | Purchase + automated lifecycle; supports more flexibility than free managed cert |
+| **[[Import from Azure Key Vault]]** | Key Vault + proper access & sync required | Use existing Key Vault-managed certs and centralize lifecycle management |
+| **[[Upload private certificate (PFX)]]** | PFX must be password-protected, triple-DES encrypted, private key ≥2048 bits, include full chain, EKU for server auth | Bring-your-own certificate from third-party CAs; bind to custom domain TLS/SSL bindings |
+
+#### Hard numbers & requirements ⚠️
+
+- PFX must be **password-protected** and encrypted with **triple DES**.
+- Private key length: **≥ 2048 bits**.
+- Certificate must include **full chain** (intermediates + root) and **EKU = server authentication (OID 1.3.6.1.5.5.7.3.1)** for TLS bindings.
+- Free managed certificates are **auto-renewed every ~6 months**, renewal starts **~45 days** before expiry.
+- To create TLS bindings or enable client certs, the **App Service plan must be Basic or higher**.
+
+#### CLI fast-path 🔧
+
+- Create a free managed certificate for a hostname (most common quick task):
+```bash
+# Why: create a free App Service managed certificate for a custom hostname
+az webapp config ssl create --resource-group <rg> --name <app> --hostname <host.example.com>
+```
+
+#### Decision matrix — free managed vs purchased vs import 📊
+
+- **Free managed**: fastest, auto-managed, limited (no wildcard, not exportable, not supported in ASE).
+- **Purchased App Service Certificate**: Azure handles purchase, verification, Key Vault storage, renewal; supports export and advanced management.
+- **Import from Key Vault / Upload PFX**: full control, supports wildcard and exports (if allowed), but you manage key security and renewals.
+
+#### Importing & binding notes
+
+- Certificates uploaded to an app are stored in the resource group's region webspace and are accessible to other apps in the same resource group & region.
+- If you buy an App Service Certificate in Azure, Azure can **manage purchase, domain verification, store the cert in Key Vault, and synchronize** copies to App Service apps.
+- Free managed certificates may require a **CAA DNS record** (`0 issue digicert.com`) for some domains.
+
+#### Exam hacks 💡
+
+- If question: **need wildcard support** → answer: **use a purchased or third-party wildcard cert** (free managed does NOT support wildcard).
+- If question: **need to export or use the private key elsewhere** → answer: **upload a PFX or purchase/exportable App Service Certificate** (free managed is not exportable).
+- If question: **certificate not renewing or invalid after storage key changes** → verify Key Vault sync / binding and DNS CAA records; toggle/import as needed.
+- If question: **what shapes TLS bindings requirement** → answer: **App Service plan Basic+**.
+
+#### Mental model (1 line)
+
+Certificates = identity blobs (private keys + chains) stored per **webspace** (resource group + region) and bound to hostnames; choose free-managed for simplicity, purchase/import for control.
 
 ---
