@@ -23,36 +23,36 @@
 
 ### Primitive
 
-- __string__
-- __number__
-- __bigint__
-- __boolean__
-- __undefined__
-- __null__
-- __symbol__
+- **string**
+- **number**
+- **bigint**
+- **boolean**
+- **undefined**
+- **null**
+- **symbol**
 
 ### Non primitive (reference)
 
-- __object__
-- __array__
-- __function__
-- __date__
+- **object**
+- **array**
+- **function**
+- **date**
 
 ### special types
 
-- __Infinity__
-- __NaN__
+- **Infinity**
+- **NaN**
 
 ### Built-in objects
 
-- __Set__
+- **Set**
   - stores unique value of any type
 
     ```js
     const set = [...new Set(arr)]
     ```
 
-- __Map__
+- **Map**
   - map stores key, value pair where key can be anything not only string
 
     ```js
@@ -68,7 +68,8 @@
 
 ### Call
 
-- The `call()` method invokes a function with a given this value and arguments provided one by one
+- The `call()` method invokes a function with a given this value and
+  arguments provided one by one
 
 ```js
 var employee1 = { firstName: "John", lastName: "Rodson" };
@@ -80,13 +81,16 @@ function invite(greeting1, greeting2) {
   );
 }
 
-invite.call(employee1, "Hello", "How are you?"); // Hello John Rodson, How are you?
-invite.call(employee2, "Hello", "How are you?"); // Hello Jimmy Baily, How are you?
+invite.call(employee1, "Hello", "How are you?");
+// Hello John Rodson, How are you?
+invite.call(employee2, "Hello", "How are you?");
+// Hello Jimmy Baily, How are you?
 ```
 
 ### Apply
 
-- Invokes the function with a given this value and allows you to pass in arguments as an array
+- Invokes the function with a given this value and allows you to pass in
+  arguments as an array
 
 ```js
 var employee1 = { firstName: "John", lastName: "Rodson" };
@@ -98,8 +102,10 @@ function invite(greeting1, greeting2) {
   );
 }
 
-invite.apply(employee1, ["Hello", "How are you?"]); // Hello John Rodson, How are you?
-invite.apply(employee2, ["Hello", "How are you?"]); // Hello Jimmy Baily, How are you?
+invite.apply(employee1, ["Hello", "How are you?"]); 
+// Hello John Rodson, How are you?
+invite.apply(employee2, ["Hello", "How are you?"]); 
+// Hello Jimmy Baily, How are you?
 ```
 
 ### bind
@@ -122,33 +128,34 @@ inviteEmployee1("Hello", "How are you?"); // Hello John Rodson, How are you?
 inviteEmployee2("Hello", "How are you?"); // Hello Jimmy Baily, How are you?
 ```
 
-- Call and Apply are pretty much interchangeable. Both execute the current function immediately. You need to decide whether it’s easier to send in an array or a comma separated list of arguments. You can remember by treating Call is for comma (separated list) and Apply is for Array.
-
-- Bind creates a new function that will have this set to the first parameter passed to bind().
+- Call and Apply are interchangeable. Both execute the function immediately.
+- Decide based on argument format: Call for comma-separated, Apply for array.
+- Bind creates a new function with preset 'this' and initial arguments.
 
 ## Higher order functions
 
 HOF are those functions which operates on other functions
 Two types of HOF:
 
-1. __Taking function as argument__ most commonly used. Eg map, filter
-2. __Returning function__ less frequently used
+1. **Taking function as argument** most commonly used. Eg map, filter
+2. **Returning function** less frequently used
 
 ## Pure functions
 
 Pure function follows two rules
 
-1. __No side effects:__ does not change state or variable outside its scope.
-2. __Deterministic scope:__ for same input set it should return same output
+1. **No side effects:** does not change state or variable outside its scope.
+2. **Deterministic scope:** for same input set it should return same output
 Charateristics
-3. __Referential transparency:__ if function is replaced with its output value, it should not affect behaviour of program.
-4. __Immutability:__ do not modify passed arguments
+3. **Referential transparency:** if function is replaced with its output value,
+   it should not affect behaviour of program.
+4. **Immutability:** do not modify passed arguments
 
 ## Scoping
 
 ### let and const scoping
 
-- __block__ Anything withing curly braces
+- **block** Anything withing curly braces
 - let and const follow block level scoping
 
 ```js
@@ -156,11 +163,15 @@ Charateristics
 console.log(a) //error
 ```
 
-- __global & window__ both reference same object. `window` used in context of browser and `global` in context of node application.
+- **global & window** both reference same object.
+- `window` in browser context, `global` in Node.js context
 
-- __globally scoped variable__ if let and const are not inside any block then they are inside _global or window_ block. It means they can accessed by another script using same application.
+- **globally scoped variable** if let and const are not inside any block
+  then they are inside *global or window* block.
+- It means they can accessed by another script using same application.
 
-- __precedence__ nearest scoped variable is used first then look for outer scoped variable
+- **precedence** nearest scoped variable is used first
+  then look for outer scoped variable
 
 ```js
 let a = 10;
@@ -180,11 +191,13 @@ console.log(a) //10
 ```
 
 - It attach to parent object in which it is declared. like function, object .
-- __precedence__ nearest scoped variable is used first then look for outer scoped variable
+- **precedence** nearest scoped variable is used first
+  then look for outer scoped variable
 
 ## Hoisting
 
-- Behaviour of javascript which moves variable or function definition (not declaration) to top of its scope.
+- Behaviour of javascript which moves variable or function definition
+- (not declaration) to top of its scope.
 - Only var follow hoisting, let and const does not moves on top
 - use `let` or `const` to prevent hoisting.
 
@@ -195,8 +208,9 @@ var a = 10
 
 ### Temporal dead zone
 
-- Behaviour of js which hoist `let` and `const` variables and function but unlike `var` they is not initialized by `undefined` resulting in `ReferenceError`.
-- TDZ starts from starting of enclosed block to the line where variable is declared
+- Behaviour of js which hoist `let` and `const` but unlike `var`
+- They are not initialized, causing `ReferenceError`
+- TDZ spans from block start to variable declaration line
 
 ```js
 function show(){
@@ -207,8 +221,8 @@ function show(){
 
 ## Closures
 
-- Closure is method of keeping scope of outer function available to inner function even outer function is executed.  
-- Closure exist if there is function inside a function.
+- Closure keeps outer scope accessible after outer function execution.
+- Exists when a function is defined inside another function.
 
 ```js
 function outer(){
@@ -246,7 +260,8 @@ show(); //10
     }
     ```
 
-this will create three instance of `i` for each iteration. so output will be `0 1 2`
+this will create three instance of `i` for each iteration.
+so output will be `0 1 2`
 
 ```js
 for(var i=0; i<3; i++){
@@ -254,28 +269,29 @@ for(var i=0; i<3; i++){
 }
 ```
 
-this will create single instance of `i` which will be updated by each iteration. so output will be `3 3 3`.
+this will create single instance of `i` which will be updated by each iteration.
+so output will be `3 3 3`.
 
 ## Array
 
 ### Array HOF
 
-| HOF |Return | Description |
-|------|------|------|
-| `map` | Array | returns new array with elements return by callback functions |
-| `filter` | Array | returns new array with elements for which callback returns true |
-| `forEach` | Undefined | same as map but does not return new array |
-| `reduce` | Value | returns single value by operating on each element |
-| `some` | Boolean | return true if for any element callback returns true |
-| `every` | Boolean | return true if for all element callback returns true |
-| `find` | Single element | returns first element for which callback returns true |
-| `findIndex` | Single index | same as find but returns index instead of element |
-| `findLast` | Single element | returns last element for which callback returns true |
-| `findLastIndex` | Single index | same as findLast but returns index instead of element |
+| HOF         | Return   | Description                          |
+| ----------- | -------- | ------------------------------------ |
+| `map`       | Array    | new array with callback results      |
+| `filter`    | Array    | array of elements passing test       |
+| `forEach`   | Undefined| executes callback (no return)        |
+| `reduce`    | Value    | single value from reduction          |
+| `some`      | Boolean  | true if any passes test              |
+| `every`     | Boolean  | true if all pass test                |
+| `find`      | Element  | first matching element               |
+| `findIndex` | Index    | index of first match                 |
+| `findLast`  | Element  | last matching element                |
+| `findLastI` | Index    | index of last match                  |
 
 ### reduce
 
-callback function in reduce take one extra argument known as __accumulator (acc)__ .
+callback function in reduce takes one extra argument: **accumulator**.
 Accumulator will store value performed on each element of array.
 
 ```js
@@ -287,33 +303,33 @@ const total = arr.reduce((acc,ele)=>{
 
 ### Array methods
 
-| __Method Name__         | __Parameters__                          | __Return Value__                              | __Details__                                                                 |
-|--------------------------|------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------|
-| __`Array.from()`__       | `arrayLike`, _`mapFn`, `thisArg`_       | A new array.                                 | Creates a new array from an array-like or iterable object.                  |
-| __`Array.of()`__         | `...elements`                           | A new array.                                 | Creates a new array with the given arguments as elements.                   |
-| __`Array.isArray()`__    | `value`                                 | `true` or `false`.                           | Checks if the given value is an array.                                      |
-| __`push()`__             | `...elements`                           | The new length of the array.                 | Adds one or more elements to the end of an array.                           |
-| __`pop()`__              | _(none)_                                | The removed element or `undefined`.          | Removes the last element from an array.                                     |
-| __`unshift()`__          | `...elements`                           | The new length of the array.                 | Adds one or more elements to the beginning of an array.                     |
-| __`shift()`__            | _(none)_                                | The removed element or `undefined`.          | Removes the first element from an array.                                    |
-| __`splice()`__           | `start`, _`deleteCount`, `...items`_    | An array containing the removed elements.    | Adds or removes elements from an array at the specified index.              |
-| __`concat()`__           | `...arrays`                             | A new array.                                 | Merges two or more arrays into a new array.                                 |
-| __`at()`__               | `index`                                 | The element at the specified index or `undefined`. | Returns the element at the specified index (supports negative indices).     |
-| __`indexOf()`__          | `searchElement`, _`fromIndex`_          | The index of the element or `-1`.            | Returns the first index of the element or -1 if not found.                  |
-| __`lastIndexOf()`__      | `searchElement`, _`fromIndex`_          | The last index of the element or `-1`.       | Returns the last index of the element or -1 if not found.                   |
-| __`includes()`__         | `searchElement`, _`fromIndex`_          | `true` or `false`.                           | Checks if the array contains a specific element.                            |
-| __`sort()`__             | _`compareFunction`_                    | The sorted array (in place).                 | Sorts the elements of an array in place.                                    |
-| __`reverse()`__          | _(none)_                                | The reversed array (in place).               | Reverses the order of elements in an array.                                 |
-| __`flat()`__             | _`depth`_                              | A new flattened array.                       | Flattens a nested array up to the specified depth (default is 1).           |
-| __`slice()`__            | _`start`, `end`_                       | A new array containing the extracted elements.| Returns a shallow copy of a portion of an array into a new array.           |
-| __`copyWithin()`__       | `target`, `start`, _`end`_              | The modified array.                          | Copies part of an array to another location in the same array.              |
-| __`fill()`__             | `value`, _`start`, `end`_              | The modified array.                          | Fills elements in the array with a static value.                            |
-| __`join()`__             | _`separator`_                          | A string of joined elements.                 | Joins all elements into a string with a specified separator (default is a comma). |
-| __`toString()`__         | _(none)_                                | A string of array elements separated by commas.| Converts the array into a comma-separated string.                           |
-| __`toLocaleString()`__   | _(none)_                                | A locale-specific string.                    | Converts the array into a locale-specific string representation.            |
-| __`entries()`__          | _(none)_                                | An iterator of key-value pairs.              | Returns an iterator with key-value pairs for each index.                    |
-| __`keys()`__             | _(none)_                                | An iterator of keys (indices).               | Returns an iterator with keys (indices) of the array.                       |
-| __`values()`__           | _(none)_                                | An iterator of values.                       | Returns an iterator with values of the array.                               |
+| Method             | Description                  |
+| ------------------ | ---------------------------- |
+| `Array.from()`     | Create array from iterable   |
+| `Array.of()`       | Create array with elements   |
+| `Array.isArray()`  | Check if value is array      |
+| `push()`           | Add elements to end          |
+| `pop()`            | Remove last element          |
+| `unshift()`        | Add elements to start        |
+| `shift()`          | Remove first element         |
+| `splice()`         | Add/remove at index          |
+| `concat()`         | Merge arrays                 |
+| `at()`             | Get element at index         |
+| `indexOf()`        | Find element index           |
+| `lastIndexOf()`    | Find last element index      |
+| `includes()`       | Check if contains element    |
+| `sort()`           | Sort array in place          |
+| `reverse()`        | Reverse array order          |
+| `flat()`           | Flatten nested arrays        |
+| `slice()`          | Get portion of array         |
+| `copyWithin()`     | Copy part to another spot    |
+| `fill()`           | Fill with static value       |
+| `join()`           | Join to string               |
+| `toString()`       | Convert to string            |
+| `toLocaleString()` | Locale string                |
+| `entries()`        | Key-value iterator           |
+| `keys()`           | Index iterator               |
+| `values()`         | Value iterator               |
 
 ## handling input on key press
 
@@ -338,18 +354,18 @@ Promise represents a value that may be present now, in future or never.
 
 ### states of promise
 
-1. __pending__ - waiting for operation completion
-2. __fulfilled__ - operation completed successfully and returned value
-3. __rejected__ - operation failed
+1. **pending** - waiting for operation completion
+2. **fulfilled** - operation completed successfully and returned value
+3. **rejected** - operation failed
 
 ### create promise
 
-__walkthrough__  
+**walkthrough**  
 
 1. Creating promise means wrapping asynchronous operation in promise object.
 2. `Promise()` constructor - is used for creating promises.  
-3. executor - function passed as parameter in constructor which conatins async operation.
-4. resolve, reject - functions passed in executor which are called once async operation is completed or failed.
+3. executor - function with async operation (resolve, reject).
+4. resolve, reject - functions called when async operation completes.
 5. executor is immediatly executed when promise is created
 6. If operation completed resolve is called with value as its argument.
 7. If operation is failed reject is called with error as its argument.
@@ -368,12 +384,12 @@ promise methods are executed handle promise value or error
 
 1. `then()` it takes a function which is executed after promise is completed.
 2. `catch()` takes a function which is executed after promise fails
-3. `finally()` takes a function which is executed always either resolved or rejected.
+3. `finally()` executes regardless of resolution or rejection.
 
 ### promise chaining
 
-multiple promise can be chained if we want to execute only if first one is completed.  
-We can chain using mutiple `.then()` where function in previous `then()` return a promise.
+multiple promises can be chained if first completes successfully.  
+Chain using multiple `.then()` where each returns a promise.
 
 ```js
 myProm1.then(()=>{
@@ -397,11 +413,11 @@ various method of creating date object
 
 1. `const currentDate = new Date();`
     - returns current date and time with ISO 8601 format.
-    - __format__ YYYY-MM-DDTHH:MM:SS:MMMZ
-    - __T__ represent separator, time start after that
-    - __Z__ represent timezone z - UTC
+    - **format** YYYY-MM-DDTHH:MM:SS:MMMZ
+    - **T** represent separator, time start after that
+    - **Z** represent timezone z - UTC
 2. `const date = new Date(n);`
-    - returns date after n miliseconds from unix epoch (1970-01-01T00:00:01.001Z)
+    - returns date after n milliseconds from Unix epoch
     - `new Date(0)` - (1970-01-01T00:00:00.000Z)
     - `new Date(1)` - (1970-01-01T00:00:00.001Z)
     - `new Date(1001)` - (1970-01-01T00:00:01.001Z)
@@ -429,7 +445,7 @@ following method are used for accessing components from date object
 
 ### comparing dates
 
-1. Date can be compared using comparisor operator (<,>,<=,>=,==) or by converting in milliseconds using `getTime()`.
+1. Compare dates using operators or convert to milliseconds with `getTime()`.
 
 ### formatting date
 
@@ -441,26 +457,26 @@ following method are used for accessing components from date object
 
 ### types of storages
 
-1. __local storage__  accessed with `localStorage`
-2. __session storage__ accessed with `sessionStorage`
-3. __cookies__ accessed with `document.cookie`
+1. **local storage**  accessed with `localStorage`
+2. **session storage** accessed with `sessionStorage`
+3. **cookies** accessed with `document.cookie`
 
-|          | cookies | local storage | session storage |
-|----------|----------|----------|----------|
-|__capacity__| 4KB | 10MB | 5MB |
-|__Browser__| HTML4/HTML5 | HTML5 | HTML5 |
-|__Accessible from__| Any window | Any window | same tab |
-|__Expires__| Manually set | Manually set | Tab close |
-|__Storage Location__| Browser/Server | Browser | Browser |
-|__Sent with request__| Yes | No | No |
+|                       | cookies        | local storage | session storage |
+| --------------------- | -------------- | ------------- | --------------- |
+| **capacity**          | 4KB            | 10MB          | 5MB             |
+| **Browser**           | HTML4/HTML5    | HTML5         | HTML5           |
+| **Accessible from**   | Any window     | Any window    | same tab        |
+| **Expires**           | Manually set   | Manually set  | Tab close       |
+| **Storage Location**  | Browser/Server | Browser       | Browser         |
+| **Sent with request** | Yes            | No            | No              |
 
 1. localStorgae
-    - `localStorage.setItems('key','value')` takes two parameter, key and value string
+    - `localStorage.setItems('key','value')` - stores key-value pair
     - `localStorage.getItems('key')` takes one parameter key
     - `localStorage.removeItems('key')`
 
 2. sessionStorage
-    - `sessionStorage.setItems('key','value')` takes two parameter, key and value string
+    - `sessionStorage.setItems('key','value')` - stores key-value pair
     - `sessionStorage.getItems('key')` takes one parameter key
     - `sessionStorage.removeItems('key')`
 
@@ -471,12 +487,12 @@ following method are used for accessing components from date object
 
 ### Accessing element
 
-1. __document.getElementById()__ takes id and return an element.
-2. __document.getElementByClassName()__ takes class name and return array of element.
-3. __document.getElementByTagName()__ takes tag name and return array of element.
-4. __document.querySelector()__ takes css selector(tag, .class, #id) and return first matched element.
-5. __document.querySelector()__ takes css selector(tag, .class, #id) and return first matched element.
-6. __document.querySelectorAll()__ takes css selector(tag, .class, #id) and return array of matched element.
+1. **document.getElementById()** takes id and return an element.
+2. **getElementByClassName()** returns array of elements by class name.
+3. **getElementByTagName()** returns array of elements by tag name.
+4. **querySelector()** returns first element matching CSS selector.
+5. **querySelectorAll()** returns array of elements matching CSS selector.
+6. **querySelectorAll()** returns array of all matched elements for selector.
 
 ### Modifying element content
 
@@ -487,22 +503,22 @@ let,
 const element = document.getElementById('myId')
 ```
 
-1. __element.innerHTML__ get or set inner html content.
+1. **element.innerHTML** get or set inner html content.
     - `console.log(element.innerHTML)` // `<p>this is para</p>`
     - `element.innerHTML = <h1>para changed to heading</h1>`
-2. __element.textContent__ get or set text content inside tag and its children .
+2. **element.textContent** get or set text content inside tag and its children .
     - `console.log(element.textContent)` // `this is para`
-3. __element.innerText__ similar to textContent but also consider css styles. It repaints html based on css and return text content of only visible elements.
+3. **innerText** like textContent but respects CSS visibility rules.
 
 ### Modifying element attributes
 
 Change element attributes like src, href etc
 
-1. __element.setAttribute(attr, val)__ takes attributes and its value and set it element.
+1. **setAttribute()** sets element attributes and values.
     - `element.setAttribute('src','image.jpg');`
-2. __element.getAttribute(attr)__ takes attributes and return its value.
+2. **element.getAttribute(attr)** takes attributes and return its value.
     - `element.getAttribute('src');` //image.jpg
-3. __element.removeAttribute(attr)__ takes attributes and remove that attribute.
+3. **element.removeAttribute(attr)** takes attributes and remove that attribute.
     - `element.removeAttribute('src');`
 
 ### Modifying element style
@@ -510,15 +526,15 @@ Change element attributes like src, href etc
 change inline style of element
 `element.style.cssPropertyName`
 
-1. __`element.style.cssPropertyName`__ set value of a css property
+1. **`element.style.cssPropertyName`** set value of a css property
     - `element.style.color = 'red'`
-2. __`element.classList`__
+2. **`element.classList`**
     1. `element.classList.add('new_class1','new_class2')`
     2. `element.classList.remove('class1','class2)`
-    3. `element.classList.toggle('myClass')` if myclass is present then it remove it else add it
+    3. `toggle('myClass')` - add if absent, remove if present
         1. `element.classList.toggle('myClass', true)` add the class
         2. `element.classList.toggle('myClass', false)` remove the class
-    4. `element.classList.contains('class1')` returns true if class present else false.
+    4. `contains('class')` - returns true if class is present
     5. `element.classList.replace('old-class','new-class')`
     6. `element.classList.item(0)` or `element.classList[0]`
     7. `element.classList.length` gives number of classed in the element.
@@ -533,14 +549,14 @@ change inline style of element
 Manipulating dom element in response to user action
 
 1. `element.addEventListener('click',handleClick)`
-1. `element.removeEventListener('click',handleClick)`
+2. `element.removeEventListener('click',handleClick)`
 
 ## Events
 
-- __Events:__ things that happen in system which is told to code and code react accordingly
-- __Event fire:__ when event is fired in browser window, it is attached to element present in browser.
-- __Event listener:__ is a object which listens for event fire and calls event handler once event is fired.
-- __Event handler:__ block of code or function which execute as reaction to event fire.
+- **Events:** happen in system and code reacts accordingly
+- **Event fire:** when event triggers, browser attaches it to element.
+- **Event listener:** listens for event and calls handler when fired.
+- **Event handler:** function that executes in reaction to event fire.
 
 ### Adding event listeners
 
@@ -566,7 +582,7 @@ There are three ways to add event listeners to an element.
 ```
 
 - Objects should have event listener to listen if event is fired.
-- if multiple event listener is added to an element then all be executed orderly.
+- multiple listeners execute orderly on same element.
 
 ```js
 myElement.addEventListener("click", functionA);
@@ -574,18 +590,18 @@ myElement.addEventListener("click", functionB);
 ```
 
 - Some event are available for all elements such as `click`
-- Some event are element specific such as `play` event is only available for `<video>` element.
-- __remove event listeners:__ if event listerners is added to any element it can be removed using `btn.removeEventListener()`
+- Some events are element-specific (e.g., `play` for `<video>`).
+- **remove event listeners:** use `removeEventListener()` to remove.
 
 #### event handler properties
 
-objects that can fire events usually have property starting with `on` followed by name of event.
+objects with `on` property prefix followed by event name.
 
 ```js
 btn.onclick(handleBtnClick);
 ```
 
-- Unlike addEventListener, event handler properties can not handle multiple event handlers
+- Unlike `addEventListener()`, handler properties can't handle multiple handlers
 
 ```js
 element.onclick = function1;
@@ -594,7 +610,7 @@ element.onclick = function2;
 
 - Here function2 will overwrite function1 handler
 
-#### Inline event handlers _(Not recommended)_
+#### Inline event handlers *(Not recommended)*
 
 `<button onclick="bgChange()">Press me</button>`
 
@@ -614,7 +630,7 @@ btn.addEventListener('click',handler);
 ```
 
 - `e.target` return element itself
-- `e.preventDefault()` prevent default event of element such as submit button of form.
+- `preventDefault()` prevents element's default action.
 
 ### Events in NodeJS
 
@@ -644,15 +660,15 @@ myEmitter.emit('eventName');
 ## Event Loop
 
 - Javascript is single threaded, synchronous by nature.
-- to handle asynchronous operations __event loop__ is used.
+- to handle asynchronous operations **event loop** is used.
 
 ### working for event loop
 
-- __Call Stack__ contains job which is currently being executed. call stack can have one job at a time. If function in call stack call inner fuction then inner function is added to top of call stack.
-- __Task queue__ contains all the job that is to be executed line by line.
-- __Web API__ if any async operations is encountered by call stack then it delegated to web api to handle it (dom request, network request etc) and moves to another job from task queue.
-- __callback queue__ one web api finish task it pushes callback function to callback queue.
-- Event loop constantly check if call stack is empty (that is after finishing task queue) then it pushes job from callback queue.
+- **Call Stack** executes current job. Async operations are delegated.
+- **Task queue** contains all the job that is to be executed line by line.
+- **Web API** handles async operations (DOM, network) from call stack.
+- **callback queue** receives callback functions from Web API.
+- Event loop pushes callbacks when call stack empties.
 
 ## Performance calculator
 
@@ -664,7 +680,7 @@ let timeElapsed = endTime - startTime;
 
 ## Drag Events
 
-- __draggable__ attribute of element is set true to make is draggable element.
+- **draggable** attribute of element is set true to make is draggable element.
 
 ```html
 <div draggable="true">
@@ -672,19 +688,20 @@ let timeElapsed = endTime - startTime;
 </div>
 ```
 
-| Events | Applicable on | Details |
-|---------|-------------|----------|
-| `onDragStart` | draggable element | triggered when dragging started|
-| `onDrag` | draggable element | continously run when dragged |
-| `onDragEnd` | draggable element | when element is released |
-| `onDragEnter` | Other element | when draggable element enter other target element|
-| `onDragOver` | Other element | continoulsy run when draggable element is hovered over target|
-|`onDragLeave` | Other element | runs when draggable element leaves target|
-| `onDrop` | Other element | when element is dropped on target|
+| Events        | On Element        | Details                      |
+| ------------- | ----------------- | ---------------------------- |
+| `onDragStart` | draggable         | When drag starts             |
+| `onDrag`      | draggable         | Continuous during drag       |
+| `onDragEnd`   | draggable         | When element released        |
+| `onDragEnter` | target            | When over target             |
+| `onDragOver`  | target            | Continuous over target       |
+| `onDragLeave` | target            | When leaving target          |
+| `onDrop`      | target            | When dropped on target       |
 
 ### Execution order
 
-`onDragStart` -> `onDrag` -> `onDragEnter` -> `onDragOver` -> `onDragLeave` -> `onDrop` -> `onDragEnd`
+`onDragStart` -> `onDrag` -> `onDragEnter` -> `onDragOver`
+-> `onDragLeave` -> `onDrop` -> `onDragEnd`
 
 ### Notes
 

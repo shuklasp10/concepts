@@ -19,5 +19,8 @@
     ],
     "draw.folder.structure.style": "ChevronIndicators",
     "draw.folder.structure.allowRecursion": true,
-    "draw.folder.structure.respectGitignore": true
+    "draw.folder.structure.respectGitignore": true,
+    "[markdown]": {
+        "editor.formatOnSave": true
+    }
 }
