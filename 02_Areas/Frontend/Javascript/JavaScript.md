@@ -267,28 +267,43 @@ console.log(a) //10
 
 ## Hoisting
 
-- Behaviour of javascript which moves variable or function definition
-- (not declaration) to top of its scope.
-- Only var follow hoisting, let and const does not moves on top
-- use `let` or `const` to prevent hoisting.
+- Behaviour of js allocates memory for variables and functions during
+  memory creation phase before execution.
+- `function` is hoisted with its full definition
+- `var` is hoisted and initialized with undefined
+- `let` and `const` are hoisted but remain uninitialized (**TDZ**)
+- Accessing `let` or `const` before initialization throws **ReferenceError**
 
-```js
-console.log(a) //undefined
-var a = 10
-```
+    ```js
+    console.log(a) // undefined
+    console.log(b) // ReferenceError
+    var a = 20;
+    let b = 10;
+    ```
+
+> **Function declaration** are hoisted but not **function expression**
+>
+> ```js
+> func1(); // works ✅
+> func2(); // TypeError ❌: func2 is not a function
+> console.log(func1); // [Function: func1] 
+> console.log(func2); // undefined
+> function func1() {console.log("Function Declaration")}
+> var func2 = function() {console.log("Function Expression")}
+> ```
 
 ### Temporal dead zone
 
-- Behaviour of js which hoist `let` and `const` but unlike `var`
+- line between start of block and variable declaration is called temporal dead zone
 - They are not initialized, causing `ReferenceError`
 - TDZ spans from block start to variable declaration line
 
-```js
-function show(){
-    // ...TDZ
-    let a = 10;
-}
-```
+    ```js
+    function show(){
+        // ...TDZ
+        let a = 10;
+    }
+    ```
 
 ## Closures
 
