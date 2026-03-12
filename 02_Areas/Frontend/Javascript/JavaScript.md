@@ -70,7 +70,7 @@
 ### Non primitive (reference)
 
 > Always passed as reference
-> 
+>
 > Javascript has one non-primitive type `object`, rest all are specialized objects.
 
 - **object**
@@ -103,37 +103,6 @@
 
   - `map.size` gives number of entries in map.
   - `Object.fromEntries(map)` convert map to object.
-
-## Execution context
-
-A box that stores everything needed to run the code.
-
-**Context** = variables + function + scope info + `this` + outer environment reference (link to parent scope)
-
-### Types of context
-
-1. Global execution context
-   - one GEC per file
-   - Global `Object` and `this` are created in GEC
-   - In browser, `Object` and `this` refer to `window` object.
-   - In Node.js, `Object` and `this` refer to `global` object.
-2. Function execution context
-   - created when function is invoked
-   - creates local variables, parameters, `this` specific to function
-3. Eval execution context: *created by `eval()` method (rarely used)*
-
-### Phases of execution context
-
-1. Memory creation phase
-    - Scans code and allocate memory for variables and functions.
-    - var initialized as `undefined`
-    - let and const placed in TDZ
-    - functions full definition stored in memory.
-2. Code execution phase
-    - code is executed line by line and variables are assigned values.
-    - Managed by **call stack** works like stack LIFO
-    - `Global()` is pushed first in stack and execute at last.
-    - Maximum recursion depth is 10,000 due to limited stack memory.
 
 ## Call, apply and bind
 
