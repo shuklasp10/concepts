@@ -20,7 +20,7 @@ It includes:
 
 - **Lexical Environment**
 - **Variable Environment**
-- **`this` Binding**
+- `**this` Binding
 
 > For `Global()` execution context, `this` refers to the global object (`window` in browser, `global` in Node.js).
 
@@ -32,19 +32,20 @@ Execution context is created when
 
 After execution context is created and pushed to call stack it goes through two phases:
 
-1. **Memory Creation Phase**:
-    - Lexical environment is created
-    - Variables registered and hoisted
-    - Function declarations stored and hoisted
-    - `this` binding determined
-2. **Code Execution Phase**:
-    - Code is executed line by line
+1. **Memory Creation Phase**
+   - Lexical environment is created
+   - Variables registered and hoisted
+   - Function declarations stored and hoisted
+   - `this` binding determined
+2. **Code Execution Phase**
+   - Code is executed line by line
+
+> \[!TIP]
+> During memory creation phase, for functions a function object is created with properties like `[[Code]]`and `[[Environment]]`
 
 ## Call Stack
 
-A data structure that keeps track of the execution contexts in the order they are created.  
-It follows Last In First Out (LIFO) principle.  
-Maximum recursion depth is 10,000 due to limited stack memory.
+A data structure that keeps track of the execution contexts in the order they are created.It follows Last In First Out (LIFO) principle.Maximum recursion depth is 10,000 due to limited stack memory.
 
 > JavaScript is single-threaded, meaning only one execution context runs at a time
 
@@ -53,12 +54,13 @@ Maximum recursion depth is 10,000 due to limited stack memory.
 A data structure that holds variables and scope information
 Lexical environment contains
 
-- Environment Record (variables/functions)
-- Reference to outer lexical environment
+- Environment Record (*variables/functions*)
+- Reference to outer lexical environment (*Refers to&#x20;*`[[Environment]]`*&#x20;property of function's object*)
+**Why?&#x20;**&#x52;eference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
 
-> Reference to outer lexical environment allows for scope chaining and variable lookup in parent scopes.
-
+> \[!NOTE]
 > Reference to outer lexical environment is based on where the function is defined, not where it is called (lexical scoping).
+>
 > For Global execution context, the outer lexical environment is `null`
 
 ```js
@@ -103,7 +105,7 @@ Allocation of memory for variables and functions before execution during the mem
 
 | Declaration | Hoisting Behavior                         |
 | ----------- | ----------------------------------------- |
-| `var`       | hoisted and initialized as `undefined`      |
+| `var`       | hoisted and initialized as `undefined`    |
 | `let`       | hoisted but remains in Temporal Dead Zone |
 | `const`     | hoisted but remains in Temporal Dead Zone |
 | `function`  | hoisted with full function definition     |
