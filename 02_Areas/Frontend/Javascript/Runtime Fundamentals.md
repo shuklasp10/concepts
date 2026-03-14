@@ -20,7 +20,7 @@ It includes:
 
 - **Lexical Environment**
 - **Variable Environment**
-- `**this` Binding
+- `this` Binding
 
 > For `Global()` execution context, `this` refers to the global object (`window` in browser, `global` in Node.js).
 
@@ -43,6 +43,23 @@ After execution context is created and pushed to call stack it goes through two 
 > \[!TIP]
 > During memory creation phase, for functions a function object is created with properties like `[[Code]]`and `[[Environment]]`
 
+### How blocks are handled during code execution phase?
+
+An execution context can have multiple lexical environment in its entire lifetime.
+
+Each block creates a new lexical environment, one lexical environment is active at a time
+
+```javascript
+var a = 10;
+if(true){
+    console.log("hello")
+}
+console.log(a);
+// Here `Global()` execution context has two lexical environments, one for global scope 
+// and one for if block. During execution of if block, the block's lexical environment is active, 
+//but after block execution finishes, it goes back to global lexical environment.
+```
+
 ## Call Stack
 
 A data structure that keeps track of the execution contexts in the order they are created.It follows Last In First Out (LIFO) principle.Maximum recursion depth is 10,000 due to limited stack memory.
@@ -56,7 +73,7 @@ Lexical environment contains
 
 - Environment Record (*variables/functions*)
 - Reference to outer lexical environment (*Refers to&#x20;*`[[Environment]]`*&#x20;property of function's object*)
-**Why?&#x20;**&#x52;eference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
+reference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
 
 > \[!NOTE]
 > Reference to outer lexical environment is based on where the function is defined, not where it is called (lexical scoping).
