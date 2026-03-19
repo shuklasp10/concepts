@@ -164,14 +164,21 @@ return obj
 > Everytime we create an object from constructor a new `this` context is created and passed to constructor function which initializes that `this` context and return it as new object.
 
 > \[!TIP]
-> Arrow function are not invoked with `this` object, they capture it lexically from outer scope.
+> Arrow function ado not create their own`this` object when invoked, instead they capture it lexically from outer scope.
 
+> \[!WARNING]
+> TODO: why `new` override explicit binding, check interna
+ working `[[call]]` vs `[[construct]]`
+### Interview Tips:
 
+- Binding priority new > explicit > implicit > default
+- **default&#x20;**`fn()`, **implicit&#x20;**`obj.fn()`, **explicit&#x20;**`fn.call(obj)` or `fn.apply(obj)` or `fn.bind(obj)`, **new&#x20;**`new fn()`
+- Reference lost -> implicit binding lost `const fn = obj.fn; fn()`&#x20;
+- Callback function lose context. `setTimeout(obj.fn, 0)` invokes with default binding&#x20;
+- Arrow function do not have t
+eir own `this`, instead invoked with outer lexical context
 
-|
-
-oty
-pes
+## Prototypes
 
 ## Classes
 
