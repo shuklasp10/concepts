@@ -1,4 +1,4 @@
-# Javascript Runtime Fundamentals
+# Runtime Fundamentals
 
 ## Execution flow
 
@@ -41,7 +41,7 @@ After execution context is created and pushed to call stack it goes through two 
    - Code is executed line by line
 
 > \[!TIP]
-> During memory creation phase, for functions a function object is created with properties like `[[Code]]`and `[[Environment]]`
+> During memory creation phase, for functions a function object is created with properties like`[[Code]]`and `[[Environment]]`
 
 ### How blocks are handled during code execution phase?
 
@@ -73,7 +73,7 @@ Lexical environment contains
 
 - Environment Record (*variables/functions*)
 - Reference to outer lexical environment (*Refers to&#x20;*`[[Environment]]`*&#x20;property of function's object*)
-reference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
+  reference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
 
 > \[!NOTE]
 > Reference to outer lexical environment is based on where the function is defined, not where it is called (lexical scoping).
