@@ -1,4 +1,4 @@
-# Core Fundamentals
+# Function Mechanics
 
 ## Closures
 
@@ -135,15 +135,16 @@ show.apply({ name: "Bob" }, ["Hi"]); // Output: Hi Bob
 const boundShow = show.bind({ name: "Charlie" });
 boundShow("Hey"); // Output: Hey Charlie
 ```
- > \[!NOTE]
+
+> \[!NOTE]
 > Internally bind work like this
 
 ### `new` binding
 
 When we invoke function with `new` keyword it does following
 
-1. Created empty `this`&#bjectx2. call function using newly created `this`
-3. after function execution, returns `this`&#x20;
+1. Created empty `this`\&#bjectx2. call function using newly created `this`
+2. after function execution, returns `this`&#x20;
 
 ```javascript
 function Person (name){
@@ -152,6 +153,7 @@ function Person (name){
 var user = new Person("John");
 console.log(user.name); // John
 ```
+
 2When `new Person()` is called it does following
 
 ```javascript
@@ -161,14 +163,15 @@ return obj
 ```
 
 > \[!NOTE]
-> Everytime we create an object from constructor a new `this` context is created and passed to constructor function which initializes that `this` context and return it as new object.
+> Everytime we create an object from constructor a new`this` context is created and passed to constructor function which initializes that `this` context and return it as new object.
 
 > \[!TIP]
 > Arrow function ado not create their own`this` object when invoked, instead they capture it lexically from outer scope.
 
 > \[!WARNING]
-> TODO: why `new` override explicit binding, check interna
- working `[[call]]` vs `[[construct]]`
+> TODO: why`new` override explicit binding, check interna
+> working `[[call]]` vs `[[construct]]`
+
 ### Interview Tips:
 
 - Binding priority new > explicit > implicit > default
@@ -176,23 +179,23 @@ return obj
 - Reference lost -> implicit binding lost `const fn = obj.fn; fn()`&#x20;
 - Callback function lose context. `setTimeout(obj.fn, 0)` invokes with default binding&#x20;
 - Arrow function do not have t
-eir own `this`, instead invoked with outer lexical context
+  eir own `this`, instead invoked with outer lexical context
 
-## Prototypes
+## Higher order functions
 
-## Classes
+HOF are those functions which operates on other functions
+Two types of HOF:
 
+1. **Taking function as argument** most commonly used. Eg map, filter
+2. **Returning function** less frequently used
 
+## Pure functions
 
+Pure function follows two rules
 
-
-
-
-
-
-
-
-
-
-
-
+1. **No side effects:** does not change state or variable outside its scope.
+2. **Deterministic scope:** for same input set it should return same output
+   Charateristics
+3. **Referential transparency:** if function is replaced with its output value,
+   it should not affect behaviour of program.
+4. **Immutability:** do not modify passed arguments
