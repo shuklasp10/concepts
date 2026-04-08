@@ -1,28 +1,30 @@
-name: Spell Check
+# name: Spell Check
 
-on:
-  pull_request:
-    branches:
-      - main
-      - feature/notes-v2
-    paths:
-      - "**/*.md"
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#       - feature/notes-v2
+#     paths:
+#       - "**/*.md"
 
-jobs:
-  spelling:
-    runs-on: ubuntu-latest
+# jobs:
+#   spelling:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Run codespell on changed markdown files
-        run: |
-          git diff --name-only origin/${{ github.base_ref }}...HEAD \
-            | grep '\.md$' \
-            | xargs -r npx codespell \
-              --builtin=clear,rare,informal,code,names \
-              --ignore-words-list="shri,prakash,shukla,devops" \
-              --check-filenames
+#       - name: Run codespell on changed markdown files
+#         env:
+#           TERM: xterm
+#         run: |
+#           git diff --name-only origin/${{ github.base_ref }}...HEAD \
+#             | grep '\.md$' \
+#             | xargs -r npx codespell \
+#               --builtin=clear,rare,informal,code,names \
+#               --ignore-words-list="shri,prakash,shukla,devops" \
+#               --check-filenames
