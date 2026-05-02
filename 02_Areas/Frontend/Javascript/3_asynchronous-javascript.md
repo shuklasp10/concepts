@@ -35,9 +35,21 @@ if (call stack empty):
 
 ### Async Task Lists
 
-**Microtask Queue:** `Promise`, `queueMicrotask`, MutationObserver, process.nextTick (highest priority)
+**Microtask Queue:** 
 
-**Macrotask Queue:** Timers, DOM Events, I/O operations (Node.js), setImmediate (Node.js)
+1. `Promise` - Represents a value that resolves or rejects asynchronously, executing callbacks in the microtask queue.
+2. `queueMicrotask` - Explicitly queues a function to execute in the microtask queue with high priority.
+3. MutationObserver - Observes DOM changes and executes callbacks in the microtask queue when mutations occur.
+4. `process.nextTick` (highest priority) - Node.js API that queues callbacks to execute before other microtasks, at the highest priority level.
+
+**Macrotask Queue:** 
+
+1. Timers: `setTimeout`, `setInterval` - Execute callbacks after a specified delay or interval.
+2. DOM Events - Execute event handlers when user interactions or DOM changes occur.
+3. I/O operations (Node.js) - Execute callbacks when file or network operations complete.
+4. `setImmediate` (Node.js) - Executes callbacks after the current event loop phase completes.
+
+> `setTimeout` & `setInterval` are web api. JS register them in browser and once it is completed browser pushes the callback function to callback queue for execution. 
 
 ## Promises
 
