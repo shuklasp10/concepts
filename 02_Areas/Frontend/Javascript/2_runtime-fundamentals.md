@@ -57,14 +57,16 @@ if(true){
 console.log(a);
 // Here `Global()` execution context has two lexical environments, one for global scope 
 // and one for if block. During execution of if block, the block's lexical environment is active, 
-//but after block execution finishes, it goes back to global lexical environment.
+// but after block execution finishes, it goes back to global lexical environment.
 ```
 
 ## Call Stack
 
-A data structure that keeps track of the execution contexts in the order they are created.It follows Last In First Out (LIFO) principle.Maximum recursion depth is 10,000 due to limited stack memory.
+A data structure that keeps track  of the execution contexts in the order they are created.It follows Last In First Out (LIFO) principle.Maximum recursion depth is 10,000 due to limited stack memory.
 
-> JavaScript is single-threaded, meaning only one execution context runs at a time
+> JavaScript is single-thrCall stack stores runtime container of execution context, and each contains hold reference of lexical environment, variable envionment and this binding. They dont store actual data. Data is stored in heap memory.
+
+eaded, meaning only one execution context runs at a time
 
 ## Lexical Environment
 
@@ -124,5 +126,32 @@ Allocation of memory for variables and functions before execution during the mem
 | ----------- | ----------------------------------------- |
 | `var`       | hoisted and initialized as `undefined`    |
 | `let`       | hoisted but remains in Temporal Dead Zone |
-| `const`     | hoisted but remains in Temporal Dead Zone |
+| `const`     | hoist/> \[!TIP]>> `var` is hoisted in variable environment of execution context but `let` is hoisted inside lexical environment.&#x20;>>
+ Here, `a, b` and` c` will be hoisted on creation of execution context and memory allocation of global lexical environment.>>
+ But `d `will be created during execution of global lexical environment when child lexical environment is created.>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ed but remains in Temporal Dead Zone |
 | `function`  | hoisted with full function definition     |
