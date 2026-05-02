@@ -8,15 +8,15 @@
 
 - **string**
 - **number**
-  - Numbers are **64 bit** IEEE 754 double precision.
-  - Breakdown: Sign(1) + Exponent(11) + Mantissa(52)
-  - Also include floats
-  - Minimum safe range: `-(2^53 - 1)` or `9007199254740991` or `Number.MIN_SAFE_INTEGER`
-  - Maximum safe range: `(2^53 - 1)` or `9007199254740991` or `Number.MAX_SAFE_INTEGER`
-  - Beyond this range numbers exist but precision is lost.
-  - Minimum positive range: `5e-324` or `Number.MIN_VALUE`
-  - Maximum range: `1.7976931348623157e+308` or `Number.MAX_VALUE`
-  - Beyond this range become `0` for minimum and `Infinity` for maximum
+    - Numbers are **64 bit** IEEE 754 double precision.
+    - Breakdown: Sign(1) + Exponent(11) + Mantissa(52)
+    - Also include floats
+    - Minimum safe range: `-(2^53 - 1)` or `9007199254740991` or `Number.MIN_SAFE_INTEGER`
+    - Maximum safe range: `(2^53 - 1)` or `9007199254740991` or `Number.MAX_SAFE_INTEGER`
+    - Beyond this range numbers exist but precision is lost.
+    - Minimum positive range: `5e-324` or `Number.MIN_VALUE`
+    - Maximum range: `1.7976931348623157e+308` or `Number.MAX_VALUE`
+    - Beyond this range become `0` for minimum and `Infinity` for maximum
 
 ```html
 <!-- TODO: Move it in separate section and add link  -->
@@ -28,17 +28,17 @@
 > `isNaN()` old way it try to convert value in number first then compare. Use `Number.isNaN()` for safe check.
 
 - **bigint**
-  - For number beyond safe integer.
-  - Range limited by memory.
+    - For number beyond safe integer.
+    - Range limited by memory.
 - **boolean**
 - **undefined**
 - **null**
-  - `Null` is primitive datatype but its `typeof` is `object`. This is
-    intentional bug in Javascript.
+    - `Null` is primitive datatype but its `typeof` is `object`. This is
+      intentional bug in Javascript.
 - **symbol**
-  - Used as **unique identifiers**, mostly as keys in object.
-  - Two symbol with same value can't be equal.
-  - `Symbol("id") === Symbol("id")` false
+    - Used as **unique identifiers**, mostly as keys in object.
+    - Two symbol with same value can't be equal.
+    - `Symbol("id") === Symbol("id")` false
 
 ### Non primitive (reference)
 
@@ -57,11 +57,11 @@
 ### Built-in objects
 
 - **Set**
-  - stores unique value of any type
+    - stores unique value of any type
 - **Map**
-  - map stores key, value pair where key can be anything not only string
-  - `map.size` gives number of entries in map.
-  - `Object.fromEntries(map)` convert map to object.
+    - map stores key, value pair where key can be anything not only string
+    - `map.size` gives number of entries in map.
+    - `Object.fromEntries(map)` convert map to object.
 
 ## Date
 
@@ -72,16 +72,19 @@ date is represented by `Date` object.
 various method of creating date object
 
 1. `const currentDate = new Date();`
+
    - returns current date and time with ISO 8601 format.
    - **format** YYYY-MM-DDTHH:MM:SS:MMMZ
    - **T** represent separator, time start after that
    - **Z** represent timezone z - UTC
-2. `const date = new Date(n);`
+1. `const date = new Date(n);`
+
    - returns date after n milliseconds from Unix epoch
    - `new Date(0)` - (1970-01-01T00:00:00.000Z)
    - `new Date(1)` - (1970-01-01T00:00:00.001Z)
    - `new Date(1001)` - (1970-01-01T00:00:01.001Z)
-3. `const date = new Date(yr,m,d,hr,min,sec)`;
+1. `const date = new Date(yr,m,d,hr,min,sec)`;
+
    - month is 0-indexed so 0-jan, 1-Feb, 11-Dec
 
 ### accessing date component
@@ -112,3 +115,45 @@ following method are used for accessing components from date object
 1. `date.toDateString()` Mon May 15 2024
 2. `date.toTimeString()` 12:00:00 GMT+0000 (Coordinated Universal Time)
 3. `date.toISOString()` 2024-05-15T12:00:00.000Z
+
+## Loops
+
+### Basic `for` loop
+
+```js
+for (let i = 0; i < arr.length; i++) { ... }
+```
+
+### `for...in` loop
+
+Iterate through `keys` for object, and `index` for array and string.
+
+```js
+const obj = { name: 'john', age: 20 }
+const arr = [10, 20, 30]
+const str = 'john'
+
+for (let i in obj) { console.log(i) } // name age
+for (let j in arr) { console.log(j) } // 0 1 2
+for (let k in str) { console.log(k) } // 0 1 2 3
+```
+
+### `for...of` loop
+
+Iterate through `values` for array, `char` for string.
+
+For objects, it does not work directly. Instead, we can use `Object.entries(obj)` which return array of array of key value.
+
+```js
+const obj = { name: 'john', age: 20 }
+const arr = [10, 20, 30]
+const str = 'john'
+
+for (let [key, value] of Object.entries(obj)) { 
+  console.log(key, value)
+} 
+// name john
+// age 20
+for (let j of arr) { console.log(j) } // 10 20 30
+for (let k of str) { console.log(k) } // j o h n
+```
