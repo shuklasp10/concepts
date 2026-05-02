@@ -1,4 +1,10 @@
 # Function Mechanics
+When function's Execution context is created
+**Lexical Environment &#x20;**&#x69;s defined during function object creation time. It is based on where function is written.
+**this Binding&#x20;**&#x69;s defined during function execution time. It is based on where function is called.&#x20;
+
+
+
 
 ## Closures
 
@@ -17,7 +23,10 @@ Closures are created when function object is created.
 4. When `outer()` finishes, normally its execution context should be removed from the stack.
 5. Because `inner` still references the lexical environment, **the environment cannot be garbage collected**.
 6. When inner function is called, it uses `[[Environment]]` reference to create its lexical environment.
-7. This persistent environment is called a **closure**.
+7. This persistent environment /> \[!WARNING]> If& inner function does not use anything from outer fu
+tion then it will directly reference to most outer scope from where it is using something. If none, then it will be reference to global scopeThis happens because JS optimizes closure.
+
+is called a **closure**.
 
 > \[!NOTE]
 > Closures can be used as encapsulation like classes in oops
@@ -122,7 +131,9 @@ show(); // this -> global or window
 
 Function invoked with manual binding using `call`, `apply` and `bind`
 
-**call&#x20;**&#x69;nvokes function like engine does by passing `this` object as first argument and then functions arguments
+**call&#x20;**&#x69;nvokes function like engine does by passing `this` object as first argument and then functions a
+
+ments
 
 **apply&#x20;**&#x69;nvokes function same as call but pass function argument in array.ot**bind&#x20;**&#x72;eturns new function with fixed `this`&#x20;
 
