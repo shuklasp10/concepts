@@ -2,16 +2,42 @@
 
 ## Event Loop
 
-- Javascript is single threaded, synchronous by nature.
-- to handle asynchronous operations **event loop** is used.
+> Javascript runtime mechanism to enable asynchronous operations.
 
-### working for event loop
+### Core topics
 
-- **Call Stack** executes current job. Async operations are delegated.
-- **Task queue** contains all the job that is to be executed line by line.
-- **Web API** handles async operations (DOM, network) from call stack.
-- **callback queue** receives callback functions from Web API.
-- Event loop pushes callbacks when call stack empties.
+- **Call Stack** - Executes synchronous code in order. Processes one function at a time using LIFO (Last In, First Out) principle.
+- **Web/Runtime API** - Browser or Node.js APIs that handle asynchronous operations (not part of JavaScript engine itself).
+- **Task Queue (Macrotask/Callback Queue)** - Holds callbacks from macrotasks like `setTimeout`, `setInterval`, and I/O operations.
+- **Microtask Queue** - Higher priority queue for microtasks like Promise callbacks and `queueMicrotask()`. Executes completely before any macrotask.
+- **Event Loop** - Coordinates execution flow. Monitors call stack; when empty, executes all microtasks first, then one macrotask, then repeats.
+
+### Execution sequence
+
+```javascript
+if (call stack empty):    
+	run ALL microtasks
+	then run ONE macrotask   
+```
+
+> Per event loop cycle, after finishing all microtasks, the engine picks one macrotask, executes it completely, then pauses and re-evaluates.
+>
+> 👉 **why one macrotask?** To prevent starvation of:
+>
+> 1. UI updates (in browser)
+> 2. I/O callbacks
+> 3. rendering
+>
+> If JS ran all macrotasks at once:
+>
+> 1. UI could freeze
+> 2. long queues would block everything
+
+### Async Task Lists
+
+**Microtask Queue:** `Promise`, `queueMicrotask`, MutationObserver, process.nextTick (highest priority)
+
+**Macrotask Queue:** Timers, DOM Events, I/O operations (Node.js), setImmediate (Node.js)
 
 ## Promises
 
