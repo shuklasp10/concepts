@@ -1,10 +1,10 @@
 # Function Mechanics
+
 When function's Execution context is created
-**Lexical Environment &#x20;**&#x69;s defined during function object creation time. It is based on where function is written.
-**this Binding&#x20;**&#x69;s defined during function execution time. It is based on where function is called.&#x20;
 
+**Lexical Environment** defined during function object creation time. It is based on where function is written. 
 
-
+**`this` Binding** defined during function execution. It is based on where function is called.
 
 ## Closures
 
@@ -24,6 +24,7 @@ Closures are created when function object is created.
 5. Because `inner` still references the lexical environment, **the environment cannot be garbage collected**.
 6. When inner function is called, it uses `[[Environment]]` reference to create its lexical environment.
 7. This persistent environment /> \[!WARNING]> If& inner function does not use anything from outer fu
+
 tion then it will directly reference to most outer scope from where it is using something. If none, then it will be reference to global scopeThis happens because JS optimizes closure.
 
 is called a **closure**.
@@ -66,7 +67,7 @@ function memoize(fn) {
 
 Like closures is lexically determined when function object is created, **context** is dynamically determined when function is invoked.
 
-**Context binding&#x20;**&#x6D;eans when function executes what will be value of `this` object.
+**Context binding** means when function executes what will be value of `this` object.
 
 `this` is reference to the **object that is currently executing the function**.
 
@@ -131,11 +132,11 @@ show(); // this -> global or window
 
 Function invoked with manual binding using `call`, `apply` and `bind`
 
-**call&#x20;**&#x69;nvokes function like engine does by passing `this` object as first argument and then functions a
+**call** invokes function like engine does by passing `this` object as first argument and then functions arguments
 
-ments
+**apply** invokes function same as call but pass function argument in array.
 
-**apply&#x20;**&#x69;nvokes function same as call but pass function argument in array.ot**bind&#x20;**&#x72;eturns new function with fixed `this`&#x20;
+**bind** returns new function with fixed `this`
 
 ```javascript
 function show(greet){
@@ -154,8 +155,8 @@ boundShow("Hey"); // Output: Hey Charlie
 
 When we invoke function with `new` keyword it does following
 
-1. Created empty `this`\&#bjectx2. call function using newly created `this`
-2. after function execution, returns `this`&#x20;
+1. Create empty `this` object then call function using newly created `this`
+2. after function execution, returns `this`
 
 ```javascript
 function Person (name){
@@ -165,7 +166,7 @@ var user = new Person("John");
 console.log(user.name); // John
 ```
 
-2When `new Person()` is called it does following
+When `new Person()` is called it does following
 
 ```javascript
 let obj = {}
@@ -186,8 +187,8 @@ return obj
 ### Interview Tips:
 
 - Binding priority new > explicit > implicit > default
-- **default&#x20;**`fn()`, **implicit&#x20;**`obj.fn()`, **explicit&#x20;**`fn.call(obj)` or `fn.apply(obj)` or `fn.bind(obj)`, **new&#x20;**`new fn()`
-- Reference lost -> implicit binding lost `const fn = obj.fn; fn()`&#x20;
+- **default**`fn()`, **implicit**`obj.fn()`, **explicit**`fn.call(obj)` or `fn.apply(obj)` or `fn.bind(obj)`, **new**`new fn()`
+- Reference lost -> implicit binding lost `const fn = obj.fn; fn()`;
 - Callback function lose context. `setTimeout(obj.fn, 0)` invokes with default binding&#x20;
 - Arrow function do not have t
   eir own `this`, instead invoked with outer lexical context
