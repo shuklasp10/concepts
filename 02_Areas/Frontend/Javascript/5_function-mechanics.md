@@ -185,6 +185,23 @@ return obj;
 
 > TODO: why `new` overrides explicit binding; check internal working of `[[call]]` vs `[[construct]]`
 
+### Prevent context loss
+
+Arrow function was introduced in ES6 to prevent context loss. Functions created with `function` create their own execution context and `this`. So if they are called without context `this` becomes `global`
+
+But when we use `this` in arrow function, it checks for its value in its parent lexical environment.
+
+```js
+const obj = {
+	name: "shri",
+	func1: function () { setTimeout(function () { console.log(this.name) }, 0) },
+	func2: function () { setTimeout(() => { console.log(this.name) }, 0) }
+}
+
+obj.func1()
+obj.func2();
+```
+
 ### Interview Tips:
 
 - Binding priority new > explicit > implicit > default
