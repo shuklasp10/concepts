@@ -1,19 +1,18 @@
 # Function Mechanics
 
-When function's Execution context is created
+When a function's execution context is created
 
-**Lexical Environment** defined during function object creation time. It is based on where function is written. 
+**Lexical Environment** is defined during function object creation time. It is based on where the function is written.
 
-**`this` Binding** defined during function execution. It is based on where function is called.
+**`this` Binding** is defined during function execution. It is based on where the function is called.
 
 ## Closures
 
-Behaviour of JS where inner function can access scope of outer function even after execution of outer function is finished.
+Behavior of JS where an inner function can access the scope of an outer function even after the execution of the outer function is finished.
 
-Closures are created when function object is created.
+Closures are created when a function object is created.
 
-> \[!TIP]
-> Its not a feature, but a consequence of lexical scoping and outer environment references
+> It's not a feature, but a consequence of lexical scoping and outer environment references
 
 **How scope is persisted**
 
@@ -23,14 +22,11 @@ Closures are created when function object is created.
 4. When `outer()` finishes, normally its execution context should be removed from the stack.
 5. Because `inner` still references the lexical environment, **the environment cannot be garbage collected**.
 6. When inner function is called, it uses `[[Environment]]` reference to create its lexical environment.
-7. This persistent environment /> \[!WARNING]> If& inner function does not use anything from outer fu
+7. This persistent environment is called a **closure**.
 
-tion then it will directly reference to most outer scope from where it is using something. If none, then it will be reference to global scopeThis happens because JS optimizes closure.
+If inner function does not use anything from the outer function, it will directly reference the most outer scope from where it is using something. If none, then it will reference the global scope. This happens because JS optimizes closure.
 
-is called a **closure**.
-
-> \[!NOTE]
-> Closures can be used as encapsulation like classes in oops
+> NOTE: Closures can be used as encapsulation like classes in OOP
 
 ```javascript
 function CreateAccount(){
@@ -55,23 +51,24 @@ myAccount.getBalance() // 70
 ```javascript
 function memoize(fn) {
   const cache = {};
-  return function (x) {
-    if (cache[x]) return cache[x];
-    cache[x] = fn(x);
-    return cache[x];
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) return cache[key];
+    cache[key] = fn(...args);
+    return cache[key];
   };
 }
 ```
 
 ## Context Binding
 
-Like closures is lexically determined when function object is created, **context** is dynamically determined when function is invoked.
+Like closures, which are lexically determined when a function object is created, **context** is dynamically determined when a function is invoked.
 
-**Context binding** means when function executes what will be value of `this` object.
+**Context binding** means what the value of the `this` object will be when the function executes.
 
-`this` is reference to the **object that is currently executing the function**.
+`this` is a reference to the **object that is currently executing the function**.
 
-Internally, function is executed like this. So, every function call have `this` value.
+Internally, a function is executed like this. So, every function call has a `this` value.
 
 ```javascript
 functionObject.[[Call]](thisValue, arguments)
@@ -88,7 +85,7 @@ function show(){ console.log("Hello") }
 show()
 ```
 
-Here, `this` in&#x20;
+Here, `this` in:
 
 - non-strict mode is `window` or `global` object
 - strict mode is `undefined`
@@ -130,13 +127,13 @@ show(); // this -> global or window
 
 ### Explicit binding
 
-Function invoked with manual binding using `call`, `apply` and `bind`
+Function invoked with manual binding using `call`, `apply`, and `bind`.
 
-**call** invokes function like engine does by passing `this` object as first argument and then functions arguments
+**call** invokes the function like the engine does by passing the `this` object as the first argument and then the function's arguments.
 
-**apply** invokes function same as call but pass function argument in array.
+**apply** invokes the function the same as call but passes the function arguments in an array.
 
-**bind** returns new function with fixed `this`
+**bind** returns a new function with a fixed `this`. Calling bind again on a bound function does nothing
 
 ```javascript
 function show(greet){
@@ -148,15 +145,23 @@ const boundShow = show.bind({ name: "Charlie" });
 boundShow("Hey"); // Output: Hey Charlie
 ```
 
-> \[!NOTE]
-> Internally bind work like this
+> Internally bind works like this:
+
+```javascript
+Function.prototype.bind = function(context, ...args) {
+  const fn = this;
+  return function(...newArgs) {
+    return fn.apply(context, args.concat(newArgs));
+  };
+};
+```
 
 ### `new` binding
 
-When we invoke function with `new` keyword it does following
+When we invoke a function with the `new` keyword, it does the following:
 
-1. Create empty `this` object then call function using newly created `this`
-2. after function execution, returns `this`
+1. Creates an empty `this` object, then calls the function using the newly created `this`.
+2. After function execution, returns `this`.
 
 ```javascript
 function Person (name){
@@ -166,48 +171,45 @@ var user = new Person("John");
 console.log(user.name); // John
 ```
 
-When `new Person()` is called it does following
+When `new Person()` is called, it does the following:
 
 ```javascript
-let obj = {}
-Person.call(obj, "John")
-return obj
+let obj = {};
+Person.call(obj, "John");
+return obj;
 ```
 
-> \[!NOTE]
-> Everytime we create an object from constructor a new`this` context is created and passed to constructor function which initializes that `this` context and return it as new object.
+> Every time we create an object from a constructor, a new `this` context is created and passed to the constructor function, which initializes that `this` context and returns it as the new object.
 
-> \[!TIP]
-> Arrow function ado not create their own`this` object when invoked, instead they capture it lexically from outer scope.
+> Arrow functions do not create their own `this` object when invoked; instead, they capture it lexically from the outer scope.
 
-> \[!WARNING]
-> TODO: why`new` override explicit binding, check interna
-> working `[[call]]` vs `[[construct]]`
+> TODO: why `new` overrides explicit binding; check internal working of `[[call]]` vs `[[construct]]`
 
 ### Interview Tips:
 
 - Binding priority new > explicit > implicit > default
-- **default**`fn()`, **implicit**`obj.fn()`, **explicit**`fn.call(obj)` or `fn.apply(obj)` or `fn.bind(obj)`, **new**`new fn()`
+- **default** `fn()`, **implicit** `obj.fn()`, **explicit** `fn.call(obj)` or `fn.apply(obj)` or `fn.bind(obj)`, **new** `new fn()`
 - Reference lost -> implicit binding lost `const fn = obj.fn; fn()`;
-- Callback function lose context. `setTimeout(obj.fn, 0)` invokes with default binding&#x20;
-- Arrow function do not have t
-  eir own `this`, instead invoked with outer lexical context
+- Callback functions lose context. `setTimeout(obj.fn, 0)` invokes with default binding.
+- Arrow functions do not have their own `this`; instead they are invoked with outer lexical context.
+- Bound functions cannot be rebound (calling bind again on a bound function does nothing).
 
 ## Higher order functions
 
-HOF are those functions which operates on other functions
+HOF are functions that operate on other functions.
 Two types of HOF:
 
-1. **Taking function as argument** most commonly used. Eg map, filter
-2. **Returning function** less frequently used
+1. **Taking a function as an argument** (most commonly used). E.g., `map`, `filter`, `reduce`.
+2. **Returning a function** (less frequently used). E.g., `bind`, `memoize`.
 
 ## Pure functions
 
-Pure function follows two rules
+A pure function follows two rules:
 
-1. **No side effects:** does not change state or variable outside its scope.
-2. **Deterministic scope:** for same input set it should return same output
-   Charateristics
-3. **Referential transparency:** if function is replaced with its output value,
-   it should not affect behaviour of program.
-4. **Immutability:** do not modify passed arguments
+1. **No side effects:** It does not change state or variables outside its scope.
+2. **Deterministic output:** For the same input set, it should return the same output.
+
+Characteristics of pure functions:
+
+- **Referential transparency:** If a function is replaced with its output value, it should not affect the behavior of the program.
+- **Immutability:** Do not modify passed arguments.
