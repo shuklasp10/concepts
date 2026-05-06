@@ -1,20 +1,7 @@
 {
-    "recommendations": [
-      // typescript
-      "yoavbls.pretty-ts-errors",
-      // javascript & react
-      "dsznajder.es7-react-js-snippets",
-      "ritwickdey.liveserver",
-      "dbaeumer.vscode-eslint",
-      "formulahendry.code-runner",
-      // error handling
-      "usernamehw.errorlens",
-      // git
-      "eamodio.gitlens",
-      // appearance
-      "esbenp.prettier-vscode",
-      "pkief.material-icon-theme",
-      "sibiraj-s.vscode-scss-formatter",
-      "streetsidesoftware.code-spell-checker",
-    ]
-  }
+  "recommendations": [
+    "jonathan-yeung.mark-sharp",
+    "jmkrivocapich.drawfolderstructure",
+    "pkief.material-icon-theme"
+  ]
+}
