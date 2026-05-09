@@ -51,9 +51,9 @@ Function prototype can be changed before creating object to set same as objects 
 
 ### Native Prototype
 
-Every build in constructor have their native prototype. For example
+Every built-in constructor has its own native prototype. For example
 
-`new Object()` here Object is constructor and its prototype i.e. `Object.prototype` is huge object which actual contain method and propertly for objects. We can verify like this\
+`new Object()` here Object is constructor and its prototype i.e. `Object.prototype` is huge object which actually contains methods and properties for objects. We can verify like this\
 
 ```js
 let obj = {}
@@ -77,6 +77,19 @@ arr.show() // 1,2,3
 
 There is only one usecase of modifying native prototype
 
-**Pollyfilling:** It is term for making a substitute for a method that exists in the JavaScript specification, but is not yet supported by a particular JavaScript engine. Then we can manually implement it. [See Example](./examples/examples.md#native-prototype-example-1)
+**Polyfilling:** It is a term for making a substitute for a method that exists in the JavaScript specification, but is not yet supported by a particular JavaScript engine. Then we can manually implement it. [See Example](./examples/examples.md#native-prototype-example-1)
 
-**Borrowing prototype methods** We can borrow methods one prototype to another prototype as long as borrowed method is applicable on both type of objects. [See Example](./examples/examples.md#native-prototype-example-2)
+**Borrowing prototype methods** We can borrow methods from one prototype to another as long as the borrowed method is applicable on both types of objects. [See Example](./examples/examples.md#native-prototype-example-2)
+
+---
+
+## TODO: Topics to Study
+
+- [ ] `Object.create()`
+- [ ] ES6 `class` syntax and prototype mapping
+- [ ] `instanceof` operator
+- [ ] Property descriptors (`Object.defineProperty`, enumerable/writable/configurable)
+- [ ] `Object.freeze()`, `Object.seal()`, `Object.assign()`
+- [ ] Shallow vs deep copy
+- [ ] `structuredClone()`
+- [ ] Symbol as property keys

@@ -6,7 +6,7 @@
 2. Parse syntax
 3. Create `Global()` execution context
 4. Push execution context to call stack
-5. Create lexical environment for for execution context
+5. Create lexical environment for execution context
 6. Create Global object and bind `this` to Global object.
 7. Memory creation phase starts in execution context
 8. Code execution phase starts in execution context
@@ -40,8 +40,8 @@ After execution context is created and pushed to call stack it goes through two 
 2. **Code Execution Phase**
    - Code is executed line by line
 
-> \[!TIP]
-> During memory creation phase, for functions a function object is created with properties like`[[Code]]`and `[[Environment]]`
+> [!TIP]
+> During memory creation phase, for functions a function object is created with properties like `[[Code]]` and `[[Environment]]`
 
 ### How blocks are handled during code execution phase?
 
@@ -62,11 +62,11 @@ console.log(a);
 
 ## Call Stack
 
-A data structure that keeps track  of the execution contexts in the order they are created.It follows Last In First Out (LIFO) principle.Maximum recursion depth is 10,000 due to limited stack memory.
+A data structure that keeps track of the execution contexts in the order they are created. It follows Last In First Out (LIFO) principle. Maximum recursion depth is ~10,000 due to limited stack memory.
 
-> JavaScript is single-thrCall stack stores runtime container of execution context, and each contains hold reference of lexical environment, variable envionment and this binding. They dont store actual data. Data is stored in heap memory.
+> JavaScript is single-threaded, meaning only one execution context runs at a time.
 
-eaded, meaning only one execution context runs at a time
+> Call stack stores runtime containers of execution contexts. Each context holds references to its lexical environment, variable environment, and `this` binding. They don't store actual data â€” data is stored in heap memory.
 
 ## Lexical Environment
 
@@ -77,7 +77,7 @@ Lexical environment contains
 - Reference to outer lexical environment (*Refers to&#x20;*`[[Environment]]`*&#x20;property of function's object*)
   reference to outer lexical environment allows for scope chaining and variable lookup in parent scopes
 
-> \[!NOTE]
+> [!NOTE]
 > Reference to outer lexical environment is based on where the function is defined, not where it is called (lexical scoping).
 >
 > For Global execution context, the outer lexical environment is `null`
@@ -126,32 +126,29 @@ Allocation of memory for variables and functions before execution during the mem
 | ----------- | ----------------------------------------- |
 | `var`       | hoisted and initialized as `undefined`    |
 | `let`       | hoisted but remains in Temporal Dead Zone |
-| `const`     | hoist/> \[!TIP]>> `var` is hoisted in variable environment of execution context but `let` is hoisted inside lexical environment.&#x20;>>
- Here, `a, b` and` c` will be hoisted on creation of execution context and memory allocation of global lexical environment.>>
- But `d `will be created during execution of global lexical environment when child lexical environment is created.>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ed but remains in Temporal Dead Zone |
+| `const`     | hoisted but remains in Temporal Dead Zone |
 | `function`  | hoisted with full function definition     |
+
+> [!TIP]
+> `var` is hoisted in variable environment of execution context but `let` and `const` are hoisted inside lexical environment.
+>
+> ```js
+> var a = 1;
+> let b = 2;
+> const c = 3;
+> if (true) {
+>   let d = 4;
+> }
+> ```
+>
+> Here, `a`, `b` and `c` will be hoisted on creation of execution context and memory allocation of global lexical environment.
+> But `d` will be created during execution when the child lexical environment (for the `if` block) is created.
+
+---
+
+## TODO: Topics to Study
+
+- [ ] Temporal Dead Zone (TDZ) â€” detailed explanation
+- [ ] Variable environment vs Lexical environment â€” differences
+- [ ] Garbage collection (mark-and-sweep)
+- [ ] Memory leaks common patterns
