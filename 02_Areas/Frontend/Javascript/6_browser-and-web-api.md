@@ -17,14 +17,14 @@
 | **Storage Location**  | Browser/Server | Browser       | Browser         |
 | **Sent with request** | Yes            | No            | No              |
 
-1. localStorgae
-   - `localStorage.setItems('key','value')` - stores key-value pair
-   - `localStorage.getItems('key')` takes one parameter key
-   - `localStorage.removeItems('key')`
+1. localStorage
+   - `localStorage.setItem('key','value')` - stores key-value pair
+   - `localStorage.getItem('key')` takes one parameter key
+   - `localStorage.removeItem('key')`
 2. sessionStorage
-   - `sessionStorage.setItems('key','value')` - stores key-value pair
-   - `sessionStorage.getItems('key')` takes one parameter key
-   - `sessionStorage.removeItems('key')`
+   - `sessionStorage.setItem('key','value')` - stores key-value pair
+   - `sessionStorage.getItem('key')` takes one parameter key
+   - `sessionStorage.removeItem('key')`
 3. cookies
    - `document.cookie = 'name=shri; expires'+new Date(2025,1,1).toUTCString()`
 
@@ -36,21 +36,19 @@
 2. **getElementByClassName()** returns array of elements by class name.
 3. **getElementByTagName()** returns array of elements by tag name.
 4. **querySelector()** returns first element matching CSS selector.
-5. **querySelectorAll()** returns array of elements matching CSS selector.
-6. **querySelectorAll()** returns array of all matched elements for selector.
+5. **querySelectorAll()** returns NodeList of all elements matching CSS selector.
 
 ### Modifying element content
 
 After selecting element with above methods we can change its content.
 
 ```javascript
-let,
 const element = document.getElementById('myId')
 ```
 
 1. **element.innerHTML** get or set inner html content.
    - `console.log(element.innerHTML)` // `<p>this is para</p>`
-   - `element.innerHTML = <h1>para changed to heading</h1>`
+   - `element.innerHTML = '<h1>para changed to heading</h1>'`
 2. **element.textContent** get or set text content inside tag and its children .
    - `console.log(element.textContent)` // `this is para`
 3. **innerText** like textContent but respects CSS visibility rules.
@@ -75,14 +73,14 @@ change inline style of element
    - `element.style.color = 'red'`
 2. **element.classList**
    1. `element.classList.add('new_class1','new_class2')`
-   2. `element.classList.remove('class1','class2)`
+   2. `element.classList.remove('class1','class2')`
    3. `toggle('myClass')` - add if absent, remove if present
       1. `element.classList.toggle('myClass', true)` add the class
       2. `element.classList.toggle('myClass', false)` remove the class
    4. `contains('class')` - returns true if class is present
    5. `element.classList.replace('old-class','new-class')`
    6. `element.classList.item(0)` or `element.classList[0]`
-   7. `element.classList.length` gives number of classed in the element.
+   7. `element.classList.length` gives number of classes in the element.
 
 ### Creating and insert element
 
@@ -143,7 +141,7 @@ myElement.addEventListener("click", functionB);
 objects with `on` property prefix followed by event name.
 
 ```js
-btn.onclick(handleBtnClick);
+btn.onclick = handleBtnClick;
 ```
 
 - Unlike `addEventListener()`, handler properties can't handle multiple handlers
@@ -169,7 +167,7 @@ element.onclick = function2;
 const btn = document.querySelector("button");
 function handler(event){
     console.log(event);
-    console.log('button is clicked)
+    console.log('button is clicked')
 }
 btn.addEventListener('click',handler);
 ```
@@ -183,7 +181,7 @@ btn.addEventListener('click',handler);
 - `EventEmitter` class used to emit events
 
 ```js
-const EventEmitters = require('events');
+const EventEmitter = require('events');
 
 const myEmitter = new EventEmitter();
 ```
@@ -212,6 +210,8 @@ myEmitter.emit('eventName');
 </div>
 ```
 
+> Native DOM event names are lowercase (`dragstart`, `dragover`, `drop`). Below table uses React-style camelCase names for reference.
+
 | Events        | On Element | Details                |
 | ------------- | ---------- | ---------------------- |
 | `onDragStart` | draggable  | When drag starts       |
@@ -231,3 +231,20 @@ myEmitter.emit('eventName');
 
 - call `e.preventDefault()` on `onDrop` and `onDragOver` to allow dropping.
 - use `dataTransfer` to transfer data between drag and drop
+
+---
+
+## TODO: Topics to Study
+
+- [ ] Event bubbling and capturing (propagation phases)
+- [ ] `stopPropagation()` vs `stopImmediatePropagation()`
+- [ ] Event delegation pattern
+- [ ] Fetch API
+- [ ] XMLHttpRequest
+- [ ] Intersection Observer
+- [ ] Resize Observer
+- [ ] Web Workers
+- [ ] Service Workers basics
+- [ ] `requestAnimationFrame`
+- [ ] `document.createDocumentFragment()`
+- [ ] `window.location`, `window.history`, `window.navigator`

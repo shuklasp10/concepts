@@ -56,7 +56,7 @@ for(let key in admin) {
 
 ```js
 function User(name){
-	this.name = name,
+	this.name = name;
 	showName() {
 		console.log(this.name)	
 	}
