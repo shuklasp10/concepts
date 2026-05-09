@@ -1,4 +1,4 @@
-# Asychronous Javascript
+# Asynchronous Javascript
 
 ## Event Loop
 
@@ -69,7 +69,7 @@ Object in javascript to handle asynchronous operation.Promise represents a value
 2. `Promise()` constructor - is used for creating promises.
 3. executor - function with async operation (resolve, reject).
 4. resolve, reject - functions called when async operation completes.
-5. executor is immediatly executed when promise is created
+5. executor is immediately executed when promise is created
 6. If operation completed resolve is called with value as its argument.
 7. If operation is failed reject is called with error as its argument.
 
@@ -83,7 +83,7 @@ const newPromise = new Promise((res,rej)=>{
 
 ### promise methods
 
-promise methods are executed handle promise value or error
+promise methods are used to handle promise value or error
 
 1. `then()` it takes a function which is executed after promise is completed.
 2. `catch()` takes a function which is executed after promise fails
@@ -104,3 +104,15 @@ myProm1.then(()=>{
 ### keypoints
 
 1. async functions return promise
+
+---
+
+## TODO: Topics to Study
+
+- [ ] `async/await` syntax and semantics
+- [ ] `Promise.all()`, `Promise.allSettled()`, `Promise.race()`, `Promise.any()`
+- [ ] Error handling in promise chains (`catch` placement)
+- [ ] Top-level `await`
+- [ ] Callback hell / Pyramid of Doom
+- [ ] Generator functions and iterators (`function*`, `yield`)
+- [ ] AbortController for cancellation

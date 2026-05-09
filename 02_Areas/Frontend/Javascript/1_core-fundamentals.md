@@ -11,21 +11,20 @@
     - Numbers are **64 bit** IEEE 754 double precision.
     - Breakdown: Sign(1) + Exponent(11) + Mantissa(52)
     - Also include floats
-    - Minimum safe range: `-(2^53 - 1)` or `9007199254740991` or `Number.MIN_SAFE_INTEGER`
+    - Minimum safe range: `-(2^53 - 1)` or `-9007199254740991` or `Number.MIN_SAFE_INTEGER`
     - Maximum safe range: `(2^53 - 1)` or `9007199254740991` or `Number.MAX_SAFE_INTEGER`
     - Beyond this range numbers exist but precision is lost.
     - Minimum positive range: `5e-324` or `Number.MIN_VALUE`
     - Maximum range: `1.7976931348623157e+308` or `Number.MAX_VALUE`
     - Beyond this range become `0` for minimum and `Infinity` for maximum
 
-```html
-<!-- TODO: Move it in separate section and add link  -->
-```
+#### NaN
 
-> `NaN` is special numeric value to represent invalid numbers.
-> Example: `0/0`, `Math.sqrt(-1)`, `"Hello"`
-> `NaN === NaN` will always be false. To compare use `Number.isNaN(value)`
-> `isNaN()` old way it try to convert value in number first then compare. Use `Number.isNaN()` for safe check.
+Special numeric value representing invalid number results.
+
+- Created by: `0/0`, `Math.sqrt(-1)`, `Number("Hello")`
+- `NaN === NaN` is always `false`. Use `Number.isNaN(value)` to check.
+- `isNaN()` converts value to number first then compares — prefer `Number.isNaN()` for strict check.
 
 - **bigint**
     - For number beyond safe integer.
@@ -33,8 +32,7 @@
 - **boolean**
 - **undefined**
 - **null**
-    - `Null` is primitive datatype but its `typeof` is `object`. This is
-      intentional bug in Javascript.
+    - `null` is a primitive datatype but `typeof null` returns `"object"`. This is a historical bug from the first JavaScript implementation, kept for backward compatibility.
 - **symbol**
     - Used as **unique identifiers**, mostly as keys in object.
     - Two symbol with same value can't be equal.
@@ -42,7 +40,7 @@
 
 ### Non primitive (reference)
 
-> Always passed as referenceJavascript has one non-primitive type `object`, rest all are specialized objects.
+> Always passed as reference. Javascript has one non-primitive type `object`, rest all are specialized objects.
 
 - **object**
 - **array**
@@ -74,16 +72,16 @@ various method of creating date object
 1. `const currentDate = new Date();`
 
    - returns current date and time with ISO 8601 format.
-   - **format** YYYY-MM-DDTHH:MM:SS:MMMZ
+   - **format** YYYY-MM-DDTHH:MM:SS.mmmZ
    - **T** represent separator, time start after that
    - **Z** represent timezone z - UTC
-1. `const date = new Date(n);`
+2. `const date = new Date(n);`
 
    - returns date after n milliseconds from Unix epoch
    - `new Date(0)` - (1970-01-01T00:00:00.000Z)
    - `new Date(1)` - (1970-01-01T00:00:00.001Z)
    - `new Date(1001)` - (1970-01-01T00:00:01.001Z)
-1. `const date = new Date(yr,m,d,hr,min,sec)`;
+3. `const date = new Date(yr,m,d,hr,min,sec)`;
 
    - month is 0-indexed so 0-jan, 1-Feb, 11-Dec
 
@@ -157,3 +155,19 @@ for (let [key, value] of Object.entries(obj)) {
 for (let j of arr) { console.log(j) } // 10 20 30
 for (let k of str) { console.log(k) } // j o h n
 ```
+
+---
+
+## TODO: Topics to Study
+
+- [ ] `var` vs `let` vs `const` (declaration, scoping, redeclaration rules)
+- [ ] Type coercion (implicit vs explicit)
+- [ ] Truthy/falsy values
+- [ ] `==` vs `===` (loose vs strict equality)
+- [ ] Template literals
+- [ ] Destructuring (array & object)
+- [ ] Spread/rest operator
+- [ ] Optional chaining (`?.`) and nullish coalescing (`??`)
+- [ ] `typeof` operator behavior table
+- [ ] String methods, Array methods (map, filter, reduce, etc.)
+- [ ] WeakRef and FinalizationRegistry

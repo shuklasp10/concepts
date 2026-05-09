@@ -2,15 +2,16 @@
 
 ## Example: submit input on key press event
 
-```markup
+```html
 <body>
-  <input onKeyDown={addTag} />
+  <input id="tagInput" />
   <script>
-    const addTag = (e) =>{
-      if( e.key == "enter" ){
-        add tag...
+    const addTag = (e) => {
+      if (e.key === "Enter") {
+        // add tag...
       }
     }
+    document.getElementById('tagInput').addEventListener('keydown', addTag);
   </script>
 </body>
 ```

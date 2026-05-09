@@ -160,8 +160,8 @@ Function.prototype.bind = function(context, ...args) {
 
 When we invoke a function with the `new` keyword, it does the following:
 
-1. Creates an empty `this` object, then calls the function using the newly created `this`.
-2. After function execution, returns `this`.
+1. Creates an empty `this` object and sets its `[[Prototype]]` to the constructor's `prototype` property, then calls the function using the newly created `this`.
+2. After function execution, returns `this` (unless function explicitly returns another object).
 
 ```javascript
 function Person (name){
@@ -183,7 +183,16 @@ return obj;
 
 > Arrow functions do not create their own `this` object when invoked; instead, they capture it lexically from the outer scope.
 
-> TODO: why `new` overrides explicit binding; check internal working of `[[call]]` vs `[[construct]]`
+> **Why `new` overrides explicit binding:**
+>
+> When a function is called with `new`, the engine invokes `[[Construct]]` instead of `[[Call]]`. `[[Construct]]` creates a fresh object and uses it as `this`, completely ignoring any `this` value bound via `bind()`, `call()`, or `apply()`. The bound `this` from `bind()` only applies during normal `[[Call]]` invocations.
+>
+> ```js
+> function Person(name) { this.name = name; }
+> const BoundPerson = Person.bind({ name: "Ignored" });
+> const p = new BoundPerson("Alice");
+> console.log(p.name); // "Alice" — bound this was ignored
+> ```
 
 ### Prevent context loss
 
@@ -230,3 +239,14 @@ Characteristics of pure functions:
 
 - **Referential transparency:** If a function is replaced with its output value, it should not affect the behavior of the program.
 - **Immutability:** Do not modify passed arguments.
+
+---
+
+## TODO: Topics to Study
+
+- [ ] IIFE (Immediately Invoked Function Expressions)
+- [ ] Function declarations vs expressions vs arrow functions comparison
+- [ ] Currying and partial application
+- [ ] Debounce and throttle
+- [ ] `arguments` object vs rest parameters
+- [ ] Function composition
