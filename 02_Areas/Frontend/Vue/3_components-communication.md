@@ -4,7 +4,11 @@
 
 ### Core Idea
 
-> Vue components are reusable, self-contained units with their own template, logic, and styling. Unlike React where everything is a function returning JSX, Vue components are Single File Components (SFCs) combining `<template>`, `<script>`, and `<style>` in one `.vue` file.
+> Vue components are reusable, self-contained units. They are written as **Single File Components (SFCs)** (`.vue` files), which explicitly separate structure, logic, and styling into dedicated blocks.
+>
+> **React vs Vue Comparison:**
+> - In **React**, logic and markup are mixed together via JSX inside a Javascript function. Styling is typically external or relies on third-party libraries (like CSS-in-JS).
+> - In **Vue**, a `.vue` file provides dedicated `<template>`, `<script>`, and `<style>` blocks. It keeps HTML, JS, and CSS physically together in one file, but syntactically separated.
 
 ### Single File Component (SFC)
 
