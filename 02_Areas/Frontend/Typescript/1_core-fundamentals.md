@@ -1,291 +1,123 @@
 # Core Fundamentals
 
-## What is TypeScript
+## What is TypeScript?
 
-> A strongly typed superset of JavaScript that adds static type checking at compile time.
+> TypeScript is JavaScript with a compiler. It is a superset of JavaScript that adds static typing.
 
-- All valid JavaScript is valid TypeScript.
-- Compiles down to plain JavaScript — TS does **not** run in browser or Node directly.
-- Provides OOP features not available in JS (interfaces, enums, access modifiers).
-- **Auto type inference** — TS can infer types without explicit annotations.
+### Problem It Solves
 
-## Installation & Tooling
+JavaScript is a dynamically typed language. If you pass a string to a function that expects a number, JavaScript won't complain until the exact moment that code executes in the browser (Runtime). In large codebases, this leads to unpredictable crashes, silent failures, and a terrible developer experience because you never know what shape an object has without reading its original definition.
 
-### Compiler (`tsc`)
+### The Mental Model
 
-Install the TypeScript compiler globally:
-
-```bash
-npm i -g typescript
-```
-
-Compile a `.ts` file to `.js`:
-
-```bash
-tsc index.ts
-```
-
-Watch mode — recompile on every change:
-
-```bash
-tsc index.ts -w
-```
-
-### Compile & Execute (`ts-node`)
-
-Compiles and executes in a single command:
-
-```bash
-npm i -g ts-node
-ts-node index.ts
-```
-
-### Project Setup (`tsconfig.json`)
-
-Initialize TypeScript config:
-
-```bash
-tsc --init
-```
-
-**Key `tsconfig.json` properties:**
-
-| Property | Purpose |
-| --- | --- |
-| `rootDir` | Source directory for `.ts` files (`"./src"`) |
-| `outDir` | Output directory for compiled `.js` files (`"./dist"`) |
-| `target` | JS version to compile to (`"ES2020"`, `"ESNext"`) |
-| `module` | Module system (`"commonjs"`, `"ESNext"`) |
-| `strict` | Enables all strict type-checking options |
-| `esModuleInterop` | Fixes default import interop with CommonJS |
-| `resolveJsonModule` | Allows importing `.json` files |
-| `declaration` | Generates `.d.ts` declaration files |
-| `sourceMap` | Generates `.map` files for debugging |
-
-> By default TS compiles output in the same folder, which can cause scoping issues with `const` redeclarations across files. Always separate `src/` and `dist/` directories.
-
-## Type System Basics
-
-### Implicit vs Explicit Typing
-
-- **Implicit (Inference):** TS automatically infers the type from the assigned value.
-
-    ```ts
-    let name = "John";   // inferred as string
-    let age = 25;        // inferred as number
-    ```
-
-- **Explicit (Annotation):** Developer manually declares the type.
-
-    ```ts
-    let name: string = "John";
-    let age: number = 25;
-    ```
-
-> **Best practice:** Let TS infer types where it can. Use explicit annotations for function parameters, return types, and complex types.
-
-### Primitive Types
-
-```ts
-let name: string = "John";
-let age: number = 25;
-let isActive: boolean = true;
-let data: undefined = undefined;
-let empty: null = null;
-let id: bigint = 100n;
-let key: symbol = Symbol("id");
-```
-
-### Special Types
-
-| Type | Usage |
-| --- | --- |
-| `any` | Disables type checking — avoid unless necessary |
-| `unknown` | Type-safe alternative to `any` — must narrow before use |
-| `void` | Function returns nothing (implicitly returns `undefined`) |
-| `never` | Function never returns — throws error or infinite loop |
-
-```ts
-// any — no type safety
-let val: any = "hello";
-val = 42; // no error, no autocomplete
-
-// unknown — must narrow before use
-let val2: unknown = "hello";
-// val2.toUpperCase(); // Error — cannot use without narrowing
-if (typeof val2 === "string") {
-    val2.toUpperCase(); // OK after narrowing
-}
-```
-
-> **`any` vs `unknown`:** Both accept any value, but `unknown` forces you to narrow the type before performing operations. Always prefer `unknown` over `any`.
-
-### Union Types
-
-`|` operator allows a variable to hold one of multiple types:
-
-```ts
-let id: string | number;
-id = "ABC";  // OK
-id = 123;    // OK
-// id = true; // Error — boolean not in union
-```
-
-### Intersection Types
-
-`&` operator combines multiple types into one — the result must satisfy **all** types:
-
-```ts
-type HasName = { name: string };
-type HasAge = { age: number };
-
-type Person = HasName & HasAge;
-// Person must have both name AND age
-
-const person: Person = { name: "John", age: 25 }; // OK
-```
-
-> **Union (`|`)** = value is **one of** the types. **Intersection (`&`)** = value is **all of** the types.
-
-### Literal Types
-
-Restrict values to specific literals instead of broad types:
-
-```ts
-type Direction = "up" | "down" | "left" | "right";
-let move: Direction = "up";   // OK
-// move = "diagonal";          // Error
-
-type DiceRoll = 1 | 2 | 3 | 4 | 5 | 6;
-```
-
-### Type Aliases (`type`)
-
-Custom types using the `type` keyword. Use **PascalCase** for naming.
-
-- **For variables:**
-
-    ```ts
-    type Username = string | number;
-    let name: Username;
-    name = "John";
-    name = 23;
-    ```
-
-- **For functions:**
-
-    ```ts
-    type MathFunc = (n: number, m: number) => number;
-    const add: MathFunc = (n, m) => n + m;
-    ```
-
-- **For objects:**
-
-    ```ts
-    type User = {
-        name: string;
-        age: number;
-        email?: string;   // optional property
-    };
-    ```
-
-### Type vs Interface — Quick Comparison
-
-| Feature | `type` | `interface` |
-| --- | --- | --- |
-| Object shapes | ✅ | ✅ |
-| Union types | ✅ | ❌ |
-| Intersection / Extension | ✅ (`&`) | ✅ (`extends`) |
-| Declaration merging | ❌ | ✅ |
-| Primitives / Tuples | ✅ | ❌ |
-| `implements` in class | ✅ | ✅ |
-
-> **Rule of thumb:** Use `interface` for object shapes and class contracts. Use `type` for unions, intersections, and computed types.
-
-### Array Declaration
-
-```ts
-// Method 1: Type[]
-let names: string[] = ["John", "Jane"];
-
-// Method 2: Array<Type> (generic syntax)
-let ids: Array<string | number> = ["ABC", 123];
-
-// Readonly array — prevents mutation methods (push, pop, etc.)
-let nums: readonly number[] = [1, 2, 3];
-// nums.push(4); // Error
-```
-
-### Tuple Types
-
-Fixed-length arrays with specific types at each position:
-
-```ts
-let user: [string, number] = ["John", 25];
-// user = [25, "John"]; // Error — wrong order
-
-// Named tuples (for readability)
-type HTTPResponse = [status: number, body: string];
-
-// Optional elements
-type FlexTuple = [string, number, boolean?];
-```
-
-> Tuples are arrays at runtime — TS only enforces types at compile time. `user.push(99)` won't error in TS (known limitation).
-
-### Enum Types
-
-Named constants group:
-
-```ts
-// Numeric enum (default starts at 0)
-enum Direction {
-    Up,      // 0
-    Down,    // 1
-    Left,    // 2
-    Right    // 3
-}
-
-// String enum
-enum Status {
-    Active = "ACTIVE",
-    Inactive = "INACTIVE",
-    Pending = "PENDING"
-}
-
-let dir: Direction = Direction.Up;
-```
-
-> **`const enum`:** Values are inlined at compile time — no runtime object is generated. Use for performance when you don't need reverse mapping.
->
-> ```ts
-> const enum Color { Red, Green, Blue }
-> let c = Color.Red; // compiled to: let c = 0;
-> ```
-
-### `as const` Assertion
-
-Makes values deeply `readonly` and narrows types to their literal values:
-
-```ts
-// Without as const
-const config = { host: "localhost", port: 3000 };
-// type: { host: string; port: number; }
-
-// With as const
-const config = { host: "localhost", port: 3000 } as const;
-// type: { readonly host: "localhost"; readonly port: 3000; }
-
-// Useful with arrays to get tuple types
-const roles = ["admin", "user", "guest"] as const;
-// type: readonly ["admin", "user", "guest"]
-// Without: string[]
-```
+- **JavaScript (Dynamic):** A **cash-only store**. You don't know if the customer actually has enough money until they are standing at the register holding up the line trying to pay.
+- **TypeScript (Static):** A **pre-paid card system**. Before the customer is even allowed to enter the store (Compile Time), you verify they have the funds. If they don't, they are blocked at the door.
 
 ---
 
-## TODO: Topics to Study
+## Compile-Time vs Runtime
 
-- [ ] Template literal types
-- [ ] `satisfies` operator (TS 5.0+)
-- [ ] Module system — `import type` / `export type`
+This is the most critical distinction to understand in TypeScript.
+
+### Compile-Time (TypeScript)
+This is when you are writing the code in your editor. The TypeScript compiler (`tsc`) analyzes your code. If you try to call `.toUpperCase()` on a number, TypeScript yells at you immediately with a red squiggly line. **TypeScript only exists here.**
+
+### Runtime (JavaScript)
+This is when the code is actually executing in the browser (or Node.js). Before running, TypeScript code is completely stripped of all its types and converted into pure JavaScript.
+
+> **Crucial Insight:** TypeScript types **cannot** affect how your code runs. A TypeScript interface does not exist in the browser. You cannot write `if (myVar instanceof MyInterface)` because `MyInterface` is erased during compilation.
+
+---
+
+## Type Inference
+
+### Core Idea
+You do not need to explicitly write types for everything. TypeScript is smart enough to figure it out by itself.
+
+```typescript
+// Explicit (unnecessary)
+let message: string = "Hello World";
+
+// Inferred (preferred)
+let message = "Hello World"; 
+// TypeScript automatically knows `message` is a string.
+```
+
+### Mental Model
+Think of Type Inference as a **Detective**. If it sees you assign a number to a variable, it deduces that the variable is meant to hold numbers forever. You only need to explicitly write types when the Detective doesn't have enough clues (e.g., when a variable is initialized without a value, or an API response comes back).
+
+---
+
+## The Special Types: `any`, `unknown`, and `never`
+
+When building types, you sometimes need to represent abstract concepts.
+
+### `any`
+- **What it is:** Disables type checking completely for that variable.
+- **Mental Model:** A **VIP pass**. The bouncer (TypeScript) looks the other way and lets you do whatever you want.
+- **Rule:** Avoid at all costs. It defeats the entire purpose of TypeScript.
+
+### `unknown`
+- **What it is:** A safer version of `any`. It means "I don't know what this is right now."
+- **Mental Model:** A **locked box**. You can hold the box, but you are not allowed to use what's inside until you prove to TypeScript what it is (using Type Guards like `typeof`).
+```typescript
+let data: unknown = "hello";
+// data.toUpperCase(); // ERROR! TypeScript won't let you.
+
+if (typeof data === "string") {
+  data.toUpperCase(); // Allowed! We proved it's a string.
+}
+```
+
+### `never`
+- **What it is:** Represents a state that should *never* happen.
+- **Mental Model:** A **black hole**. Code execution cannot successfully return from a `never` type.
+- **Usage:** Used for functions that always throw an error, or functions that have infinite `while(true)` loops.
+
+---
+
+## `null` vs `undefined`
+
+In JavaScript and TypeScript, both represent the absence of a value, but they have distinct semantic meanings.
+
+| Aspect | `undefined` | `null` |
+|--------|------------|--------|
+| Meaning | "The variable was created, but no value has been assigned yet." | "This variable intentionally has no value right now." |
+| Analogy | An unassigned empty parking space. | A parking space that was explicitly blocked off with a traffic cone. |
+| Typeof | `typeof undefined === "undefined"` | `typeof null === "object"` (a historical JS bug) |
+
+---
+
+## Interview Perspective
+
+**Q: What is TypeScript and why would you use it over JavaScript?**
+TypeScript is a strongly typed superset of JavaScript. We use it over JS to catch type-related errors at compile-time rather than runtime, which dramatically improves code reliability, refactoring safety, and developer experience through robust autocomplete.
+
+**Q: What are the advantages of TypeScript?**
+1. Early bug detection (Compile-time checking).
+2. Better IDE support (Intellisense).
+3. Easier and safer refactoring.
+4. Serves as living documentation for your code.
+
+**Q: Difference between compile-time and runtime in TypeScript?**
+Compile-time is when TypeScript analyzes the code and strips away types to generate standard JavaScript. Runtime is when the browser executes that generated JavaScript. Type errors are caught at compile-time; they do not exist at runtime.
+
+**Q: What is type inference in TypeScript?**
+The ability of the TypeScript compiler to automatically deduce the type of a variable based on its assigned value, eliminating the need for explicit type annotations everywhere.
+
+**Q: Difference between `any`, `unknown`, and `never`?**
+- `any`: Disables type checking. You can do anything with it (Unsafe).
+- `unknown`: You don't know the type yet. You must check its type (via `typeof`) before you can interact with it (Safe).
+- `never`: Represents a value that will never occur (e.g., a function that throws an error or loops infinitely).
+
+**Q: Difference between `null` and `undefined` in TypeScript?**
+`undefined` means a variable has been declared but not assigned a value. `null` is an intentional, explicit assignment representing "no value".
+
+---
+
+## Key Takeaways
+
+- TypeScript only exists during development (Compile Time). It vanishes in the browser (Runtime).
+- Rely on Type Inference; don't over-annotate basic variables.
+- Use `unknown` instead of `any` when handling unpredictable data (like API responses).
+- Understand that TypeScript cannot prevent runtime errors caused by external data that doesn't match your defined types.
