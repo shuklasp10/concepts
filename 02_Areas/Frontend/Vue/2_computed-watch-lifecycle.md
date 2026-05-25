@@ -46,6 +46,13 @@ const fullNameWritable = computed({
 
 ### Computed vs Methods
 
+> **💡 Quick Definition: Side Effect**
+> A **side effect** is any operation that modifies state outside its local environment or interacts with the outside world.
+> - **Pure (No side effects):** Takes inputs, returns output. Changes nothing else. (e.g., math calculations, string formatting).
+> - **Side Effects:** API calls, changing the DOM, writing to `localStorage`, setting timers (`setTimeout`), or mutating external variables.
+> 
+> *Computed properties must be pure. Methods and Watchers exist to handle side effects.*
+
 | Aspect | Computed | Method |
 |--------|----------|--------|
 | Caching | Yes — returns cached result if deps unchanged | No — re-runs every time it's called |
