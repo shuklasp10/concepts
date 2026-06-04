@@ -1,6 +1,6 @@
 # React Interview Questions — Quick Reference
 
-> 50 questions covering mid-level to senior concepts. Each answer references the detailed notes for deep understanding. Every concept is mapped to Vue equivalents for faster learning (where applicable).
+> 65 questions covering mid-level to senior concepts. Each answer references the detailed notes for deep understanding. Every concept is mapped to Vue equivalents for faster learning (where applicable). Questions 51–65 cover React Query, RTK deep dive, and React 18+ concurrent features.
 
 ---
 
@@ -242,3 +242,76 @@ If you mutate state directly (`state.count++`), the memory reference stays the s
 
 ### 50. Explain Suspense in React.
 **One-liner:** A component `<Suspense fallback={<Spinner />}>` that lets you declarative "wait" for some code (like `React.lazy`) or data to load, showing a fallback UI in the meantime.
+📖 [Detailed notes](12_suspense-concurrent-features.md#suspense--deep-dive)
+
+---
+
+## Data Fetching & Server State
+
+### 51. What is React Query and what problem does it solve?
+**One-liner:** A server-state management library that replaces `useEffect` + `useState` for data fetching, providing built-in caching, deduplication, background refetching, retries, and optimistic updates.
+📖 [Detailed notes](10_react-query.md#the-problem-data-fetching-with-useeffect)
+
+### 52. What is the difference between server state and client state?
+**One-liner:** Client state is owned by the browser (theme, sidebar open), persists only locally, and can't go stale. Server state is owned by a remote server (user data, products), shared among users, and can become outdated at any time.
+📖 [Detailed notes](10_react-query.md#server-state-vs-client-state)
+
+### 53. How do query keys work in React Query?
+**One-liner:** Arrays that uniquely identify a cache entry. If any element changes, it's treated as a new query. They enable deduplication, targeted invalidation, and hierarchical matching.
+📖 [Detailed notes](10_react-query.md#query-keys--the-cache-identity)
+
+### 54. What are optimistic updates and how do you implement them?
+**One-liner:** Immediately update the UI before the server confirms, then rollback on failure. Pattern: `onMutate` (snapshot + optimistic update) → `onError` (restore snapshot) → `onSettled` (invalidate to sync with server).
+📖 [Detailed notes](10_react-query.md#optimistic-updates)
+
+---
+
+## Redux & RTK Advanced
+
+### 55. How does `createAsyncThunk` work?
+**One-liner:** Creates an action creator for async operations that auto-dispatches three actions: `pending` (loading), `fulfilled` (success with data), `rejected` (failure with error). Handle these in `extraReducers`.
+📖 [Detailed notes](11_redux-rtk-deep-dive.md#async-operations--createasyncthunk)
+
+### 56. What is RTK Query and how does it differ from React Query?
+**One-liner:** Redux Toolkit's data fetching layer. Like React Query, but stores everything in the Redux store. It auto-generates hooks from endpoint definitions and uses tag-based cache invalidation. Use it when already using Redux.
+📖 [Detailed notes](11_redux-rtk-deep-dive.md#rtk-query--api-caching-layer)
+
+### 57. What are memoized selectors and why do they matter?
+**One-liner:** Created with `createSelector`, they cache output based on inputs. Without them, `.filter()` or `.map()` in selectors creates new arrays on every state change, causing unnecessary re-renders of all consuming components.
+📖 [Detailed notes](11_redux-rtk-deep-dive.md#selectors--performance)
+
+### 58. Explain Redux middleware. How does it work?
+**One-liner:** A chain of functions intercepting dispatched actions before they reach the reducer. Signature: `store => next => action => { ... }`. Used for logging, async operations (thunks), analytics. RTK includes thunk, serializableCheck, and immutableCheck by default.
+📖 [Detailed notes](11_redux-rtk-deep-dive.md#redux-middleware)
+
+---
+
+## React 18+ & Concurrent Features
+
+### 59. What is `useTransition` and when would you use it?
+**One-liner:** Marks a state update as non-urgent so React can interrupt it for high-priority updates (typing). Returns `[isPending, startTransition]`. Use it when you own the state setter and the update triggers expensive re-renders.
+📖 [Detailed notes](12_suspense-concurrent-features.md#usetransition--marking-updates-as-non-urgent)
+
+### 60. What is `useDeferredValue` and how does it differ from `useTransition`?
+**One-liner:** Creates a "lagging" copy of a value that updates at lower priority. Unlike `useTransition` (where you control the setter), `useDeferredValue` is for values received as props that you can't control.
+📖 [Detailed notes](12_suspense-concurrent-features.md#usedeferredvalue--deferring-a-slow-re-render)
+
+### 61. What are React Server Components (RSC)?
+**One-liner:** Components that render only on the server — zero JS shipped to the browser. They can directly access databases and file systems. Cannot use hooks or event handlers. Client Components (marked `'use client'`) handle interactivity.
+📖 [Detailed notes](12_suspense-concurrent-features.md#react-server-components-rsc)
+
+### 62. How does Streaming SSR improve performance?
+**One-liner:** Traditional SSR waits for the entire page to generate before sending anything. Streaming SSR sends HTML progressively — fast sections appear immediately, slow sections show Suspense fallbacks that are replaced when ready.
+📖 [Detailed notes](12_suspense-concurrent-features.md#streaming-ssr)
+
+### 63. How would you preload lazy-loaded chunks for better UX?
+**One-liner:** Trigger the dynamic `import()` on mouse hover or focus of the navigation link. The browser downloads the chunk before the user clicks, making navigation feel instant.
+📖 [Detailed notes](12_suspense-concurrent-features.md#preloading-chunks-performance-optimization)
+
+### 64. Why should you nest multiple Suspense boundaries instead of using one?
+**One-liner:** One Suspense boundary shows a single fallback for everything — the user sees nothing until ALL data loads. Multiple boundaries let each section load independently, showing content progressively as it becomes available.
+📖 [Detailed notes](12_suspense-concurrent-features.md#suspense-boundaries)
+
+### 65. How do Error Boundaries and Suspense work together?
+**One-liner:** ErrorBoundary wraps Suspense. If data fetching fails → ErrorBoundary catches the error and shows an error fallback. If data is loading → Suspense shows a loading fallback. They handle different failure modes complementarily.
+📖 [Detailed notes](12_suspense-concurrent-features.md#error-boundaries-with-suspense)
