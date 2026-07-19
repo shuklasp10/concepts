@@ -2,7 +2,7 @@
     "IDX.aI.enableCodebaseIndexing": false,
     "IDX.aI.enableInlineCompletion": false,
     "window.autoDetectColorScheme": false,
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Dark Modern",
     "workbench.iconTheme": "material-icon-theme",
     "files.autoSave": "afterDelay",
     "draw.folder.structure.exclude": [
