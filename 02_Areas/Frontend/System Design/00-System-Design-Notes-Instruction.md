@@ -35,17 +35,25 @@
    - Requirement Analysis examples and Application Architecture examples should use matching category sets when possible.
    - Keep tone, depth, and structure aligned.
 
-6. **Prefer clarity over cleverness.**
+6. **Use the standard four-file topic layout.**
+   - Every topic folder should normally contain:
+     - `README.md` for the overview and navigation
+     - `Concepts.md` for the core guide
+     - `Examples.md` for applied walkthroughs
+     - `Interview-Strategy.md` for interview prep and communication guidance
+   - Keep supporting material inside those files instead of splitting into extra topic files like `Trade-Offs.md`, `Resources.md`, or `Interview-Questions.md`.
+
+7. **Prefer clarity over cleverness.**
    - Short paragraphs.
    - Simple headings.
    - Tables where they help learning.
    - Avoid overly fancy wording.
 
-7. **Explain the why, not just the what.**
+8. **Explain the why, not just the what.**
    - Every example should show why a requirement or constraint changes the design.
    - Mention the architecture signal clearly.
 
-8. **Teach with patterns.**
+9. **Teach with patterns.**
    - End sections with quick patterns, checklists, or comparison notes.
    - Help the reader remember the big idea fast.
 

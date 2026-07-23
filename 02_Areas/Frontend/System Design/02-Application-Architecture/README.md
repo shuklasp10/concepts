@@ -1,8 +1,22 @@
-# Application Architecture — Frontend System Design Guide
+# Application Architecture in Frontend System Design
 
-> 💡 **Core Idea:** Application architecture is the bridge between product requirements and implementation reality. It answers: *how do we organize the app so it stays maintainable, scalable, and understandable as features grow?*
+## Overview
+After requirement analysis tells you **what** to build, application architecture decides **how the app should be shaped** so the codebase stays maintainable as features grow.
 
----
+Application architecture is the crucial second step in the system design process. It is the act of turning a product shape into boundaries, layers, and ownership rules.
+
+If you get this wrong, the app may work today but become hard to change tomorrow.
+
+## Table of Contents
+
+### 📖 [Concepts — Complete Engineering Guide](Concepts.md)
+The single source of truth for this topic. Covers architecture styles, layer models, module boundaries, decision factors, trade-offs, anti-patterns, and a quick-recall cheat sheet — all in one structured, revision-friendly document.
+
+### 🛠️ [Examples — Deep Full-Journey Walkthroughs](Examples.md)
+5 detailed category-based examples showing how product shape affects frontend architecture. Each example demonstrates boundaries, state ownership, shared primitives, trade-offs, and edge cases.
+
+### 🎙️ [Interview Strategy — The Performance Guide](Interview-Strategy.md)
+How to answer architecture questions clearly under pressure. Covers the first 5 minutes playbook, communication techniques, presentation framework, quick recall, interviewer traps, and practice prompts.
 
 ## What This Topic Covers
 
@@ -11,14 +25,6 @@
 - How to separate UI, state, business logic, and data access
 - How to keep large frontend codebases testable and maintainable
 - How architecture decisions affect team velocity, performance, and reliability
-
-## Recommended Study Order
-
-1. [Concepts.md](./Concepts.md)
-2. [Examples.md](./Examples.md)
-3. [Trade-Offs.md](./Trade-Offs.md)
-4. [Interview-Questions.md](./Interview-Questions.md)
-5. [Resources.md](./Resources.md)
 
 ## Why It Matters
 
@@ -48,5 +54,20 @@ Think in layers:
 5. **Infrastructure layer** — logging, analytics, auth, feature flags
 
 > **Rule of thumb:** If a feature becomes hard to change, your boundaries are probably in the wrong place.
+
+## Useful References
+
+- Feature-sliced architecture examples
+- Modular monolith discussions
+- React and state organization guides
+- Real-world design system structure examples
+
+## What to Practice
+
+- Refactor a small app into feature folders
+- Identify accidental coupling in a medium-sized codebase
+- Separate UI rendering from business rules
+- Write tests for logic that was previously embedded in components
+
 
 
