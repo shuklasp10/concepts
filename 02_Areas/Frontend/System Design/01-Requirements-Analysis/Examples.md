@@ -1,253 +1,459 @@
-# Requirement Analysis — Deep Examples
+ # Requirement Analysis — Deep Examples
 
-> 💡 **Core Idea:** Examples showing the FULL JOURNEY from a vague prompt to concrete architecture. Each example walks through clarification → spec extraction → architecture mapping → trade-off surfacing → edge case discovery — exactly how a senior engineer thinks in an interview or a design review.
+> 💡 **Core Idea:** These examples show how to move from a broad product idea to a clear frontend plan. The goal is simple: understand the app category, define the core flow, and spot the real architecture drivers early.
 
 ## Table of Contents
 
-- [Example 1: "Design a News Feed" — Full Journey](#-example-1-design-a-news-feed--full-journey)
-- [Example 2: "Design an E-Commerce Checkout" — Full Journey](#-example-2-design-an-e-commerce-checkout--full-journey)
-- [Example 3: "Design a Real-Time Chat App" — Full Journey](#-example-3-design-a-real-time-chat-app--full-journey)
-- [Example 4: "Design a Dashboard/Analytics Tool" — Full Journey](#-example-4-design-a-dashboardanalytics-tool--full-journey)
-- [Quick-Fire Scenarios](#-quick-fire-scenarios)
+- [How to Use These Examples](#how-to-use-these-examples)
+- [1. Social Media App](#1-social-media-app)
+- [2. E-Commerce App](#2-e-commerce-app)
+- [3. Streaming / Media App](#3-streaming--media-app)
+- [4. Productivity / Collaboration App](#4-productivity--collaboration-app)
+- [5. Marketplace / Admin Platform](#5-marketplace--admin-platform)
+- [Quick Learning Patterns](#quick-learning-patterns)
 
 ---
 
-## 📱 Example 1: "Design a News Feed" — Full Journey
+## How to Use These Examples
+
+For every category, we look at the same learning steps:
+
+1. **The vague prompt** — what the interviewer says
+2. **Clarifying questions** — what you should ask
+3. **Extracted requirements** — what actually matters
+4. **Core flow** — the main user journey
+5. **Architecture hints** — what the requirements push you toward
+6. **Trade-offs** — what you gain and what you lose
+7. **Edge cases** — what most people forget
+
+> **Simple rule:** first understand the app type, then the user goal, then the constraints.
+
+---
+
+## 1. Social Media App
 
 ### 1.1 The Vague Prompt
 
-**Interviewer/Manager:** "I want you to design a News Feed like Twitter."
+**Interviewer/Manager:** “Design a social media feed like Instagram or X.”
 
-*If you start drawing components now, you fail.*
+### 1.2 Clarifying Questions
 
-### 1.2 The Clarifying Phase
+**You:**
 
-**You:** "Awesome. Before we talk about React or State, let's establish some boundaries."
+- Is the focus on a feed, stories, comments, or messaging?
+- Is content mostly text, images, or video?
+- Do we need real-time updates or is refresh okay?
+- Are we optimizing for mobile, desktop, or both?
+- Do we need offline mode or poor-network support?
+- Do we need accessibility basics like keyboard navigation and screen readers?
 
-*   **You:** "Is this primarily for mobile web, native apps, or desktop?"
-    *   *Them:* "Let's focus on mobile web."
-*   **You:** "Are we showing images and videos, or just text?"
-    *   *Them:* "Text and images. No video for now."
-*   **You:** "Do we need real-time updates (like new tweets popping in automatically) or is pull-to-refresh okay?"
-    *   *Them:* "Pull-to-refresh is fine. No real-time."
-*   **You:** "Who is the audience? Are we optimizing for low-end devices?"
-    *   *Them:* "Yes, global launch. 3G network performance is critical."
-*   **You:** "Does this feed need to be accessible — screen reader support, keyboard navigation for browsing posts?"
-    *   *Them:* "Basic accessibility — semantic HTML and alt text for images. Full ARIA isn't an MVP priority."
-*   **You:** "Are there any content moderation requirements? Flagging posts, reporting, NSFW filtering?"
-    *   *Them:* "Server handles moderation. On the frontend we just need to respect a `hidden` flag from the API."
-*   **You:** "Any analytics requirements? Impression tracking, scroll depth, engagement metrics?"
-    *   *Them:* "Yes, we need impression tracking — knowing which posts were actually viewed."
+**Example answers:**
+
+- Main flow is scrolling a personalized feed
+- Mostly images and short text
+- Pull-to-refresh is fine; no real-time for MVP
+- Mobile-first
+- Strong performance on slow networks
 
 ### 1.3 Extracted Spec Sheet
 
-In 90 seconds, you solved 80% of the architecture.
-
-**✅ Functional Requirements (What to build):**
+**Functional Requirements**
 
 | Priority | Requirement |
 |:---------|:------------|
-| **Must Have** | Feed of text + image posts with infinite scroll |
-| **Must Have** | Pull-to-refresh pagination |
-| **Must Have** | Impression tracking (viewport-based) |
-| **Should Have** | Post interactions (Like, Share) |
-| **Should Have** | Basic accessibility (semantic HTML, alt text) |
-| **Could Have** | Post bookmarking |
-| **Won't Have** | Video playback, real-time WebSockets, Direct Messages |
+| Must Have | Feed of posts with infinite scroll |
+| Must Have | Like, comment, and share actions |
+| Must Have | Image upload and display |
+| Should Have | Pull-to-refresh |
+| Should Have | Post bookmarking |
+| Could Have | Stories or short-form content |
+| Won’t Have | Live video, DMs, creator monetization |
 
-**🧱 Non-Functional Requirements (How to build it):**
+**Non-Functional Requirements**
 
-| Constraint | Target | Reason |
-|:-----------|:-------|:-------|
-| Network | Fast on 3G (<200kb initial bundle) | Global audience on slow networks |
-| Scale | 10,000+ items without crashes | Mobile browser memory limits |
-| Performance | LCP < 2.5s, INP < 200ms | Core Web Vitals compliance |
-| Accessibility | Semantic HTML, image alt text | Basic screen reader support |
+| Constraint | Target | Why it matters |
+|:-----------|:-------|:---------------|
+| Performance | Fast initial load on mobile | Users scroll immediately |
+| Scale | Thousands of posts per session | Feed can grow very large |
+| Network | Works well on slow connections | Global audience |
+| Accessibility | Semantic HTML, alt text, keyboard support | Basic usability |
 
-### 1.4 Concepts in Action: Requirement → Architecture
+### 1.4 Core Flow
 
-This is where the spec sheet transforms into engineering decisions. Each requirement *forces* an architectural pattern:
+**Open app → load feed → scroll → react to post → open comments → share or save**
 
-- **Mobile web + 3G** → Aggressive code splitting (route-based chunking), WebP image compression, skeleton loaders for perceived performance
-- **Text + images feed** → Image lazy loading via `loading="lazy"` + Intersection Observer, blur-hash placeholders (tiny base64 preview while real image loads)
-- **Pull-to-refresh** → Cursor-based pagination (not offset-based — offset breaks when new items are inserted), Intersection Observer to trigger next page fetch
-- **10,000+ items** → DOM Virtualization (only render ~15 visible items, recycle DOM nodes on scroll)
-- **Impression tracking** → Intersection Observer API (same observer pattern, dual purpose — triggering loads and tracking views)
+That flow tells you the app is mostly about:
 
-> **Key Insight:** Notice how Intersection Observer appears three times — for lazy loading images, triggering pagination, and tracking impressions. Recognizing this shared primitive is what separates senior from junior thinking.
+- list rendering
+- cached data
+- interaction state
+- viewport tracking
+- content loading
 
-### 1.5 Trade-Offs That Surface
+### 1.5 Architecture Hints
 
-Three of the 7 Senior Trade-Offs from Concepts apply directly here:
+- Infinite scroll → pagination + virtualization
+- Images → lazy loading + placeholders
+- Large feed → server pagination with cursor-based data
+- Impression tracking → viewport observer pattern
+- Offline tolerance → cache-first or stale-while-revalidate
 
-| Trade-Off | The Tension | Decision for This Feed |
-|:----------|:------------|:-----------------------|
-| **Memory vs Speed** (Trade-Off #4) | Caching 10k DOM nodes = fast back-scroll but crashes mobile. Virtualizing = saves memory but costs CPU on mount/unmount. | Virtualize. Mobile memory is the harder constraint on 3G devices. Accept the CPU cost. |
-| **Caching vs Freshness** (Trade-Off #6) | Cache feed data for instant revisits vs always show latest posts. | Stale-while-revalidate. Show cached feed instantly, then silently refresh in background. Show a "New posts available" banner instead of force-refreshing and losing scroll position. |
-| **Bundle Size vs DX** (Trade-Off #5) | Using a virtualization library (react-window: ~6kb) vs building custom. | Use the library. 6kb gzipped is within budget and saves weeks of edge case handling. |
+### 1.6 Trade-Offs
 
-### 1.6 Decision Tree Walk-Through
+| Trade-Off | Simple Decision |
+|:----------|:----------------|
+| Freshness vs performance | Show cached feed fast, refresh in background |
+| Rich media vs speed | Compress images and load them lazily |
+| Infinite scroll vs memory | Virtualize the list |
 
-Following the Slow Network / Emerging Market decision tree:
+### 1.7 Edge Cases
 
-```
-Requirement: Must load fast on 3G
-  → Decision: Minimize initial payload
-    → Reason: Network bandwidth is the bottleneck, not device CPU
-      → Architecture: Aggressive Code Splitting & Lazy Loading
-        → Implementation:
-          1. Route-based chunking (feed page loads only feed code)
-          2. Image compression (WebP with AVIF fallback)
-          3. Blur-hash placeholders (< 30 bytes per image preview)
-          4. Skeleton loaders (CSS-only, zero JS cost)
-          5. Prefetch next page of data before user hits bottom
-```
-
-**Why NOT SSR here?** The decision tree for SEO says SSR. But this feed has no SEO requirement — it's a logged-in user experience. CSR with aggressive splitting wins because it avoids the hydration cost that SSR adds on slow devices.
-
-### 1.7 Edge Cases & What Most Candidates Miss
-
-These are the details that separate a "good" answer from a "hire" answer:
-
-- **Variable-height items in virtualization** — Some posts are text-only (80px), some have large images (400px). Standard virtualization libraries assume fixed heights. You need dynamic measurement (`react-virtuoso` handles this, or measure-before-render with `ResizeObserver`).
-- **Network failure mid-scroll** — User scrolls to page 5 and loses connection. Show cached content with a subtle "You're offline" banner. Do NOT clear existing items. Queue any interactions (likes) for retry via Background Sync.
-- **Pull-to-refresh race conditions** — User pulls to refresh while a previous fetch is still in flight. You must `AbortController.abort()` the pending request before firing a new one. Otherwise, the old response might arrive after the new one and overwrite fresher data.
-- **Image loading failures** — Individual image failures should show a fallback placeholder (broken image icon + "Tap to retry"), not crash the entire feed item. Use `<img onerror>` with retry logic (max 2 retries with exponential backoff).
-- **Infinite scroll memory leaks** — Even with virtualization, image `Blob` URLs created via `URL.createObjectURL()` must be explicitly revoked. Intersection Observer instances must be disconnected on unmount. Forgetting either leaks memory over long scroll sessions.
-- **Content ordering consistency** — If 50 new posts arrive while the user is at position 300, do NOT inject them into the feed and shift everything. Buffer them and show "50 new posts" at the top. Clicking the banner scrolls to top and prepends. This prevents the jarring "content jump" (CLS problem).
-
-### 1.8 Final Architecture Summary
-
-| Requirement | Decision | Architecture | Implementation |
-|:------------|:---------|:-------------|:---------------|
-| Mobile web + 3G | Minimize payload | Code splitting + lazy loading | Route-based chunks, WebP images, skeleton loaders |
-| Text + image feed | Lazy render images | Intersection Observer | `loading="lazy"`, blur-hash placeholders |
-| Pull-to-refresh | Cursor-based data fetching | Pagination with prefetch | Intersection Observer trigger, AbortController for races |
-| 10k+ items | Save memory | DOM Virtualization | `react-virtuoso` (dynamic heights), node recycling |
-| Impression tracking | Track viewport entries | Intersection Observer | Batch impression events, send on `visibilitychange` |
-| Offline resilience | Cache-first | Stale-while-revalidate | Service Worker cache, "New posts" banner on refresh |
+- What happens when a post image fails to load?
+- What if the user scrolls while a refresh is happening?
+- What if a post is deleted while it is still visible?
+- What if the feed contains mixed media sizes?
 
 ---
 
-## 🛒 Example 2: "Design an E-Commerce Checkout" — Full Journey
+## 2. E-Commerce App
 
 ### 2.1 The Vague Prompt
 
-**Interviewer/Manager:** "Design the checkout flow for our new store."
+**Interviewer/Manager:** “Design an e-commerce shopping experience.”
 
-### 2.2 The Clarifying Phase
+### 2.2 Clarifying Questions
 
-*   **You:** "Is this a single-page checkout or a multi-step wizard (Shipping → Billing → Review)?"
-    *   *Them:* "Multi-step wizard."
-*   **You:** "Are we supporting global customers with different currencies and address formats?"
-    *   *Them:* "Yes, global support."
-*   **You:** "Which payment methods? Just credit cards, or also PayPal, Apple Pay, BNPL?"
-    *   *Them:* "Credit cards and PayPal for MVP."
-*   **You:** "Do users need to be logged in, or do we support guest checkout?"
-    *   *Them:* "Guest checkout is a Must Have — most of our drop-offs are at the login wall."
-*   **You:** "Should cart data persist if the user closes the tab and comes back?"
-    *   *Them:* "Yes, critical. We lose 30% of users who get distracted mid-checkout."
-*   **You:** "Do we need real-time shipping estimation during the address step?"
-    *   *Them:* "Should Have — not blocking for launch, but planned."
-*   **You:** "Any specific security compliance requirements?"
-    *   *Them:* "PCI DSS. We never touch raw card numbers — use Stripe Elements."
+**You:**
+
+- Is this browsing, cart, checkout, or all of them?
+- Do we support guest checkout?
+- Do prices change often?
+- Do we need coupons, shipping estimates, or taxes?
+- Is inventory real-time?
+- Are we supporting one country or many?
+
+**Example answers:**
+
+- Browsing, cart, and checkout are all in scope
+- Guest checkout is required
+- Global customers, multiple currencies
+- Inventory and pricing can change
 
 ### 2.3 Extracted Spec Sheet
 
-**✅ Functional Requirements:**
+**Functional Requirements**
 
 | Priority | Requirement |
 |:---------|:------------|
-| **Must Have** | Multi-step wizard (Shipping → Payment → Review → Confirmation) |
-| **Must Have** | Guest checkout (no login required) |
-| **Must Have** | Credit card (via Stripe Elements) + PayPal integration |
-| **Must Have** | Cart persistence across tab close/reopen |
-| **Should Have** | Real-time shipping cost estimation |
-| **Should Have** | Order summary sidebar (always visible) |
-| **Could Have** | Address autocomplete (Google Places API) |
-| **Won't Have** | BNPL, Cryptocurrency, Subscription billing |
+| Must Have | Product listing and product detail pages |
+| Must Have | Add to cart and cart editing |
+| Must Have | Multi-step checkout |
+| Must Have | Guest checkout |
+| Should Have | Coupon support |
+| Should Have | Shipping and tax estimation |
+| Could Have | Saved addresses and wishlists |
+| Won’t Have | Subscriptions, BNPL, auction flow |
 
-**🧱 Non-Functional Requirements:**
+**Non-Functional Requirements**
 
-| Constraint | Target | Reason |
-|:-----------|:-------|:-------|
-| Security | PCI DSS compliant | Never handle raw card data on our frontend |
-| i18n | Multi-currency, multi-address format | Global customer base |
-| Resilience | Zero data loss on navigation/refresh | Cart abandonment reduction |
-| Performance | CLS < 0.1 (no layout shift on step transitions) | E-commerce conversion sensitivity |
+| Constraint | Target | Why it matters |
+|:-----------|:-------|:---------------|
+| Security | PCI-safe payment handling | Never expose card data |
+| Reliability | No data loss during checkout | Abandonment is expensive |
+| Performance | No layout shift during payment | Trust and conversion |
+| Localization | Currency and address support | Global users |
 
-### 2.4 Concepts in Action
+### 2.4 Core Flow
 
-- **Multi-step wizard** → Complex form state management. Each step's data must survive forward/backward navigation. `useReducer` + Context for step state, or React Hook Form with `FormProvider` for field-level validation preservation.
-- **Global customers** → i18n architecture: RTL CSS support for Arabic/Hebrew, `Intl.NumberFormat` for currency display (never manually format currencies), country-specific address schemas (US has ZIP + State, UK has Postcode, Japan has reversed order).
-- **Security (PCI)** → Stripe Elements iframes for card input (card data never touches our DOM or JS). HttpOnly cookies for session tokens. Content Security Policy headers to prevent XSS injection that could exfiltrate payment data.
-- **Cart persistence** → `localStorage` for cart items (serialized JSON) + server-side cart sync for logged-in users. On page load: merge local cart with server cart, handle conflicts (item price changed, item out of stock).
+**Browse product → inspect details → add to cart → review cart → enter shipping → pay → confirm order**
 
-### 2.5 Trade-Offs That Surface
+That flow tells you the app needs:
 
-| Trade-Off | The Tension | Decision for Checkout |
-|:----------|:------------|:----------------------|
-| **Consistency vs Availability** (Trade-Off #2) | Optimistic UI is great for Likes — but NEVER for payments. You cannot show "Payment successful!" and then discover it failed. | Pessimistic UI for payment. Show a spinner. Wait for the server confirmation. The user's money is at stake. |
-| **Performance vs Accessibility** (Trade-Off #3) | Custom styled dropdowns for country/state selection look beautiful. Native `<select>` is ugly but fully keyboard/screen-reader accessible. | Use native `<select>` with light CSS styling. Checkout is not the place for flashy UI — it's the place for zero friction. Every custom widget is a potential accessibility barrier that costs conversions. |
-| **Bundle Size vs DX** (Trade-Off #5) | React Hook Form (~8kb) vs building custom form state management. | Use the library. The validation, dirty tracking, and error handling logic it provides would take weeks to build correctly. 8kb is a rounding error against Stripe's SDK. |
+- durable form state
+- cart persistence
+- validation
+- price refresh before payment
+- error recovery
 
-### 2.6 Decision Tree Walk-Through
+### 2.5 Architecture Hints
 
-```
-Requirement: Global customers with different currencies
-  → Decision: Content must render correctly in any locale
-    → Reason: Showing "$100" to a Japanese user paying ¥15,000 breaks trust
-      → Architecture: i18n-aware rendering pipeline
-        → Implementation:
-          1. Intl.NumberFormat for all currency display
-          2. Country-driven address form schema
-          3. RTL CSS via `dir="rtl"` attribute + logical properties
-          4. Date formatting via Intl.DateTimeFormat (no Moment.js)
-```
+- Cart → dedicated state store or domain module
+- Checkout → step-based workflow
+- Pricing → server-validated final calculation
+- Payment → secure third-party integration
+- Localization → locale-aware formatting
 
-### 2.7 Edge Cases & What Most Candidates Miss
+### 2.6 Trade-Offs
 
-- **Multi-step wizard state persistence** — User fills shipping (Step 1), goes to payment (Step 2), then hits the browser Back button. Does the shipping data survive? What if they refresh the page entirely? Use `sessionStorage` to persist form state across refreshes, and `beforeunload` to warn about unsaved changes.
-- **Payment failure recovery** — Stripe returns a `payment_failed` error. What state does the UI show? The user should NOT need to re-enter their shipping address. Keep all prior step data intact. Show the error inline on the payment step with a "Retry" button.
-- **Cart expiry and inventory locking** — User adds the last item to cart, spends 20 minutes on checkout. Meanwhile, someone else buys it. On payment submission, the server returns "out of stock." Show a clear error, offer alternatives, and update the cart total in real-time.
-- **Currency conversion timing** — User sees "€85.00" on the review page. By the time they click "Pay" (5 minutes later), the exchange rate has shifted. Always re-fetch the final price from the server on payment submission. Never charge based on a cached price.
-- **Address validation** — Async validation against shipping APIs can take 2-3 seconds. Show inline validation states (spinner → checkmark/error). Handle network timeouts gracefully — allow the user to proceed with a warning rather than blocking them entirely.
-- **Session timeout during checkout** — If the auth session expires mid-checkout, do NOT redirect to login and destroy form data. Silently refresh the token (if using refresh tokens) or prompt a lightweight re-auth modal that preserves the current page state.
-- **Double-submit prevention** — User clicks "Pay" twice rapidly. Disable the button immediately on first click. Use an idempotency key in the API request so the server ignores duplicate submissions. Show a clear "Processing..." state.
-- **Guest checkout → account creation upsell** — After successful payment, offer "Save your details for faster checkout next time?" This is a state transition: guest session data must be transferable to a new account without re-entering anything.
+| Trade-Off | Simple Decision |
+|:----------|:----------------|
+| Speed vs accuracy | Re-check final price before payment |
+| Fancy UI vs accessibility | Prefer simple, safe form controls |
+| Local state vs persistence | Persist cart and form draft data |
 
-### 2.8 Final Architecture Summary
+### 2.7 Edge Cases
 
-| Requirement | Decision | Architecture | Implementation |
-|:------------|:---------|:-------------|:---------------|
-| Multi-step wizard | Preserve state across steps | Form state manager + Context | React Hook Form with `FormProvider`, `sessionStorage` backup |
-| Guest checkout | No auth wall | Session-based cart | `localStorage` cart + server sync on payment |
-| PCI compliance | Never touch card data | Hosted payment fields | Stripe Elements (iframe isolation) |
-| Global i18n | Locale-aware rendering | i18n pipeline | `Intl.NumberFormat`, country-driven address schemas, logical CSS properties |
-| Cart persistence | Survive tab close | Client-side storage | `localStorage` + merge logic on reload |
-| Double-submit | Prevent duplicate payments | Idempotency | Disable button + idempotency key in API request |
+- What if an item goes out of stock in checkout?
+- What if the user refreshes mid-order?
+- What if a coupon expires while the cart is open?
+- What if payment fails after all steps are complete?
 
 ---
 
-## 💬 Example 3: "Design a Real-Time Chat App" — Full Journey
-
-> This example covers real-time data, offline support, sync, and WebSockets — concepts that Examples 1 & 2 don't touch.
+## 3. Streaming / Media App
 
 ### 3.1 The Vague Prompt
 
-**Interviewer/Manager:** "Design a messaging app like WhatsApp Web."
+**Interviewer/Manager:** “Design a streaming app like YouTube, Netflix, or a music player.”
 
-### 3.2 The Clarifying Phase
+### 3.2 Clarifying Questions
 
-*   **You:** "Are we building 1-on-1 messaging, group chats, or both?"
-    *   *Them:* "Both. Groups up to 256 members."
-*   **You:** "What media types? Text only, or images/files too?"
-    *   *Them:* "Text + images for MVP. File sharing is a Should Have."
-*   **You:** "Do we need read receipts — the double-checkmark pattern?"
-    *   *Them:* "Yes, sent/delivered/read status per message."
-*   **You:** "Offline message queuing? If the user types a message on the subway, should it send when they reconnect?"
-    *   *Them:* "Yes, must work on flaky networks."
-*   **You:** "End-to-end encryption?"
+**You:**
+
+- Is this video, audio, or both?
+- Is the main goal browsing, playback, or recommendations?
+- Do we need offline downloads?
+- Is live streaming part of the scope?
+- Do users upload content, or only consume it?
+- How important is adaptive quality on slow networks?
+
+**Example answers:**
+
+- Video playback is the main flow
+- Browsing and recommendations matter too
+- Offline downloads are a should-have
+- No live streaming for MVP
+
+### 3.3 Extracted Spec Sheet
+
+**Functional Requirements**
+
+| Priority | Requirement |
+|:---------|:------------|
+| Must Have | Browse content catalog |
+| Must Have | Play media with controls |
+| Must Have | Resume playback from last position |
+| Should Have | Recommendations and related content |
+| Should Have | Watch history |
+| Could Have | Offline downloads |
+| Won’t Have | Live broadcasting, creator studio, comments |
+
+**Non-Functional Requirements**
+
+| Constraint | Target | Why it matters |
+|:-----------|:-------|:---------------|
+| Performance | Fast start of playback | Users quit if video buffers too long |
+| Network | Adaptive quality support | Users may be on weak connections |
+| Reliability | Playback should survive interruptions | Smooth experience matters |
+| Storage | Large media caching support | Offline or resume use cases |
+
+### 3.4 Core Flow
+
+**Open app → browse title → start playback → pause/resume → continue later**
+
+This flow pushes you toward:
+
+- persistent playback state
+- prefetching metadata
+- adaptive loading
+- cache management
+- strong error handling
+
+### 3.5 Architecture Hints
+
+- Playback state → local plus server sync
+- Media assets → CDN and adaptive bitrate logic
+- History → persistent storage
+- Recommendations → separate data fetching layer
+- Downloads → offline storage with queueing
+
+### 3.6 Trade-Offs
+
+| Trade-Off | Simple Decision |
+|:----------|:----------------|
+| Quality vs speed | Adapt quality based on network |
+| Rich UI vs reliability | Keep playback controls stable and simple |
+| Offline vs storage | Download only when the user asks |
+
+### 3.7 Edge Cases
+
+- What if the network drops during playback?
+- What if the user switches devices?
+- What if one media item has missing metadata?
+- What if the user scrubs while the player is buffering?
+
+---
+
+## 4. Productivity / Collaboration App
+
+### 4.1 The Vague Prompt
+
+**Interviewer/Manager:** “Design a productivity app like Notion, Trello, or Google Docs.”
+
+### 4.2 Clarifying Questions
+
+**You:**
+
+- Is this document editing, task management, or both?
+- Do we need real-time collaboration?
+- Do we need offline support?
+- Are there multiple user roles or permissions?
+- How deep is the data structure?
+- Do we need comments, mentions, or notifications?
+
+**Example answers:**
+
+- Real-time collaboration is required
+- Offline support is important
+- Permissions vary by workspace
+
+### 4.3 Extracted Spec Sheet
+
+**Functional Requirements**
+
+| Priority | Requirement |
+|:---------|:------------|
+| Must Have | Create, edit, and organize content |
+| Must Have | Permissions and sharing |
+| Must Have | Real-time collaboration |
+| Should Have | Comments and mentions |
+| Should Have | Activity history |
+| Could Have | Offline editing |
+| Won’t Have | Advanced publishing workflows |
+
+**Non-Functional Requirements**
+
+| Constraint | Target | Why it matters |
+|:-----------|:-------|:---------------|
+| Consistency | Edits should not conflict badly | Many users may edit at once |
+| Reliability | Work should not be lost | Collaboration trust depends on it |
+| Performance | Editing should feel instant | Input lag breaks flow |
+| Scalability | Large docs or boards should still work | Real apps grow big |
+
+### 4.4 Core Flow
+
+**Open workspace → edit content → share with others → see live updates → resolve conflicts**
+
+This flow tells you the app is about:
+
+- sync
+- conflict handling
+- document state
+- permission checks
+- offline persistence
+
+### 4.5 Architecture Hints
+
+- Real-time updates → sync layer or websocket layer
+- Offline support → local storage + queue
+- Permissions → shared policy module
+- Complex content → domain-oriented structure
+- Collaboration → separation between editor UI and sync logic
+
+### 4.6 Trade-Offs
+
+| Trade-Off | Simple Decision |
+|:----------|:----------------|
+| Consistency vs responsiveness | Apply local edits quickly, sync in background |
+| Simplicity vs collaboration | Keep sync logic out of components |
+| Offline vs conflict risk | Queue changes and reconcile later |
+
+### 4.7 Edge Cases
+
+- What if two users edit the same block at once?
+- What if the user goes offline mid-edit?
+- What if permissions change while the page is open?
+- What if an update arrives out of order?
+
+---
+
+## 5. Marketplace / Admin Platform
+
+### 5.1 The Vague Prompt
+
+**Interviewer/Manager:** “Design a marketplace admin or operations app.”
+
+### 5.2 Clarifying Questions
+
+**You:**
+
+- Is this read-heavy or write-heavy?
+- Are there risky actions like refunds, approvals, or bans?
+- Do different teams use the same app?
+- Do we need audit logs?
+- Are tables, filters, and workflows the main UI?
+
+**Example answers:**
+
+- Mostly read-heavy
+- Some high-risk actions exist
+- Support, ops, and finance all use it
+- Audit logging is important
+
+### 5.3 Extracted Spec Sheet
+
+**Functional Requirements**
+
+| Priority | Requirement |
+|:---------|:------------|
+| Must Have | Search, filter, and table views |
+| Must Have | Detail pages for users/orders/items |
+| Must Have | High-risk admin actions with confirmation |
+| Should Have | Audit logs |
+| Should Have | Role-based access |
+| Could Have | Bulk actions |
+| Won’t Have | Consumer-style social features |
+
+**Non-Functional Requirements**
+
+| Constraint | Target | Why it matters |
+|:-----------|:-------|:---------------|
+| Safety | Avoid wrong admin actions | Mistakes are expensive |
+| Traceability | Track who did what | Audit and compliance |
+| Usability | Fast navigation in tables | Operators need speed |
+| Permissioning | Strong access rules | Different teams need different access |
+
+### 5.4 Core Flow
+
+**Open dashboard → search record → inspect details → take action → confirm → log result**
+
+### 5.5 Architecture Hints
+
+- Tables and filters → reusable query state pattern
+- High-risk actions → isolated workflows with confirmation
+- Audit logs → central tracking layer
+- Permissions → shared auth and policy model
+- Multiple teams → strong feature boundaries
+
+### 5.6 Trade-Offs
+
+| Trade-Off | Simple Decision |
+|:----------|:----------------|
+| Speed vs safety | Add confirmations for destructive actions |
+| Reuse vs clarity | Keep workflows explicit, not over-generic |
+| Flexibility vs control | Tight permission rules win |
+
+### 5.7 Edge Cases
+
+- What if an admin action partially fails?
+- What if a user loses permission mid-session?
+- What if the table has 100k rows?
+- What if the action must be undone?
+
+---
+
+## Quick Learning Patterns
+
+Use these patterns across all categories:
+
+- **If the app is feed-heavy:** think scroll, cache, virtualization
+- **If the app is checkout-heavy:** think forms, persistence, validation, safety
+- **If the app is media-heavy:** think playback, buffering, offline, performance
+- **If the app is collaboration-heavy:** think sync, conflict handling, permissions
+- **If the app is admin-heavy:** think tables, filters, audit logs, safe actions
+
+> **Quick memory trick:** app category first, core flow second, architecture third.
+
     *   *Them:* "Out of scope for MVP."
 *   **You:** "Search through message history?"
     *   *Them:* "Should Have. Not blocking for launch."

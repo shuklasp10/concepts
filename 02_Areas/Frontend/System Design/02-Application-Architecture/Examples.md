@@ -1,66 +1,62 @@
 # Application Architecture — Deep Examples
 
-> 💡 **Core Idea:** These examples show how to move from product context to app structure. The goal is not just to “organize files” — it is to make the app easier to evolve.
+> 💡 **Core Idea:** These examples show how app category affects app structure. The goal is not just to organize files — it is to shape the app so it matches the product and the team.
 
 ## Table of Contents
 
-- [Example 1: Design a SaaS Dashboard](#example-1-design-a-saas-dashboard)
-- [Example 2: Design a Multi-Step Checkout App](#example-2-design-a-multi-step-checkout-app)
-- [Example 3: Design a Collaboration Workspace](#example-3-design-a-collaboration-workspace)
-- [Example 4: Design an Admin Portal for a Marketplace](#example-4-design-an-admin-portal-for-a-marketplace)
-- [Quick-Fire Scenarios](#quick-fire-scenarios)
+- [How to Read These Examples](#how-to-read-these-examples)
+- [1. Social Media Platform](#1-social-media-platform)
+- [2. E-Commerce Storefront](#2-e-commerce-storefront)
+- [3. Streaming / Media Product](#3-streaming--media-product)
+- [4. Productivity / Collaboration Tool](#4-productivity--collaboration-tool)
+- [5. Marketplace / Admin Console](#5-marketplace--admin-console)
+- [Quick Comparison Notes](#quick-comparison-notes)
 
 ---
 
-## Example 1: Design a SaaS Dashboard
+## How to Read These Examples
+
+For each category, focus on these questions:
+
+1. What is the core user flow?
+2. What kind of state is changing?
+3. What should stay local and what should be shared?
+4. What is the main scaling risk?
+5. Which part of the app deserves the strongest boundary?
+
+> **Simple rule:** product shape first, architecture second.
+
+---
+
+## 1. Social Media Platform
 
 ### The Vague Prompt
 
-**Interviewer/Manager:** “Design the frontend architecture for our SaaS dashboard.”
+**Interviewer/Manager:** “Design the frontend architecture for a social app.”
 
 ### Clarifying Phase
 
-**You:** “Before I suggest folder structure or state tools, I’d like to understand the product shape.”
+**You:**
 
-- Is this a single product area or many independent modules?
-- Which screens change most often?
-- Do we have different user roles?
-- Is there a design system already?
-- Are we expecting multiple teams to work in parallel?
+- Is the main experience a feed, stories, messaging, or all of them?
+- Is it mobile-first?
+- Do we need real-time updates?
+- Are images, videos, or text the main content type?
+- Is offline mode needed?
 
-**Them:**
+**Example answers:**
 
-- Multiple modules: analytics, billing, account settings, team management
-- Several roles: owner, admin, member
-- Design system exists
-- Two teams will work in parallel
-
-### Extracted Spec Sheet
-
-**Functional Requirements**
-
-| Priority | Requirement |
-|:---------|:------------|
-| Must Have | Separate modules for analytics, billing, settings, and teams |
-| Must Have | Role-based access control in the UI |
-| Must Have | Shared design system components |
-| Should Have | Feature flags for staged rollout |
-| Could Have | Per-module lazy loading |
-
-**Non-Functional Requirements**
-
-| Constraint | Target | Reason |
-|:-----------|:-------|:-------|
-| Maintainability | Easy to scale across 2+ teams | Parallel work without collisions |
-| Performance | Fast initial load | Dashboard should not feel heavy |
-| Testability | Unit tests for business logic | Reduce regressions in workflows |
+- Feed is the main flow
+- Mobile-first
+- No real-time for MVP
+- Text and images only
 
 ### Architecture Mapping
 
-- **Multiple modules** → feature-based architecture
-- **Role-based UI** → shared auth/permission layer with feature guards
-- **Parallel teams** → strict boundaries and public entry points
-- **Design system** → shared UI layer for primitives only
+- Feed-heavy UI → list virtualization and pagination
+- Content cards → reusable post modules
+- Likes and comments → local interaction state + server sync
+- Media loading → lazy loading and placeholders
 
 ### Recommended Structure
 
@@ -68,117 +64,196 @@
 src/
   app/
   features/
-    analytics/
-    billing/
-    settings/
-    teams/
+    feed/
+    post-actions/
+    comments/
+    profile/
   shared/
     ui/
     lib/
     api/
-  entities/
-```
-
-### Trade-Offs
-
-| Trade-Off | Decision |
-|:----------|:---------|
-| Shared UI vs feature-specific UI | Share only primitives, keep workflows local |
-| Global state vs local ownership | Local by default, global only for auth and theme |
-| Monolithic routing vs module routing | Route by feature to preserve boundaries |
-
-### Edge Cases
-
-- What happens when a role loses access mid-session?
-- How do we avoid importing billing internals into analytics?
-- How do we prevent shared components from becoming feature-specific?
-
----
-
-## Example 2: Design a Multi-Step Checkout App
-
-### The Vague Prompt
-
-**Interviewer/Manager:** “How would you structure the frontend for checkout?”
-
-### Clarifying Phase
-
-**You:**
-
-- Is checkout a wizard or a single page?
-- Do we need guest checkout?
-- Does shipping estimation update live?
-- Is cart state shared across pages?
-- Do we need draft persistence on refresh?
-
-**Them:**
-
-- Wizard flow
-- Guest checkout allowed
-- Cart must survive refresh
-- Pricing and shipping should update dynamically
-
-### Architecture Mapping
-
-- **Wizard flow** → step-oriented module with local workflow state
-- **Draft persistence** → state layer with storage adapter
-- **Shared cart** → dedicated cart domain module
-- **Dynamic pricing** → domain logic isolated from components
-
-### Recommended Structure
-
-```txt
-checkout/
-  steps/
-  state/
-  domain/
-  api/
-  ui/
 ```
 
 ### Why This Works
 
-- The checkout workflow is isolated.
-- The pricing rules can evolve without rewriting UI.
-- The cart can be reused by mini-cart and order review screens.
+- Feed stays isolated from profile logic
+- Shared UI stays small and stable
+- Interaction code does not leak into every component
 
 ### Common Mistake
 
-Putting all checkout logic directly inside screen components.
+Putting feed fetching, post rendering, and like handling in one large screen component.
 
-That works for one step and fails for five.
+### Edge Cases
+
+- Variable-height posts
+- Deleted posts while scrolling
+- Network loss during refresh
+- Image failures inside cards
 
 ---
 
-## Example 3: Design a Collaboration Workspace
+## 2. E-Commerce Storefront
 
 ### The Vague Prompt
 
-**Interviewer/Manager:** “Design the app architecture for a Notion-like workspace.”
+**Interviewer/Manager:** “Design the frontend architecture for an online store.”
 
 ### Clarifying Phase
 
 **You:**
 
-- Is real-time editing required?
-- Are documents deeply nested?
-- How many entity types exist: docs, comments, mentions, tasks?
-- Is offline editing needed?
-- Do different workspaces have different permissions?
+- Are we designing browsing, cart, checkout, or all three?
+- Is guest checkout supported?
+- Do prices and inventory change often?
+- Do we need multi-currency support?
+- Is the cart persistent across sessions?
 
-**Them:**
+**Example answers:**
 
-- Real-time collaboration required
-- Offline support is important
-- Many entity types
-- Workspace-level permissions
+- Browsing, cart, and checkout are all required
+- Guest checkout is needed
+- Multi-currency is required
+- Cart must persist
 
 ### Architecture Mapping
 
-- **Many entity types** → domain-driven structure
-- **Real-time collaboration** → separate sync layer
-- **Offline support** → persistence and queue layer
-- **Permissions** → shared policy module
+- Product browsing → search, filtering, and catalog modules
+- Cart → dedicated domain state
+- Checkout → step-based flow
+- Pricing → server-validated data
+- Localization → locale-aware formatting layer
+
+### Recommended Structure
+
+```txt
+src/
+  features/
+    catalog/
+    product-details/
+    cart/
+    checkout/
+    orders/
+  shared/
+    ui/
+    lib/
+    api/
+```
+
+### Why This Works
+
+- Each shopping stage has its own logic
+- Cart and checkout remain stable even when catalog changes
+- Payment and pricing rules stay isolated
+
+### Common Mistake
+
+Letting product cards directly own cart and checkout logic.
+
+### Edge Cases
+
+- Item goes out of stock during checkout
+- Coupon expires mid-flow
+- Refresh during payment
+- Currency changes between browse and pay
+
+---
+
+## 3. Streaming / Media Product
+
+### The Vague Prompt
+
+**Interviewer/Manager:** “Design a media app like Netflix or YouTube.”
+
+### Clarifying Phase
+
+**You:**
+
+- Is this video, audio, or both?
+- Is playback the main flow or just one part?
+- Do we support offline downloads?
+- Is adaptive bitrate playback needed?
+- Are recommendations important?
+
+**Example answers:**
+
+- Video is the main flow
+- Playback and browse matter most
+- Offline download is a should-have
+- Adaptive quality is important
+
+### Architecture Mapping
+
+- Browse page → content discovery module
+- Playback → dedicated player module
+- History → persistent state layer
+- Downloads → offline storage and queue layer
+- Recommendations → separate data-fetching flow
+
+### Recommended Structure
+
+```txt
+src/
+  features/
+    browse/
+    player/
+    history/
+    downloads/
+    recommendations/
+  shared/
+    ui/
+    media/
+    api/
+```
+
+### Why This Works
+
+- Player logic stays isolated
+- Large media concerns do not pollute browse screens
+- Offline and resume logic has a clear home
+
+### Common Mistake
+
+Mixing playback controls, recommendation loading, and download state in one component tree.
+
+### Edge Cases
+
+- Buffering or playback failure
+- Quality drops on slow network
+- Resume from last timestamp
+- Device switch while watching
+
+---
+
+## 4. Productivity / Collaboration Tool
+
+### The Vague Prompt
+
+**Interviewer/Manager:** “Design a collaborative app like Notion or Trello.”
+
+### Clarifying Phase
+
+**You:**
+
+- Is this document, board, or task focused?
+- Do we need real-time collaboration?
+- Is offline editing needed?
+- How complex are permissions?
+- Do we need comments, mentions, or activity logs?
+
+**Example answers:**
+
+- Real-time collaboration is required
+- Offline editing is useful
+- Permissions vary by workspace
+
+### Architecture Mapping
+
+- Editor or board → domain-owned workspace module
+- Collaboration → sync layer
+- Offline edits → local queue and reconciliation
+- Permissions → policy module
+- Comments and mentions → separate feature modules
 
 ### Recommended Structure
 
@@ -186,71 +261,108 @@ That works for one step and fails for five.
 src/
   domains/
     documents/
-    comments/
+    boards/
     permissions/
-    presence/
-  sync/
-  storage/
+    collaboration/
   shared/
+    ui/
+    lib/
+    sync/
 ```
 
-### Key Decision
+### Why This Works
 
-Do not let the editor UI own sync logic.
+- Sync stays out of the UI layer
+- Domain logic stays testable
+- Permissions remain centralized
 
-The editor should render state; the sync layer should negotiate state.
+### Common Mistake
+
+Letting the editor component directly manage network sync, conflict resolution, and permissions.
+
+### Edge Cases
+
+- Two users edit the same content
+- Offline edits need later merge
+- Permission changes mid-session
+- Out-of-order updates arrive
 
 ---
 
-## Example 4: Design an Admin Portal for a Marketplace
+## 5. Marketplace / Admin Console
 
 ### The Vague Prompt
 
-**Interviewer/Manager:** “We need an internal admin portal.”
+**Interviewer/Manager:** “Design an admin portal or marketplace console.”
 
 ### Clarifying Phase
 
 **You:**
 
-- Is the portal used by support, operations, or finance?
-- Are most actions read-only or write-heavy?
+- Who uses it: support, operations, finance, or all of them?
+- Are the main screens tables and filters?
+- Are actions mostly safe or high-risk?
 - Do we need audit logs?
-- Which workflows are critical?
+- Do permissions vary by role?
 
-**Them:**
+**Example answers:**
 
-- Used by support and operations
-- Many read-heavy views
-- Audit logs are important
-- A few high-risk actions like refunds and bans
+- Multiple internal teams use it
+- Tables and filters are the main UI
+- Some actions are high-risk
+- Audit logging is mandatory
 
 ### Architecture Mapping
 
-- **Read-heavy UI** → table/list-first structure
-- **High-risk actions** → isolated domain workflows with confirmations
-- **Audit logs** → shared observability and action tracking layer
+- Table views → reusable query and list state
+- High-risk actions → isolated workflow modules
+- Audit logs → central tracking module
+- Permissions → shared policy layer
+- Multiple teams → stronger feature boundaries
 
-### Important Pattern
+### Recommended Structure
 
-High-risk workflows should not be casually reusable.
+```txt
+src/
+  features/
+    users/
+    orders/
+    payouts/
+    moderation/
+    audit-log/
+  shared/
+    ui/
+    lib/
+    api/
+```
 
-Refunds, bans, approvals, and manual overrides deserve explicit modules.
+### Why This Works
+
+- Operations flows stay explicit
+- Sensitive actions are easy to review
+- Audit and permission logic are not scattered
+
+### Common Mistake
+
+Turning admin actions into a generic “action framework” too early.
+
+### Edge Cases
+
+- Action succeeds only partially
+- Permission changes while open
+- Large tables need pagination and filtering
+- Undo support for dangerous actions
 
 ---
 
-## Quick-Fire Scenarios
+## Quick Comparison Notes
 
-1. **You have a small app and one engineer.**
-   - Keep the structure simple.
+| Category | Main Flow | Main Architecture Driver |
+|:---------|:----------|:-------------------------|
+| Social media | Scroll and engage | Feed performance and interactions |
+| E-commerce | Browse to buy | State safety and checkout reliability |
+| Streaming | Browse and play | Playback stability and media handling |
+| Productivity | Edit and collaborate | Sync and conflict resolution |
+| Marketplace/Admin | Search and act | Permissions and safe workflows |
 
-2. **You have three teams shipping in parallel.**
-   - Add stronger feature boundaries.
-
-3. **A workflow has business rules that change often.**
-   - Extract domain logic out of components.
-
-4. **A feature needs offline persistence and sync.**
-   - Add a storage and synchronization layer.
-
-5. **You are tempted to use micro-frontends “for future scale.”**
-   - First ask whether the org structure truly requires it.
+> **Fast memory trick:** feeds need speed, stores need safety, media needs stability, collaboration needs sync, and admin tools need control.
